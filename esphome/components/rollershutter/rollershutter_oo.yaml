@@ -1,0 +1,119 @@
+esphome:
+  name: roller-shutter-1
+  id: rollershutter1
+  friendly_name: Roller_Shutter_1
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+  encryption:
+    key: !secret encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 0
+  manual_ip:
+    static_ip: !secret ip_rl_1
+    gateway: !secret ip_dateway
+    subnet: 255.255.255.0
+
+i2c:
+  sda: GPIO4
+  scl:
+    number: GPIO5
+    ignore_strapping_warning: true
+
+pcf8574:
+  - id: inputs_1_8
+    address: 0x22
+    pcf8575: false
+  - id: outputs_1_8
+    address: 0x24
+    pcf8575: false
+
+binary_sensor:
+  - platform: gpio
+    name: "RL_HAR_I_U"
+    id: in_har_u
+    pin:
+      pcf8574: inputs_1_8
+      number: 0
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_HAR_I_D"
+    id: in_har_d
+    pin:
+      pcf8574: inputs_1_8
+      number: 1
+      mode: INPUT
+      inverted: true
+
+switch:
+  - platform: gpio
+    name: "RL_HAR_O_U"
+    id: out_har_u
+    pin:
+      pcf8574: outputs_1_8
+      number: 0
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_HAR_O_D"
+    id: out_har_d
+    pin:
+      pcf8574: outputs_1_8
+      number: 1
+      mode: OUTPUT
+      inverted: true
+
+rstimes:
+  - id: TIME_NORMAL
+    milisecondsup: 20000
+    milisecondsdown: 20000
+    milisecondsgap: 14000
+
+  - id: TIME_BIGWINDOW
+    milisecondsup: 27000
+    milisecondsdown: 27000
+    milisecondsgap: 17000
+
+  - id: TIME_BIGDOOR
+    milisecondsup: 30000
+    milisecondsdown: 27000
+    milisecondsgap: 11000
+
+rsgroups:
+  - id: HOUSE_SOUTH
+    name: Haus-Sued
+    sundowner:
+      monthfrom: 5
+      monthto: 9
+      gaphour: 8
+      gapminute: 0
+      uphour: 15
+      upminute: 45
+
+rshutters:
+  - id: rs_har
+    name: Hausanschlussraum
+    rsgroup_id: HOUSE_SOUTH
+    rstime_id: TIME_NORMAL
+    inputup_id: in_har_u
+    inputdown_id: in_har_d
+    outputup_id: out_har_u
+    outputdown_id: out_har_d

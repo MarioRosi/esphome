@@ -1,0 +1,505 @@
+esphome:
+  name: roller-shutter-1
+  id: rollershutter1
+  friendly_name: Roller_Shutter_1
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+logger:
+
+api:
+  encryption:
+    key: !secret encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 0
+  manual_ip:
+    static_ip: 192.168.50.120
+    gateway: 192.168.50.2
+    subnet: 255.255.255.0
+
+time:
+  - platform: sntp
+    id: sntp_time
+    timezone: Europe/Berlin
+    servers:
+      - 0.pool.ntp.org,
+      - 1.pool.ntp.org,
+      - 2.pool.ntp.org
+
+uart:
+  - id: rs485
+    tx_pin: GPIO13
+    rx_pin: GPIO16
+    baud_rate: 9600
+
+i2c:
+  sda: GPIO4
+  scl:
+    number: GPIO5
+    ignore_strapping_warning: true
+
+pcf8574:
+  - id: inputs_1_8
+    address: 0x22
+    pcf8575: false
+  - id: inputs_9_16
+    address: 0x21
+    pcf8575: false
+  - id: outputs_1_8
+    address: 0x24
+    pcf8575: false
+  - id: outputs_9_16
+    address: 0x25
+    pcf8575: false
+
+binary_sensor:
+  - platform: gpio
+    name: "KC868-A16-HT1"
+    pin:
+      number: GPIO32
+      inverted: true
+
+  - platform: gpio
+    name: "KC868-A16-HT2"
+    pin:
+      number: GPIO33
+      inverted: true
+
+  - platform: gpio
+    name: "KC868-A16-HT3"
+    pin:
+      number: GPIO14
+      inverted: true
+
+  - platform: gpio
+    name: "RL_HAR_I_U"
+    id: in_har_u
+    pin:
+      pcf8574: inputs_1_8
+      number: 0
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_HAR_I_D"
+    id: in_har_d
+    pin:
+      pcf8574: inputs_1_8
+      number: 1
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KIT_I_U"
+    id: in_kit_u
+    pin:
+      pcf8574: inputs_1_8
+      number: 2
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KIT_I_D"
+    id: in_kit_d
+    pin:
+      pcf8574: inputs_1_8
+      number: 3
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_BA1_I_U"
+    id: in_ba1_u
+    pin:
+      pcf8574: inputs_1_8
+      number: 4
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_BA1_I_D"
+    id: in_ba1_d
+    pin:
+      pcf8574: inputs_1_8
+      number: 5
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI1_I_U"
+    id: in_ki1_u
+    pin:
+      pcf8574: inputs_1_8
+      number: 6
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI1_I_D"
+    id: in_ki1_d
+    pin:
+      pcf8574: inputs_1_8
+      number: 7
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI2_I_U"
+    id: in_ki2_u
+    pin:
+      pcf8574: inputs_9_16
+      number: 0
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI2_I_D"
+    id: in_ki2_d
+    pin:
+      pcf8574: inputs_9_16
+      number: 1
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_ARB_I_U"
+    id: in_arb_u
+    pin:
+      pcf8574: inputs_9_16
+      number: 2
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_ARB_I_D"
+    id: in_arb_d
+    pin:
+      pcf8574: inputs_9_16
+      number: 3
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STT_I_U"
+    id: in_stt_u
+    pin:
+      pcf8574: inputs_9_16
+      number: 4
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STT_I_D"
+    id: in_stt_d
+    pin:
+      pcf8574: inputs_9_16
+      number: 5
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STF_I_U"
+    id: in_stf_u
+    pin:
+      pcf8574: inputs_9_16
+      number: 6
+      mode: INPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STF_I_D"
+    id: in_stf_d
+    pin:
+      pcf8574: inputs_9_16
+      number: 7
+      mode: INPUT
+      inverted: true
+
+switch:
+  - platform: gpio
+    name: "RL_HAR_O_U"
+    id: out_har_u
+    pin:
+      pcf8574: outputs_1_8
+      number: 0
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_HAR_O_D"
+    id: out_har_d
+    pin:
+      pcf8574: outputs_1_8
+      number: 1
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KIT_O_U"
+    id: out_kit_u
+    pin:
+      pcf8574: outputs_1_8
+      number: 2
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KIT_O_D"
+    id: out_kit_d
+    pin:
+      pcf8574: outputs_1_8
+      number: 3
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_BA1_O_U"
+    id: out_ba1_u
+    pin:
+      pcf8574: outputs_1_8
+      number: 4
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_BA1_O_D"
+    id: out_ba1_d
+    pin:
+      pcf8574: outputs_1_8
+      number: 5
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI1_O_U"
+    id: out_ki1_u
+    pin:
+      pcf8574: outputs_1_8
+      number: 6
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI1_O_D"
+    id: out_ki1_d
+    pin:
+      pcf8574: outputs_1_8
+      number: 7
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI2_O_U"
+    id: out_ki2_u
+    pin:
+      pcf8574: outputs_9_16
+      number: 0
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_KI2_O_D"
+    id: out_ki2_d
+    pin:
+      pcf8574: outputs_9_16
+      number: 1
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_ARB_O_U"
+    id: out_arb_u
+    pin:
+      pcf8574: outputs_9_16
+      number: 2
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_ARB_O_D"
+    id: out_arb_d
+    pin:
+      pcf8574: outputs_9_16
+      number: 3
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STT_O_U"
+    id: out_stt_u
+    pin:
+      pcf8574: outputs_9_16
+      number: 4
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STT_O_D"
+    id: out_stt_d
+    pin:
+      pcf8574: outputs_9_16
+      number: 5
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STF_O_U"
+    id: out_stf_u
+    pin:
+      pcf8574: outputs_9_16
+      number: 6
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_STF_O_D"
+    id: out_stf_d
+    pin:
+      pcf8574: outputs_9_16
+      number: 7
+      mode: OUTPUT
+      inverted: true
+
+rstimes:
+  - id: TIME_NORMAL
+    milisecondsup: 20000
+    milisecondsdown: 20000
+    milisecondsgap: 14000
+
+  - id: TIME_BIGWINDOW
+    milisecondsup: 27000
+    milisecondsdown: 27000
+    milisecondsgap: 17000
+
+  - id: TIME_BIGDOOR
+    milisecondsup: 30000
+    milisecondsdown: 27000
+    milisecondsgap: 11000
+
+rsgroups:
+  - id: HOUSE_SOUTH
+    name: Haus-sued
+    sundowner:
+      monthfrom: 5
+      monthto: 9
+      gaphour: 8
+      gapminute: 0
+      uphour: 15
+      upminute: 45
+
+  - id: HOUSE_NORTH
+    name: Haus-nord
+    sundowner:
+      offline: 1
+
+  - id: HOUSE_EAST
+    name: Haus-ost
+    sundowner:
+      monthfrom: 5
+      monthto: 9
+      gaphour: 6
+      gapminute: 30
+      uphour: 11
+      upminute: 00
+
+  - id: HOUSE_WEST
+    name: Haus-west
+    sundowner:
+      monthfrom: 5
+      monthto: 9
+      gaphour: 13
+      gapminute: 40
+      uphour: 18
+      upminute: 55
+
+rshutterAll:
+  allinputup_id: remote
+  allinputdown_id: remote
+  allinputhollyday_id: remote
+  allinput_master: False
+  allInput_slave: True
+
+rshutters:
+  - id: rs_har
+    name: Hausanschlussraum
+    rsgroup_id: HOUSE_SOUTH
+    rstime_id: TIME_NORMAL
+    inputup_id: in_har_u
+    inputdown_id: in_har_d
+    outputup_id: out_har_u
+    outputdown_id: out_har_d
+
+  - id: rs_kit
+    name: Kueche
+    rsgroup_id: HOUSE_SOUTH
+    rstime_id: TIME_NORMAL
+    inputup_id: in_kit_u
+    inputdown_id: in_kit_d
+    outputup_id: out_kit_u
+    outputdown_id: out_kit_d
+
+  - id: rs_ba1
+    name: Kinderbad
+    rsgroup_id: HOUSE_SOUTH
+    rstime_id: TIME_NORMAL
+    inputup_id: in_ba1_u
+    inputdown_id: in_ba1_d
+    outputup_id: out_ba1_u
+    outputdown_id: out_ba1_d
+
+  - id: rs_ki1
+    name: Kinderzimmer
+    rsgroup_id: HOUSE_SOUTH
+    rstimes_id: TIME_NORMAL
+    inputup:_id: in_ki1_u
+    inputdown_id: in_ki1_d
+    outputup_id: out_ki1_u
+    outputdown_id: out_ki1_d
+
+  - id: rs_ki2
+    name: Kinder-Schlafen
+    rsgroup_id: HOUSE_WEST
+    rstime_id: TIME_NORMAL
+    inputup_id: in_ki2_u
+    inputdown_id: in_ki2_d
+    outputup_id: out_ki2_u
+    outputdown_id: out_ki2_d
+
+  - id: rs_arb
+    name: Arbeitsplatz
+    rsgroup_id: HOUSE_WEST
+    rstime_id: TIME_NORMAL
+    inputup_id: in_arb_u
+    inputdown_id: in_arb_d
+    outputup_id: out_arb_u
+    outputdown_id: out_arb_d
+
+  - id: rs_stt
+    name: Stube-Terassentuer
+    rsgroup_id: HOUSE_WEST
+    rstime_id: TIME_BIGDOOR
+    inputup_id: in_stt_u
+    inputdown_id: in_stt_d
+    outputup_id: out_stt_u
+    outputdown_id: out_stt_d
+
+  - id: rs_stf
+    name: Stube-Terassenfenster
+    rsgroup_id: HOUSE_WEST
+    rstime_id: TIME_WINDOW
+    inputup_id: in_stf_u
+    inputdown_id: in_stf_d
+    outputup_id: out_stf_u
+    outputdown_id: out_stf_d
