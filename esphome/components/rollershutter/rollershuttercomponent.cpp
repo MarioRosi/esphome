@@ -20,6 +20,8 @@
 
 namespace esphome {
 namespace rollershutter {
+
+static const char *TAG = "RollerShutterComponent.component";
 /// @brief Konstruktor
 /// @param id
 RollerShutterComponent::RollerShutterComponent(std::string id, std::string name) {
@@ -239,7 +241,7 @@ void RollerShutterComponent::loop() {
       if (this->btnHolliday->has_state())
         this->btnHollidayIsOn = this->btnHolliday->state;
       else
-        this->btnHollidayIsOn = fals;
+        this->btnHollidayIsOn = false;
     }
     // Wenn Urlaubssteuerung, hoch und runter zufällig zwischen 5-7 und 17-19
     if (this->btnHollidayIsOn) {
@@ -291,7 +293,29 @@ void RollerShutterComponent::loop() {
 }
 
 /// @brief Dump-Config
-void RollerShutterComponent::dump_config() {}
+void RollerShutterComponent::dump_config() 
+{
+  ESP_LOGCONFIG(TAG, "DIe Komponete");
+  ESP_LOGCONFIG(TAG, "Anzahl der Rolläden = ", this->shutters->size());
+  if (this->allBtnIsMaster)
+  {
+    ESP_LOGCONFIG(TAG, "Alles Runter, ich bin Master = ", !this->btnDownIsRemote);
+    ESP_LOGCONFIG(TAG, "Alles Hoch, ich bin Master = ", !this->btnUpIsRemote);
+    ESP_LOGCONFIG(TAG, "Urlaubsschalter, ich bin Master = ", !this->btnHollidayIsRemote);
+  }
+  else if (this->allBtnIsMaster)
+  {
+    ESP_LOGCONFIG(TAG, "Alles Runter, ich bin Remote = ", this->btnDownIsRemote);
+    ESP_LOGCONFIG(TAG, "Alles Hoch, ich bin Remote = ", this->btnUpIsRemote);
+    ESP_LOGCONFIG(TAG, "Urlaubsschalter, ich bin Remote = ", this->btnHollidayIsRemote);
+  }
+  else{
+    ESP_LOGCONFIG(TAG, "Alles Runter, wird nicht genutzt");
+    ESP_LOGCONFIG(TAG, "Alles Hoch, wird nicht genutzt");
+    ESP_LOGCONFIG(TAG, "Urlaubsschalter, wird nicht genutzt");
+  }
+
+}
 
 /// @brief Gibt das Switch anhand seiner Id zurück
 /// @param hisId

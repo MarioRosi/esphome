@@ -1,6 +1,5 @@
 esphome:
   name: roller-shutter-1
-  id: rollershutter1
   friendly_name: Roller_Shutter_1
 
 esp32:
@@ -34,8 +33,8 @@ time:
     id: sntp_time
     timezone: Europe/Berlin
     servers:
-      - 0.pool.ntp.org,
-      - 1.pool.ntp.org,
+      - 0.pool.ntp.org
+      - 1.pool.ntp.org
       - 2.pool.ntp.org
 
 uart:
@@ -372,134 +371,137 @@ switch:
       mode: OUTPUT
       inverted: true
 
-rstimes:
-  - id: TIME_NORMAL
-    milisecondsup: 20000
-    milisecondsdown: 20000
-    milisecondsgap: 14000
+rollershutter:
+  id: rollershutter_1
 
-  - id: TIME_BIGWINDOW
-    milisecondsup: 27000
-    milisecondsdown: 27000
-    milisecondsgap: 17000
+  rstimes:
+    - id: TIME_NORMAL
+      milisecondsup: 20000
+      milisecondsdown: 20000
+      milisecondsgap: 14000
 
-  - id: TIME_BIGDOOR
-    milisecondsup: 30000
-    milisecondsdown: 27000
-    milisecondsgap: 11000
+    - id: TIME_BIGWINDOW
+      milisecondsup: 27000
+      milisecondsdown: 27000
+      milisecondsgap: 17000
 
-rsgroups:
-  - id: HOUSE_SOUTH
-    name: Haus-sued
-    sundowner:
-      monthfrom: 5
-      monthto: 9
-      gaphour: 8
-      gapminute: 0
-      uphour: 15
-      upminute: 45
+    - id: TIME_BIGDOOR
+      milisecondsup: 30000
+      milisecondsdown: 27000
+      milisecondsgap: 11000
 
-  - id: HOUSE_NORTH
-    name: Haus-nord
-    sundowner:
-      offline: 1
+  rsgroups:
+    - id: HOUSE_SOUTH
+      name: Haus-sued
+      sundowner:
+        monthfrom: 5
+        monthto: 9
+        gaphour: 8
+        gapminute: 0
+        uphour: 15
+        upminute: 45
 
-  - id: HOUSE_EAST
-    name: Haus-ost
-    sundowner:
-      monthfrom: 5
-      monthto: 9
-      gaphour: 6
-      gapminute: 30
-      uphour: 11
-      upminute: 00
+    - id: HOUSE_NORTH
+      name: Haus-nord
+      sundowner:
+        offline: 1
 
-  - id: HOUSE_WEST
-    name: Haus-west
-    sundowner:
-      monthfrom: 5
-      monthto: 9
-      gaphour: 13
-      gapminute: 40
-      uphour: 18
-      upminute: 55
+    - id: HOUSE_EAST
+      name: Haus-ost
+      sundowner:
+        monthfrom: 5
+        monthto: 9
+        gaphour: 6
+        gapminute: 30
+        uphour: 11
+        upminute: 00
 
-rshutterAll:
-  allinputup_id: remote
-  allinputdown_id: remote
-  allinputhollyday_id: remote
-  allinput_master: False
-  allInput_slave: True
+    - id: HOUSE_WEST
+      name: Haus-west
+      sundowner:
+        monthfrom: 5
+        monthto: 9
+        gaphour: 13
+        gapminute: 40
+        uphour: 18
+        upminute: 55
 
-rshutters:
-  - id: rs_har
-    name: Hausanschlussraum
-    rsgroup_id: HOUSE_SOUTH
-    rstime_id: TIME_NORMAL
-    inputup_id: in_har_u
-    inputdown_id: in_har_d
-    outputup_id: out_har_u
-    outputdown_id: out_har_d
+  rshutterAll:
+    allinputup_id: remote
+    allinputdown_id: remote
+    allinputhollyday_id: remote
+    allinput_master: False
+    allInput_slave: True
 
-  - id: rs_kit
-    name: Kueche
-    rsgroup_id: HOUSE_SOUTH
-    rstime_id: TIME_NORMAL
-    inputup_id: in_kit_u
-    inputdown_id: in_kit_d
-    outputup_id: out_kit_u
-    outputdown_id: out_kit_d
+  rshutters:
+    - id: rs_har
+      name: Hausanschlussraum
+      rsgroup_id: HOUSE_SOUTH
+      rstime_id: TIME_NORMAL
+      inputup_id: in_har_u
+      inputdown_id: in_har_d
+      outputup_id: out_har_u
+      outputdown_id: out_har_d
 
-  - id: rs_ba1
-    name: Kinderbad
-    rsgroup_id: HOUSE_SOUTH
-    rstime_id: TIME_NORMAL
-    inputup_id: in_ba1_u
-    inputdown_id: in_ba1_d
-    outputup_id: out_ba1_u
-    outputdown_id: out_ba1_d
+    - id: rs_kit
+      name: Kueche
+      rsgroup_id: HOUSE_SOUTH
+      rstime_id: TIME_NORMAL
+      inputup_id: in_kit_u
+      inputdown_id: in_kit_d
+      outputup_id: out_kit_u
+      outputdown_id: out_kit_d
 
-  - id: rs_ki1
-    name: Kinderzimmer
-    rsgroup_id: HOUSE_SOUTH
-    rstimes_id: TIME_NORMAL
-    inputup:_id: in_ki1_u
-    inputdown_id: in_ki1_d
-    outputup_id: out_ki1_u
-    outputdown_id: out_ki1_d
+    - id: rs_ba1
+      name: Kinderbad
+      rsgroup_id: HOUSE_SOUTH
+      rstime_id: TIME_NORMAL
+      inputup_id: in_ba1_u
+      inputdown_id: in_ba1_d
+      outputup_id: out_ba1_u
+      outputdown_id: out_ba1_d
 
-  - id: rs_ki2
-    name: Kinder-Schlafen
-    rsgroup_id: HOUSE_WEST
-    rstime_id: TIME_NORMAL
-    inputup_id: in_ki2_u
-    inputdown_id: in_ki2_d
-    outputup_id: out_ki2_u
-    outputdown_id: out_ki2_d
+    - id: rs_ki1
+      name: Kinderzimmer
+      rsgroup_id: HOUSE_SOUTH
+      rstimes_id: TIME_NORMAL
+      inputup:_id: in_ki1_u
+      inputdown_id: in_ki1_d
+      outputup_id: out_ki1_u
+      outputdown_id: out_ki1_d
 
-  - id: rs_arb
-    name: Arbeitsplatz
-    rsgroup_id: HOUSE_WEST
-    rstime_id: TIME_NORMAL
-    inputup_id: in_arb_u
-    inputdown_id: in_arb_d
-    outputup_id: out_arb_u
-    outputdown_id: out_arb_d
+    - id: rs_ki2
+      name: Kinder-Schlafen
+      rsgroup_id: HOUSE_WEST
+      rstime_id: TIME_NORMAL
+      inputup_id: in_ki2_u
+      inputdown_id: in_ki2_d
+      outputup_id: out_ki2_u
+      outputdown_id: out_ki2_d
 
-  - id: rs_stt
-    name: Stube-Terassentuer
-    rsgroup_id: HOUSE_WEST
-    rstime_id: TIME_BIGDOOR
-    inputup_id: in_stt_u
-    inputdown_id: in_stt_d
-    outputup_id: out_stt_u
-    outputdown_id: out_stt_d
+    - id: rs_arb
+      name: Arbeitsplatz
+      rsgroup_id: HOUSE_WEST
+      rstime_id: TIME_NORMAL
+      inputup_id: in_arb_u
+      inputdown_id: in_arb_d
+      outputup_id: out_arb_u
+      outputdown_id: out_arb_d
 
-  - id: rs_stf
-    name: Stube-Terassenfenster
-    rsgroup_id: HOUSE_WEST
-    rstime_id: TIME_WINDOW
-    inputup_id: in_stf_u
-    inputdown_id: in_stf_d
-    outputup_id: out_stf_u
-    outputdown_id: out_stf_d
+    - id: rs_stt
+      name: Stube-Terassentuer
+      rsgroup_id: HOUSE_WEST
+      rstime_id: TIME_BIGDOOR
+      inputup_id: in_stt_u
+      inputdown_id: in_stt_d
+      outputup_id: out_stt_u
+      outputdown_id: out_stt_d
+
+    - id: rs_stf
+      name: Stube-Terassenfenster
+      rsgroup_id: HOUSE_WEST
+      rstime_id: TIME_WINDOW
+      inputup_id: in_stf_u
+      inputdown_id: in_stf_d
+      outputup_id: out_stf_u
+      outputdown_id: out_stf_d
