@@ -4,7 +4,7 @@ from esphome.const import CONF_ID, CONF_NAME
 
 MULTI_CONF = True
 
-AUTO_LOAD = ["ethernet", "time", "uart", "ic2", "pcf8574", "binary_sensor", "switch" ]
+AUTO_LOAD = ["ethernet", "time", "uart", "ic2", "pcf8574", "binary_sensor", "switch"]
 
 CODEOWNERS = ["@esphome/core"]
 rollershutter_ns = cg.esphome_ns.namespace("rollershutter")
@@ -106,7 +106,7 @@ CONFIG_ROLERSHUTTER = cv.Schema(
         cv.Required(CONF_RLS_TIMES): cv.ensure_list(CONFIG_RLS_TIME),
         cv.Required(CONF_RLS_GROUPS): cv.ensure_list(CONFIG_RLS_GROUP),
         cv.Required(CONF_RLS_ALLSH): cv.ensure_schema(CONFIG_RLS_ALLSHUTTER),
-        cv.Required(CONF_RLS_SHUTTERS): cv.ensure_list(CONFIG_RLS_SHUTTER)
+        cv.Required(CONF_RLS_SHUTTERS): cv.ensure_list(CONFIG_RLS_SHUTTER),
     }
 )
 
@@ -114,9 +114,7 @@ CONFIG_ROLERSHUTTER = cv.Schema(
 
 
 async def to_code(config):
-    if (
-        CONF_RLS_ROOT in config
-    ):
+    if CONF_RLS_ROOT in config:
         if rlsRoot := config.get(CONF_RLS_ROOT):
             rlstimes = []
             for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):

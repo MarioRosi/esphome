@@ -293,28 +293,22 @@ void RollerShutterComponent::loop() {
 }
 
 /// @brief Dump-Config
-void RollerShutterComponent::dump_config() 
-{
+void RollerShutterComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "DIe Komponete");
   ESP_LOGCONFIG(TAG, "Anzahl der Rolläden = ", this->shutters->size());
-  if (this->allBtnIsMaster)
-  {
+  if (this->allBtnIsMaster) {
     ESP_LOGCONFIG(TAG, "Alles Runter, ich bin Master = ", !this->btnDownIsRemote);
     ESP_LOGCONFIG(TAG, "Alles Hoch, ich bin Master = ", !this->btnUpIsRemote);
     ESP_LOGCONFIG(TAG, "Urlaubsschalter, ich bin Master = ", !this->btnHollidayIsRemote);
-  }
-  else if (this->allBtnIsMaster)
-  {
+  } else if (this->allBtnIsMaster) {
     ESP_LOGCONFIG(TAG, "Alles Runter, ich bin Remote = ", this->btnDownIsRemote);
     ESP_LOGCONFIG(TAG, "Alles Hoch, ich bin Remote = ", this->btnUpIsRemote);
     ESP_LOGCONFIG(TAG, "Urlaubsschalter, ich bin Remote = ", this->btnHollidayIsRemote);
-  }
-  else{
+  } else {
     ESP_LOGCONFIG(TAG, "Alles Runter, wird nicht genutzt");
     ESP_LOGCONFIG(TAG, "Alles Hoch, wird nicht genutzt");
     ESP_LOGCONFIG(TAG, "Urlaubsschalter, wird nicht genutzt");
   }
-
 }
 
 /// @brief Gibt das Switch anhand seiner Id zurück
