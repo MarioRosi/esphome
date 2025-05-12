@@ -100,7 +100,7 @@ CONFIG_RLS_ALLSHUTTER = cv.Schema(
     }
 )
 
-CONFIG_ROLERSHUTTER = cv.Schema(
+CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(RollerShutterComponent),
         cv.Required(CONF_RLS_TIMES): cv.ensure_list(CONFIG_RLS_TIME),
