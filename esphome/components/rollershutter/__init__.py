@@ -95,8 +95,8 @@ CONFIG_RLS_ALLSHUTTER = cv.Schema(
         cv.Optional(CONF_RLS_ALLSH_IPU): cv.string,
         cv.Optional(CONF_RLS_ALLSH_IPD): cv.string,
         cv.Optional(CONF_RLS_ALLSH_IPH): cv.string,
-        cv.Optional(CONF_RLS_ALLSH_MAS): cv.boolean(False),
-        cv.Optional(CONF_RLS_ALLSH_SLV): cv.boolean(False),
+        cv.Optional(CONF_RLS_ALLSH_MAS): cv.boolean,
+        cv.Optional(CONF_RLS_ALLSH_SLV): cv.boolean,
     }
 )
 
