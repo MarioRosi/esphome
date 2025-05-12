@@ -377,6 +377,13 @@ switch:
       mode: OUTPUT
       inverted: true
 
+external_components:
+  - source: 
+    type: git
+    url: https://github.com/MarioRosi/esphome
+    ref: dev
+  components: [ rollershutter ]
+
 rollershutter:
   id: rollershutter_1
 

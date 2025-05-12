@@ -4,7 +4,7 @@ from esphome.const import CONF_ID, CONF_NAME
 
 MULTI_CONF = True
 
-AUTO_LOAD = ["ethernet", "time", "uart", "ic2", "pcf8574", "binary_sensor", "switch"]
+AUTO_LOAD = ["ethernet", "time", "uart", "i2c", "pcf8574", "binary_sensor", "switch"]
 
 CODEOWNERS = ["@esphome/core"]
 rollershutter_ns = cg.esphome_ns.namespace("rollershutter")
