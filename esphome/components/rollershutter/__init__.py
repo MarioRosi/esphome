@@ -81,8 +81,8 @@ CONFIG_RLS_SHUTTER = cv.Schema(
     {
         cv.Required(CONF_ID): cv.declare_id(RollerShutter),
         cv.Required(CONF_NAME): cv.valid_name,
-        cv.Required(CONF_RLS_SH_GRP): cv.declare_id(RL_Group),
-        cv.Required(CONF_RLS_SH_TIM): cv.declare_id(RL_Time),
+        cv.Required(CONF_RLS_SH_GRP): cv.string,
+        cv.Required(CONF_RLS_SH_TIM): cv.string,
         cv.Required(CONF_RLS_SH_IPU): cv.string,
         cv.Required(CONF_RLS_SH_IPD): cv.string,
         cv.Required(CONF_RLS_SH_OSU): cv.string,
