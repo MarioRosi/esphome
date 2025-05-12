@@ -59,12 +59,12 @@ CONFIG_RLS_TIME = cv.Schema(
 CONFIG_RLS_SUNDO = cv.Schema(
     {
         cv.Optional(CONF_RLS_SD_OFF): cv.boolean("true"),
-        cv.Optional(CONF_RLS_SD_MF): cv.int_(5),
-        cv.Optional(CONF_RLS_SD_MT): cv.int_(9),
-        cv.Optional(CONF_RLS_SD_GH): cv.int_(10),
-        cv.Optional(CONF_RLS_SD_GM): cv.int_(10),
-        cv.Optional(CONF_RLS_SD_UH): cv.int_(11),
-        cv.Optional(CONF_RLS_SD_UM): cv.int_(11),
+        cv.Optional(CONF_RLS_SD_MF): cv.int_range(1, 12, True, True),
+        cv.Optional(CONF_RLS_SD_MT): cv.int_range(1, 12, True, True),
+        cv.Optional(CONF_RLS_SD_GH): cv.int_range(0, 23, True, True),
+        cv.Optional(CONF_RLS_SD_GM): cv.int_range(0, 59, True, True),
+        cv.Optional(CONF_RLS_SD_UH): cv.int_range(0, 23, True, True),
+        cv.Optional(CONF_RLS_SD_UM): cv.int_range(0, 59, True, True),
     }
 )
 
