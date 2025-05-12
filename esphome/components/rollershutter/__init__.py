@@ -49,9 +49,9 @@ CONF_RLS_ALLSH_SLV = "allinput_slave"
 CONFIG_RLS_TIME = cv.Schema(
     {
         cv.Required(CONF_ID): cv.declare_id(RL_Time),
-        cv.Required(CONF_RLS_TIMES_MSU): cv.int_(20000),
-        cv.Required(CONF_RLS_TIMES_MSD): cv.int_(20000),
-        cv.Required(CONF_RLS_TIMES_MSGD): cv.int_(14000),
+        cv.Required(CONF_RLS_TIMES_MSU): cv.int_range(0, 100000, True, True),
+        cv.Required(CONF_RLS_TIMES_MSD): cv.int_range(0, 100000, True, True),
+        cv.Required(CONF_RLS_TIMES_MSGD): cv.int_range(0, 100000, True, True),
     }
 )
 
