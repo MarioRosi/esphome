@@ -34,6 +34,10 @@
 
 namespace esphome {
 namespace rollershutter {
+
+// extern definition
+class RollerShutterComponent;
+
 /// @brief Status des Rolladen
 enum enRollerShutterState {
   /// @brief darf es nicht geben
