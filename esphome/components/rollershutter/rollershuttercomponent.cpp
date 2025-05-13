@@ -7,8 +7,6 @@
 */
 
 #include "rollershuttercomponent.h"
-#include "rollershutter.h"
-#include "esphome/core/helpers.h"
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()

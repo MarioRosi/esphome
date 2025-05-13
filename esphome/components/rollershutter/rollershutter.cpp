@@ -7,8 +7,7 @@
 */
 
 #include "rollershutter.h"
-#include "rollershuttercomponent.h"
-#include "esphome/components/time/real_time_clock.h"
+
 namespace esphome {
 namespace rollershutter {
 
