@@ -6,8 +6,8 @@
    Freeware
 */
 //#pragma once
-#ifndef RollerShutterComponent
-#define RollerShutterComponent
+#ifndef ROLLERSHUTTERCOMPONENT
+#define ROLLERSHUTTERCOMPONENT
 
 #define USE_BINARY_SENSOR
 #define USE_SWITCH
@@ -177,4 +177,4 @@ class RollerShutterComponent : public Component {
 }  // namespace rollershutter
 }  // namespace esphome
 
-#endif // RollerShutterComponent
+#endif // ROLLERSHUTTERCOMPONENT

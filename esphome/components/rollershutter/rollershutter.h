@@ -7,8 +7,8 @@
 */
 //#pragma once
 
-#ifndef RollerShutter
-#define RollerShutter
+#ifndef ROLLERSHUTTER
+#define ROLLERSHUTTER
 
 #define USE_BINARY_SENSOR
 #define USE_SWITCH
@@ -294,4 +294,4 @@ class RollerShutter {
 }  // namespace rollershutter
 }  // namespace esphome
 
-#endif // RollerShutter
+#endif // ROLLERSHUTTER
