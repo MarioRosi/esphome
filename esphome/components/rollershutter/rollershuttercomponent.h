@@ -32,6 +32,7 @@
 #include "esphome/components/uart/uart_component.h"
 
 #include <string>
+#include <vector>
 
 namespace esphome {
 namespace rollershutter {
@@ -104,12 +105,12 @@ class RollerShutterComponent : public Component {
 
  public:
   /// @brief Konstruktor
-  /// @param id
-  /// @param name
+  /// @param myId
+  /// @param myName
   /// @param btnUpId
   /// @param btnDownId
   /// @param btnHollidayId
-  RollerShutterComponent(std::string id, std::string name);
+  RollerShutterComponent(std::string myId, std::string myName);
 
   /// @brief Destruktor
   ~RollerShutterComponent();

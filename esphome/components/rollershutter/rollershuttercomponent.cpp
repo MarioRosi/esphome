@@ -8,6 +8,7 @@
 
 #include "rollershuttercomponent.h"
 #include <string>
+#include <vector>
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()
@@ -23,9 +24,10 @@ namespace rollershutter {
 static const char *TAG = "RollerShutterComponent.component";
 
 /// @brief Konstruktor
-/// @param id
-RollerShutterComponent::RollerShutterComponent(std::string id, std::string name) {
-  this->myId = id;
+/// @param myId
+/// @param myName
+RollerShutterComponent::RollerShutterComponent(std::string myId, std::string myName) {
+  this->myId = myId;
   this->name = name;
   this->movingTimes = new std::vector<RL_Time *>();
   this->groups = new std::vector<RL_Group *>();
