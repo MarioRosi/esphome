@@ -5,8 +5,7 @@
    Mario Rosenbohm
    Freeware
 */
-//#pragma once
-
+#pragma once
 #ifndef ROLLERSHUTTER
 #define ROLLERSHUTTER
 
