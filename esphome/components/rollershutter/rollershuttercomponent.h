@@ -5,7 +5,9 @@
    Mario Rosenbohm
    Freeware
 */
-#pragma once
+//#pragma once
+#ifndef RollerShutterComponent
+#define RollerShutterComponent
 
 #define USE_BINARY_SENSOR
 #define USE_SWITCH
@@ -171,3 +173,5 @@ class RollerShutterComponent : public Component {
 
 }  // namespace rollershutter
 }  // namespace esphome
+
+#endif RollerShutterComponent
