@@ -124,56 +124,66 @@ void RollerShutter::Stop() {
   if (hasSetup) {
     switch (myState) {
       case enRollerShutterState::isDoTop:
-        time_t timestampStop = std::time(nullptr);
-        relUp->turn_off();
-        relDown->turn_off();
-        double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
-        this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->millisecondUp) * 100.0;
-        this->myState = enRollerShutterState::isStopDoTop;
-        if (this->closingPosition <= 0.0) {
+        {
+          time_t timestampStop = std::time(nullptr);
+          relUp->turn_off();
+          relDown->turn_off();
+          double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
+          this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->millisecondUp) * 100.0;
+          this->myState = enRollerShutterState::isStopDoTop;
+          if (this->closingPosition <= 0.0) {
+            this->closingPosition = 0.0;
+            this->myState = enRollerShutterState::isTop;
+          }
+        }
+        break;
+      case enRollerShutterState::isDoDown:
+        {
+          time_t timestampStop = std::time(nullptr);
+          relUp->turn_off();
+          relDown->turn_off();
+          double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
+          this->closingPosition += timeStartToStop / ((double) this->timeUpDown->millisecondDown) * 100.0;
+          this->myState = enRollerShutterState::isStopDoDown;
+          if (this->closingPosition >= 100.0) {
+            this->closingPosition = 100.0;
+            this->myState = enRollerShutterState::isDown;
+          }
+        }
+        break;
+      case enRollerShutterState::isStarted:
+        {
+          relUp->turn_off();
+          relDown->turn_off();
           this->closingPosition = 0.0;
           this->myState = enRollerShutterState::isTop;
         }
         break;
-      case enRollerShutterState::isDoDown:
-        time_t timestampStop = std::time(nullptr);
-        relUp->turn_off();
-        relDown->turn_off();
-        double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
-        this->closingPosition += timeStartToStop / ((double) this->timeUpDown->millisecondDown) * 100.0;
-        this->myState = enRollerShutterState::isStopDoDown;
-        if (this->closingPosition >= 100.0) {
-          this->closingPosition = 100.0;
-          this->myState = enRollerShutterState::isDown;
+      case enRollerShutterState::isGoToGapUp:
+        {
+          time_t timestampStop = std::time(nullptr);
+          relUp->turn_off();
+          relDown->turn_off();
+          double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
+          this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->millisecondUp) * 100.0;
+          if (this->closingPosition <= (this->timeUpDown->millisecondGap / this->timeUpDown->millisecondUp * 100.0))
+            this->myState = enRollerShutterState::isOnGap;
+          else
+            this->myState = enRollerShutterState::isStopGapUp;
         }
         break;
-      case enRollerShutterState::isStarted:
-        relUp->turn_off();
-        relDown->turn_off();
-        this->closingPosition = 0.0;
-        this->myState = enRollerShutterState::isTop;
-        break;
-      case enRollerShutterState::isGoToGapUp:
-        time_t timestampStop = std::time(nullptr);
-        relUp->turn_off();
-        relDown->turn_off();
-        double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
-        this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->millisecondUp) * 100.0;
-        if (this->closingPosition <= (this->timeUpDown->millisecondGap / this->timeUpDown->millisecondUp * 100.0))
-          this->myState = enRollerShutterState::isOnGap;
-        else
-          this->myState = enRollerShutterState::isStopGapUp;
-        break;
       case enRollerShutterState::isGoToGapDown:
-        time_t timestampStop = std::time(nullptr);
-        relUp->turn_off();
-        relDown->turn_off();
-        double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
-        this->closingPosition += timeStartToStop / ((double) this->timeUpDown->millisecondDown) * 100.0;
-        if (this->closingPosition >= (this->timeUpDown->millisecondGap / this->timeUpDown->millisecondDown * 100.0))
-          this->myState = enRollerShutterState::isOnGap;
-        else
-          this->myState = enRollerShutterState::isStopGapDown;
+        {
+          time_t timestampStop = std::time(nullptr);
+          relUp->turn_off();
+          relDown->turn_off();
+          double timeStartToStop = difftime(timestampStop, timestampStart) * 1000.0;
+          this->closingPosition += timeStartToStop / ((double) this->timeUpDown->millisecondDown) * 100.0;
+          if (this->closingPosition >= (this->timeUpDown->millisecondGap / this->timeUpDown->millisecondDown * 100.0))
+            this->myState = enRollerShutterState::isOnGap;
+          else
+            this->myState = enRollerShutterState::isStopGapDown;
+        }
         break;
     }
   }
