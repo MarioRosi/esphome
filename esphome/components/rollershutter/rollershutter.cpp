@@ -5,7 +5,6 @@
    Mario Rosenbohm
    Freeware
 */
-#pragma once
 
 #include "rollershutter.h"
 #include "rollershuttercomponent.h"
