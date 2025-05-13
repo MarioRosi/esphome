@@ -7,6 +7,7 @@
 */
 
 #include "rollershuttercomponent.h"
+#include <string>
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()
@@ -20,6 +21,7 @@ namespace esphome {
 namespace rollershutter {
 
 static const char *TAG = "RollerShutterComponent.component";
+
 /// @brief Konstruktor
 /// @param id
 RollerShutterComponent::RollerShutterComponent(std::string id, std::string name) {

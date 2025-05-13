@@ -31,7 +31,7 @@
 #include "esphome/components/ethernet/ethernet_component.h"
 #include "esphome/components/uart/uart_component.h"
 
-#include "string.h"
+#include <string>
 
 namespace esphome {
 namespace rollershutter {

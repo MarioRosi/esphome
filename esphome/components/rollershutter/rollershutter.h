@@ -34,6 +34,7 @@
 #include "esphome/components/pcf8574/pcf8574.h"
 
 #include "chrono"
+#include <string>
 
 namespace esphome {
 namespace rollershutter {

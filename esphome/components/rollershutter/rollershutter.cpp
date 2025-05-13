@@ -7,6 +7,7 @@
 */
 
 #include "rollershutter.h"
+#include <string>
 
 namespace esphome {
 namespace rollershutter {
