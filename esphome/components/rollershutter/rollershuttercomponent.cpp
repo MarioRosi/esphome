@@ -7,6 +7,7 @@
 */
 
 #include "rollershuttercomponent.h"
+#include "rollershutter.h"
 #include <string>
 #include <vector>
 
