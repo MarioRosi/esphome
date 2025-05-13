@@ -15,7 +15,7 @@
 #define USE_UPDATE
 
 #include "rollershuttercomponent.h"
-
+#include "esphome/core/defines.h"
 #include "esphome/core/application.h"
 #include "esphome/core/component_iterator.h"
 #include "esphome/core/helpers.h"
