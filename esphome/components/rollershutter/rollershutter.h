@@ -14,7 +14,7 @@
 #define USE_EVENT
 #define USE_UPDATE
 
-#include "rollershuttercomponent.h"
+
 #include "esphome/core/defines.h"
 #include "esphome/core/application.h"
 #include "esphome/core/component_iterator.h"
@@ -28,9 +28,8 @@
 #include "esphome/core/string_ref.h"
 #include "esphome/components/binary_sensor/binary_sensor.h"
 #include "esphome/components/switch/switch.h"
-
 #include "esphome/components/pcf8574/pcf8574.h"
-
+#include "rollershuttercomponent.h"
 #include "chrono"
 
 namespace esphome {
