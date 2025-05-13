@@ -29,7 +29,7 @@ static const char *TAG = "RollerShutterComponent.component";
 /// @param myName
 RollerShutterComponent::RollerShutterComponent(std::string myId, std::string myName) {
   this->myId = myId;
-  this->name = name;
+  this->myName = myName;
   this->movingTimes = new std::vector<RL_Time *>();
   this->groups = new std::vector<RL_Group *>();
   this->shutters = new std::vector<RollerShutter *>();

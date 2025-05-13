@@ -49,7 +49,7 @@ class RollerShutterComponent : public Component {
   /// @brief die Id
   std::string myId;
   /// @brief Gruppenname
-  std::string name;
+  std::string myName;
 
   /// @brief Laufzeitvoreinstellungen
   std::vector<RL_Time *> *movingTimes;
@@ -155,13 +155,13 @@ class RollerShutterComponent : public Component {
   void InitialRun();
 
   /// @brief onSetup
-  void setup() override;
+  void setup();
 
   /// @brief onLoop
-  void loop() override;
+  void loop();
 
   /// @brief Dump-Config
-  void dump_config() override;
+  void dump_config();
 
   /// @brief Gibt das Switch anhand seiner Id zurück
   /// @param hisId
