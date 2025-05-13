@@ -9,10 +9,10 @@
 
 #define USE_BINARY_SENSOR
 #define USE_SWITCH
-#define USE_DATETIME_DATE
-#define USE_DATETIME_TIME
-#define USE_EVENT
-#define USE_UPDATE
+// #define USE_DATETIME_DATE
+// #define USE_DATETIME_TIME
+// #define USE_EVENT
+// #define USE_UPDATE
 
 #include "esphome/core/defines.h"
 #include "esphome/core/application.h"
@@ -25,8 +25,6 @@
 #include "esphome/core/scheduler.h"
 #include "esphome/core/time.h"
 
-#include "esphome/components/binary_sensor/binary_sensor.h"
-#include "esphome/components/switch/switch.h"
 #include "esphome/components/pcf8574/pcf8574.h"
 #include "esphome/components/ethernet/ethernet_component.h"
 #include "esphome/components/uart/uart_component.h"

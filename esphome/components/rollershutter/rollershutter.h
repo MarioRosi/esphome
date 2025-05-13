@@ -9,10 +9,10 @@
 
 #define USE_BINARY_SENSOR
 #define USE_SWITCH
-#define USE_DATETIME_DATE
-#define USE_DATETIME_TIME
-#define USE_EVENT
-#define USE_UPDATE
+// #define USE_DATETIME_DATE
+// #define USE_DATETIME_TIME
+// #define USE_EVENT
+// #define USE_UPDATE
 
 
 #include "esphome/core/defines.h"
