@@ -124,11 +124,6 @@ class RollerShutterComponent : public Component {
   void SetButtons(std::string btnUpId, std::string btnDownId, std::string btnHollidayId, bool allInputIsMaster,
                   bool allInputIsSlave);
 
-  /// @brief onSetup
-  void setup() override;
-  /// @brief log Config
-  void dump_config() override;
-
   /// @brief Fügt eine RL_Time der Liste hinzu
   /// @param item
   void AddTime(RL_Time *item);
@@ -155,13 +150,13 @@ class RollerShutterComponent : public Component {
   void InitialRun();
 
   /// @brief onSetup
-  void setup();
+  void setup() override;
 
   /// @brief onLoop
-  void loop();
+  void loop() override;
 
   /// @brief Dump-Config
-  void dump_config();
+  void dump_config() override;
 
   /// @brief Gibt das Switch anhand seiner Id zurück
   /// @param hisId
