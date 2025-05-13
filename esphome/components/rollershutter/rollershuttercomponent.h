@@ -32,6 +32,12 @@
 namespace esphome {
 namespace rollershutter {
 
+// extern definition
+class RL_Time;
+class RL_Group;
+class RollerShutter;
+
+
 /** Die Compenentenklasse des Rolladen */
 class RollerShutterComponent : public Component {
  private:
