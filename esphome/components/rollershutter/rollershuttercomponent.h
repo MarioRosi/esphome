@@ -31,6 +31,8 @@
 #include "esphome/components/ethernet/ethernet_component.h"
 #include "esphome/components/uart/uart_component.h"
 
+#include "string.h"
+
 namespace esphome {
 namespace rollershutter {
 
@@ -174,4 +176,4 @@ class RollerShutterComponent : public Component {
 }  // namespace rollershutter
 }  // namespace esphome
 
-#endif RollerShutterComponent
+#endif // RollerShutterComponent

@@ -293,4 +293,4 @@ class RollerShutter {
 }  // namespace rollershutter
 }  // namespace esphome
 
-#endif RollerShutter
+#endif // RollerShutter
