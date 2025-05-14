@@ -171,6 +171,7 @@ void RollerShutterComponent::InitialRun() {
 
 /// @brief onSetup
 void RollerShutterComponent::setup() {
+  ESP_LOGD(TAG, "Hallo aus dem Setup");
   InitialRun();
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
@@ -222,6 +223,7 @@ void RollerShutterComponent::setup() {
   } else {
     this->hasSetup = true;
   }
+    ESP_LOGD(TAG, "Ende aus dem Setup");
 }
 
 /// @brief onLoop
