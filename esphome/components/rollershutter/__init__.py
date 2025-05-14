@@ -46,9 +46,9 @@ CONF_RLS_ALLSH_IPH = "allinputhollyday_id"
 CONF_RLS_ALLSH_MAS = "allinput_master"
 CONF_RLS_ALLSH_SLV = "allinput_slave"
 
-_LOGGER = logging.getLogger("RollerShutter")
+LOGGER = logging.getLogger(__name__)
 
-_LOGGER.debug("init.py Start")
+LOGGER.debug("init.py Start")
 CONFIG_RLS_TIME = cv.Schema(
     {
         cv.Required(CONF_ID): cv.declare_id(RL_Time),
@@ -118,11 +118,11 @@ CONFIG_SCHEMA = cv.Schema(
 
 
 async def to_code(config):
-    _LOGGER.debug("to_code Start")
+    LOGGER.debug("to_code Start")
     if CONF_RLS_ROOT in config:
-        _LOGGER.debug("to_code 1")
+        LOGGER.debug("to_code 1")
         if rlsRoot := config.get(CONF_RLS_ROOT):
-            _LOGGER.debug("to_code 2")
+            LOGGER.debug("to_code 2")
             var = cg.new_Pvariable(config[CONF_ID], config[CONF_NAME])
             await cg.register_component(var, config)
             for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
@@ -157,9 +157,9 @@ async def to_code(config):
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
-                ))      
+                ))
             for rlshutter in rlsRoot.get(CONF_RLS_SHUTTERS, []):
-                cg.add(var.AddShutter(                
+                cg.add(var.AddShutter(
                     rlshutter[CONF_ID],
                     rlshutter[CONF_NAME],
                     rlshutter[CONF_RLS_SH_GRP],
@@ -168,5 +168,6 @@ async def to_code(config):
                     rlshutter[CONF_RLS_SH_IPD],
                     rlshutter[CONF_RLS_SH_OSU],
                     rlshutter[CONF_RLS_SH_OSD],
-                ))                
-            await var.InitialRun()            
+                ))
+            await var.InitialRun()
+    LOGGER.debug("to_code ENDE")
