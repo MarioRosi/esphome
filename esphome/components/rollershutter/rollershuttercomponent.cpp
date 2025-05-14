@@ -38,6 +38,10 @@ RollerShutterComponent::RollerShutterComponent(std::string myId, std::string myN
   this->btnUpIsRemote = false;
   this->btnDownIsRemote = false;
   this->btnHollidayIsRemote = false;
+  ESP_LOGD(TAG, "Ende aus dem Konstruktor");
+  ESP_LOGI(TAG, "Ende aus dem Konstruktor");
+  ESP_LOGVV(TAG, "Ende aus dem Konstruktor");
+
 }
 
 /// @brief Buttons für alle setzten
@@ -222,8 +226,10 @@ void RollerShutterComponent::setup() {
     }
   } else {
     this->hasSetup = true;
-  }
+  }    
     ESP_LOGD(TAG, "Ende aus dem Setup");
+    ESP_LOGI(TAG, "Ende aus dem Setup");
+    ESP_LOGVV(TAG, "Ende aus dem Setup");
 }
 
 /// @brief onLoop
