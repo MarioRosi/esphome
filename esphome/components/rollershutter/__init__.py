@@ -47,8 +47,8 @@ CONF_RLS_ALLSH_MAS = "allinput_master"
 CONF_RLS_ALLSH_SLV = "allinput_slave"
 
 LOGGER = logging.getLogger(__name__)
-
 LOGGER.debug("init.py Start")
+
 CONFIG_RLS_TIME = cv.Schema(
     {
         cv.Required(CONF_ID): cv.declare_id(RL_Time),
@@ -115,7 +115,6 @@ CONFIG_SCHEMA = cv.Schema(
 )
 
 # .extend(cv.COMPONENT_SCHEMA)
-
 
 async def to_code(config):
     LOGGER.debug("to_code Start")
