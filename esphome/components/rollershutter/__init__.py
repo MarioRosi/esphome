@@ -123,22 +123,22 @@ async def to_code(config):
         _LOGGER.debug("to_code 1")
         if rlsRoot := config.get(CONF_RLS_ROOT):
             _LOGGER.debug("to_code 2")
-            rlstimes = []
+            var = cg.new_Pvariable(config[CONF_ID], config[CONF_NAME])
+            await cg.register_component(var, config)
             for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
-                rlstimes[rlstime[CONF_ID]] = RL_Time(
+                cg.add(var.AddTime(RL_Time(
                     rlstime[CONF_ID],
                     rlstime[CONF_RLS_TIMES_MSU],
                     rlstime[CONF_RLS_TIMES_MSD],
-                    rlstime[CONF_RLS_TIMES_MSGD],
-                )
-            rlsgroups = []
+                    rlstime[CONF_RLS_TIMES_MSGD]
+                ))            
             for rlsgroup in rlsRoot.get(CONF_RLS_GROUPS, []):
                 if CONF_RLS_SD_OFF in rlsgroup:
-                    rlsgroups[rlsgroup[CONF_ID]] = RL_Group(
+                    cg.add(var.Addgroup(RL_Group(
                         rlsgroup[CONF_ID], rlsgroup[CONF_NAME], RL_SunDowner()
-                    )
+                    ))
                 else:
-                    rlsgroups[rlsgroup[CONF_ID]] = RL_Group(
+                    cg.add(var.Addgroup(RL_Group(
                         rlsgroup[CONF_ID],
                         rlsgroup[CONF_NAME],
                         RL_SunDowner(
@@ -148,30 +148,25 @@ async def to_code(config):
                             rlsgroup[CONF_RLS_SD][CONF_RLS_SD_GM],
                             rlsgroup[CONF_RLS_SD][CONF_RLS_SD_UH],
                             rlsgroup[CONF_RLS_SD][CONF_RLS_SD_UM],
-                        ),
-                    )
-            var = cg.new_Pvariable(config[CONF_ID], config[CONF_NAME])
+                        )
+                    ))
             if CONF_RLS_ALLSH in rlsRoot:
-                var.SetButtons(
+                cg.add(var.SetButtons(
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
                     rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
-                )
-            await cg.register_component(var, config)
-            rlshutters = []
+                ))           
             for rlshutter in rlsRoot.get(CONF_RLS_SHUTTERS, []):
-                rlshutters[rlshutter[CONF_ID]] = RollerShutter(
+                cg.add(var.AddShutter(                
                     rlshutter[CONF_ID],
                     rlshutter[CONF_NAME],
-                    rlsgroups[rlshutter[CONF_RLS_SH_GRP]],
-                    rlstimes[rlshutter[CONF_RLS_SH_TIM]],
-                    var,
+                    rlshutter[CONF_RLS_SH_GRP],
+                    rlshutter[CONF_RLS_SH_TIM],
                     rlshutter[CONF_RLS_SH_IPU],
                     rlshutter[CONF_RLS_SH_IPD],
                     rlshutter[CONF_RLS_SH_OSU],
                     rlshutter[CONF_RLS_SH_OSD],
-                )
-            await var.InitialRun()
-            cg.add_define("USE_POWER_SUPPLY")
+                ))                
+            await var.InitialRun()            

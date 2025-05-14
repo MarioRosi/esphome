@@ -11,11 +11,11 @@ logger:
 
 api:
   encryption:
-    key: !secret encryption_key
+    key: !secret encryption_key2
 
 ota:
   - platform: esphome
-    password: !secret ota_password
+    password: !secret ota_password2
 
 ethernet:
   type: LAN8720
