@@ -105,15 +105,13 @@ class RollerShutterComponent : public Component {
 
  public:
   /// @brief Konstruktor
-  /// @param myId
-  /// @param myName
-  /// @param btnUpId
-  /// @param btnDownId
-  /// @param btnHollidayId
-  RollerShutterComponent(std::string myId, std::string myName);
+  RollerShutterComponent();
 
   /// @brief Destruktor
   ~RollerShutterComponent();
+
+  /// @brief name und Id setzten  
+  void SetIdAndName(std::string myId, std::string myName);
 
   /// @brief Buttons für alle setzten
   /// @param btnUpId
@@ -140,8 +138,9 @@ class RollerShutterComponent : public Component {
   /// @param pinInDown
   /// @param pinOutUp
   /// @param pinOutDown
-  void AddShutter(std::string id, std::string name, std::string idGroup, std::string idTime, std::string btnUpId,
-                  std::string btDownId, std::string relUpId, std::string relDownId);
+  void AddShutter(std::string id, std::string name, std::string idGroup, 
+                  std::string idTime, std::string btnUpId, std::string btDownId, 
+                  std::string relUpId, std::string relDownId);
 
   /// @brief Erzeugt die Listen für das Abarbeiten der Buttons
   void PrepareShutters();

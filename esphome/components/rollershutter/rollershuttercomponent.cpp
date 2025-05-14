@@ -25,11 +25,7 @@ namespace rollershutter {
 static const char *TAG = "RollerShutterComponent.component";
 
 /// @brief Konstruktor
-/// @param myId
-/// @param myName
-RollerShutterComponent::RollerShutterComponent(std::string myId, std::string myName) {
-  this->myId = myId;
-  this->myName = myName;
+RollerShutterComponent::RollerShutterComponent() {
   this->movingTimes = new std::vector<RL_Time *>();
   this->groups = new std::vector<RL_Group *>();
   this->shutters = new std::vector<RollerShutter *>();
@@ -41,8 +37,15 @@ RollerShutterComponent::RollerShutterComponent(std::string myId, std::string myN
   ESP_LOGD(TAG, "Ende aus dem Konstruktor");
   ESP_LOGI(TAG, "Ende aus dem Konstruktor");
   ESP_LOGVV(TAG, "Ende aus dem Konstruktor");
-
 }
+
+/// @brief name und Id setzten  
+void RollerShutterComponent::SetIdAndName(std::string myId, std::string myName)
+{
+  this->myId = myId;
+  this->myName = myName;
+}
+
 
 /// @brief Buttons für alle setzten
 /// @param btnUpId
