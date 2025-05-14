@@ -27,6 +27,7 @@ ethernet:
     static_ip: 192.168.50.121
     gateway: 192.168.50.2
     subnet: 255.255.255.0
+    dns1: 192.168.50.2
 
 time:
   - platform: sntp

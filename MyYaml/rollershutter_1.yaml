@@ -33,6 +33,7 @@ ethernet:
     static_ip: 192.168.50.120
     gateway: 192.168.50.2
     subnet: 255.255.255.0
+    dns1: 192.168.50.2
 
 time:
   - platform: sntp
@@ -379,10 +380,11 @@ switch:
 
 external_components:
   - source: 
-    type: git
-    url: https://github.com/MarioRosi/esphome
-    ref: dev
-  components: [ rollershutter ]
+      type: git
+      url: https://github.com/MarioRosi/esphome
+      ref: dev
+    components: [ rollershutter ]
+    refresh: 0d
 
 rollershutter:
   id: rollershutter_1
@@ -405,7 +407,7 @@ rollershutter:
 
   rsgroups:
     - id: HOUSE_SOUTH
-      name: Haus-sued
+      name: haus-sued
       sundowner:
         monthfrom: 5
         monthto: 9
@@ -415,12 +417,12 @@ rollershutter:
         upminute: 45
 
     - id: HOUSE_NORTH
-      name: Haus-nord
+      name: haus-nord
       sundowner:
         offline: 1
 
     - id: HOUSE_EAST
-      name: Haus-ost
+      name: haus-ost
       sundowner:
         monthfrom: 5
         monthto: 9
@@ -430,7 +432,7 @@ rollershutter:
         upminute: 00
 
     - id: HOUSE_WEST
-      name: Haus-west
+      name: haus-west
       sundowner:
         monthfrom: 5
         monthto: 9
@@ -444,11 +446,11 @@ rollershutter:
     allinputdown_id: remote
     allinputhollyday_id: remote
     allinput_master: False
-    allInput_slave: True
+    allinput_slave: True
 
   rshutters:
     - id: rs_har
-      name: Hausanschlussraum
+      name: hausanschlussraum
       rsgroup_id: HOUSE_SOUTH
       rstime_id: TIME_NORMAL
       inputup_id: in_har_u
@@ -457,7 +459,7 @@ rollershutter:
       outputdown_id: out_har_d
 
     - id: rs_kit
-      name: Kueche
+      name: kueche
       rsgroup_id: HOUSE_SOUTH
       rstime_id: TIME_NORMAL
       inputup_id: in_kit_u
@@ -466,7 +468,7 @@ rollershutter:
       outputdown_id: out_kit_d
 
     - id: rs_ba1
-      name: Kinderbad
+      name: kinderbad
       rsgroup_id: HOUSE_SOUTH
       rstime_id: TIME_NORMAL
       inputup_id: in_ba1_u
@@ -475,16 +477,16 @@ rollershutter:
       outputdown_id: out_ba1_d
 
     - id: rs_ki1
-      name: Kinderzimmer
+      name: kinderzimmer
       rsgroup_id: HOUSE_SOUTH
-      rstimes_id: TIME_NORMAL
-      inputup:_id: in_ki1_u
+      rstime_id: TIME_NORMAL
+      inputup_id: in_ki1_u
       inputdown_id: in_ki1_d
       outputup_id: out_ki1_u
       outputdown_id: out_ki1_d
 
     - id: rs_ki2
-      name: Kinder-Schlafen
+      name: kinder-schlafen
       rsgroup_id: HOUSE_WEST
       rstime_id: TIME_NORMAL
       inputup_id: in_ki2_u
@@ -493,7 +495,7 @@ rollershutter:
       outputdown_id: out_ki2_d
 
     - id: rs_arb
-      name: Arbeitsplatz
+      name: arbeitsplatz
       rsgroup_id: HOUSE_WEST
       rstime_id: TIME_NORMAL
       inputup_id: in_arb_u
@@ -502,7 +504,7 @@ rollershutter:
       outputdown_id: out_arb_d
 
     - id: rs_stt
-      name: Stube-Terassentuer
+      name: stube-terassentuer
       rsgroup_id: HOUSE_WEST
       rstime_id: TIME_BIGDOOR
       inputup_id: in_stt_u
@@ -511,7 +513,7 @@ rollershutter:
       outputdown_id: out_stt_d
 
     - id: rs_stf
-      name: Stube-Terassenfenster
+      name: stube-terassenfenster
       rsgroup_id: HOUSE_WEST
       rstime_id: TIME_WINDOW
       inputup_id: in_stf_u

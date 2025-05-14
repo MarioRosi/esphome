@@ -1,3 +1,4 @@
+import logging
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.const import CONF_ID, CONF_NAME
@@ -45,7 +46,9 @@ CONF_RLS_ALLSH_IPH = "allinputhollyday_id"
 CONF_RLS_ALLSH_MAS = "allinput_master"
 CONF_RLS_ALLSH_SLV = "allinput_slave"
 
+_LOGGER = logging.getLogger("RollerShutter")
 
+_LOGGER.debug("init.py Start")
 CONFIG_RLS_TIME = cv.Schema(
     {
         cv.Required(CONF_ID): cv.declare_id(RL_Time),
@@ -114,8 +117,11 @@ CONFIG_SCHEMA = cv.Schema(
 
 
 async def to_code(config):
+    _LOGGER.debug("to_code Start")
     if CONF_RLS_ROOT in config:
+        _LOGGER.debug("to_code 1")
         if rlsRoot := config.get(CONF_RLS_ROOT):
+            _LOGGER.debug("to_code 2")
             rlstimes = []
             for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
                 rlstimes[rlstime[CONF_ID]] = RL_Time(
