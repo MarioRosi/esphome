@@ -103,6 +103,7 @@ CONFIG_RLS_ALLSHUTTER = cv.Schema(
     }
 )
 
+
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(RollerShutterComponent),
