@@ -308,7 +308,7 @@ void RollerShutterComponent::loop() {
 
 /// @brief Dump-Config
 void RollerShutterComponent::dump_config() {
-  ESP_LOGCONFIG(TAG, "DIe Komponete");
+  ESP_LOGCONFIG(TAG, "Rollershutter");
   ESP_LOGCONFIG(TAG, "Anzahl der Rolläden = ", this->shutters->size());
   if (this->allBtnIsMaster) {
     ESP_LOGCONFIG(TAG, "Alles Runter, ich bin Master = ", !this->btnDownIsRemote);
