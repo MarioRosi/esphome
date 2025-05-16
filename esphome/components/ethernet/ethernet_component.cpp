@@ -241,7 +241,7 @@ void EthernetComponent::setup() {
 
 void EthernetComponent::loop() {
   const uint32_t now = millis();
-
+  ESP_LOGI(TAG, "ethernet loop");
   switch (this->state_) {
     case EthernetComponentState::STOPPED:
       if (this->started_) {
