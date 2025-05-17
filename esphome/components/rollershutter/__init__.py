@@ -120,7 +120,7 @@ async def to_code(config):
     LOGGER.info("to_code Start")    
     #if CONF_RLS_ROOT in config:
     LOGGER.info("to_code 1")
-    if rlsRoot := config #.get(CONF_RLS_ROOT):
+    if rlsRoot := config:
         LOGGER.info("to_code 2")
         var = cg.new_Pvariable(config[CONF_ID])
         await cg.register_component(var, config)
