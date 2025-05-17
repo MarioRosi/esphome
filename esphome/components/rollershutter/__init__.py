@@ -118,6 +118,7 @@ CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
 
 async def to_code(config):
     LOGGER.info("to_code Start")
+    LOGGER.info(config)
     if CONF_RLS_ROOT in config:
         LOGGER.info("to_code 1")
         if rlsRoot := config.get(CONF_RLS_ROOT):
