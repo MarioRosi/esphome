@@ -125,7 +125,7 @@ async def to_code(config):
         LOGGER.info("to_code 2")
         var = cg.new_Pvariable(config[CONF_ID])
         await cg.register_component(var, config)
-        cg.add(var.SetIdAndName(config[CONF_ID], config[CONF_NAME]))
+        cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
         LOGGER.info("to_code 3")
         for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
             LOGGER.info("to_code 4")
