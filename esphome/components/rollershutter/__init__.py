@@ -107,6 +107,7 @@ CONFIG_RLS_ALLSHUTTER = cv.Schema(
 CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
     {
         cv.GenerateID(): cv.declare_id(RollerShutterComponent),
+        cv.Required(CONF_NAME): cv.valid_name,
         cv.Required(CONF_RLS_TIMES): cv.ensure_list(CONFIG_RLS_TIME),
         cv.Required(CONF_RLS_GROUPS): cv.ensure_list(CONFIG_RLS_GROUP),
         cv.Required(CONF_RLS_ALLSH): cv.ensure_schema(CONFIG_RLS_ALLSHUTTER),
