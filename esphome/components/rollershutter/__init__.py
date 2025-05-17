@@ -104,7 +104,7 @@ CONFIG_RLS_ALLSHUTTER = cv.Schema(
 )
 
 
-CONFIG_SCHEMA = cv.Schema(
+CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
     {
         cv.GenerateID(): cv.declare_id(RollerShutterComponent),
         cv.Required(CONF_RLS_TIMES): cv.ensure_list(CONFIG_RLS_TIME),
@@ -117,11 +117,11 @@ CONFIG_SCHEMA = cv.Schema(
 # .extend(cv.COMPONENT_SCHEMA)
 
 async def to_code(config):
-    LOGGER.debug("to_code Start")
+    LOGGER.info("to_code Start")
     if CONF_RLS_ROOT in config:
-        LOGGER.debug("to_code 1")
+        LOGGER.info("to_code 1")
         if rlsRoot := config.get(CONF_RLS_ROOT):
-            LOGGER.debug("to_code 2")
+            LOGGER.info("to_code 2")
             var = cg.new_Pvariable(config[CONF_ID])
             await cg.register_component(var, config)
             cg.add(var.SetIdAndName(config[CONF_ID], config[CONF_NAME]))
@@ -170,4 +170,4 @@ async def to_code(config):
                     rlshutter[CONF_RLS_SH_OSD],
                 ))
             await var.InitialRun()
-    LOGGER.debug("to_code ENDE")
+    LOGGER.info("to_code ENDE")

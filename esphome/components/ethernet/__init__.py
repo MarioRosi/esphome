@@ -274,8 +274,7 @@ def phy_register(address: int, value: int, page: int):
 
 
 @coroutine_with_priority(60.0)
-async def to_code(config):
-    LOGGER.info("to_code ethernet Start")
+async def to_code(config):    
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
 
