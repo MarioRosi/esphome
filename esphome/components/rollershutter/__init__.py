@@ -130,7 +130,7 @@ async def to_code(config):
         for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
             LOGGER.info("to_code 4")
             cg.add(var.AddTime(RL_Time(
-                rlstime[CONF_ID],
+                rlstime[CONF_ID].__str__(),
                 rlstime[CONF_RLS_TIMES_MSU],
                 rlstime[CONF_RLS_TIMES_MSD],
                 rlstime[CONF_RLS_TIMES_MSGD]
@@ -138,11 +138,12 @@ async def to_code(config):
         for rlsgroup in rlsRoot.get(CONF_RLS_GROUPS, []):
             if CONF_RLS_SD_OFF in rlsgroup:
                 cg.add(var.Addgroup(RL_Group(
-                    rlsgroup[CONF_ID], rlsgroup[CONF_NAME], RL_SunDowner()
+                    rlsgroup[CONF_ID].__str__(),
+                    rlsgroup[CONF_NAME], RL_SunDowner()
                 )))
             else:
                 cg.add(var.Addgroup(RL_Group(
-                    rlsgroup[CONF_ID],
+                    rlsgroup[CONF_ID].__str__(),
                     rlsgroup[CONF_NAME],
                     RL_SunDowner(
                         rlsgroup[CONF_RLS_SD][CONF_RLS_SD_MF],
@@ -163,7 +164,7 @@ async def to_code(config):
             ))
         for rlshutter in rlsRoot.get(CONF_RLS_SHUTTERS, []):
             cg.add(var.AddShutter(
-                rlshutter[CONF_ID],
+                rlshutter[CONF_ID].__str__(),
                 rlshutter[CONF_NAME],
                 rlshutter[CONF_RLS_SH_GRP],
                 rlshutter[CONF_RLS_SH_TIM],
