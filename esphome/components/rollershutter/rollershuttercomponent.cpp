@@ -69,11 +69,43 @@ RollerShutterComponent::~RollerShutterComponent() {
 }
 
 /// @brief Fügt eine RL_Time der Liste hinzu
-/// @param item
-void RollerShutterComponent::AddTime(RL_Time *item) { this->movingTimes->push_back(item); }
-/// @brief Fügt eine Gruppe der Liste hinzu
-/// @param item
-void RollerShutterComponent::AddGroup(RL_Group *item) { this->groups->push_back(item); }
+/// @param id 
+/// @param millisecondUp 
+/// @param millisecondDown 
+/// @param millisecondGap 
+void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int millisecondDown, int millisecondGap)
+{
+  RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
+  this->movingTimes->push_back(item); 
+}
+
+
+/// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu
+/// @param id 
+/// @param name 
+/// @param monthFrom 
+/// @param monthTo 
+/// @param gapHour 
+/// @param gapMinute 
+/// @param upHoure 
+/// @param upMinute 
+void RollerShutterComponent::AddGroup(std::string id, std::string name, 
+  int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
+{
+  RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
+  RL_Group *item = new RL_Group(id, name, sd);
+  this->groups->push_back(item); 
+}
+
+/// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
+/// @param id 
+/// @param name 
+void RollerShutterComponent::AddGroup(std::string id, std::string name)
+{
+  RL_SunDowner *sd = new RL_SunDowner();
+  RL_Group *item = new RL_Group(id, name, sd);
+  this->groups->push_back(item); 
+}
 
 /// @brief Einfügen eines Rolladen in die Liste
 /// @param id

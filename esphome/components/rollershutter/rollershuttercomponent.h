@@ -123,11 +123,31 @@ class RollerShutterComponent : public Component {
                   bool allInputIsSlave);
 
   /// @brief Fügt eine RL_Time der Liste hinzu
-  /// @param item
-  void AddTime(RL_Time *item);
-  /// @brief Fügt eine Gruppe der Liste hinzu
-  /// @param item
-  void AddGroup(RL_Group *item);
+  /// @param id 
+  /// @param millisecondUp 
+  /// @param millisecondDown 
+  /// @param millisecondGap 
+  void AddTime(std::string id, int millisecondUp, int millisecondDown, int millisecondGap);
+
+  // @brief Fügt eine Gruppe der Liste hinzu
+
+  /// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu
+  /// @param id 
+  /// @param name 
+  /// @param monthFrom 
+  /// @param monthTo 
+  /// @param gapHour 
+  /// @param gapMinute 
+  /// @param upHoure 
+  /// @param upMinute 
+  void AddGroup(std::string id, std::string name, 
+    int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute);
+
+  /// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
+  /// @param id 
+  /// @param name 
+  void AddGroup(std::string id, std::string name);
+
 
   /// @brief Einfügen eines Rolladen in die Liste
   /// @param id
