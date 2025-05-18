@@ -153,6 +153,7 @@ async def to_code(config):
                 rlssundowner[CONF_RLS_SD_UM],
             ))
     if CONF_RLS_ALLSH in rlsRoot:
+        LOGGER.info("to_code SetButtons")
         cg.add(var.SetButtons(
             rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
             rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
@@ -161,6 +162,7 @@ async def to_code(config):
             rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
         ))
     for rlshutter in rlsRoot.get(CONF_RLS_SHUTTERS, []):
+        LOGGER.info("to_code ein RollerShutter gefunden")
         cg.add(var.AddShutter(
             rlshutter[CONF_ID].__str__(),
             rlshutter[CONF_NAME],

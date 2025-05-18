@@ -26,6 +26,7 @@ static const char *TAG = "RollerShutterComponent.component";
 
 /// @brief Konstruktor
 RollerShutterComponent::RollerShutterComponent() {
+  ESP_LOGI(TAG, "Start aus dem Konstruktor");
   this->movingTimes = new std::vector<RL_Time *>();
   this->groups = new std::vector<RL_Group *>();
   this->shutters = new std::vector<RollerShutter *>();
@@ -34,9 +35,7 @@ RollerShutterComponent::RollerShutterComponent() {
   this->btnUpIsRemote = false;
   this->btnDownIsRemote = false;
   this->btnHollidayIsRemote = false;
-  ESP_LOGD(TAG, "Ende aus dem Konstruktor");
   ESP_LOGI(TAG, "Ende aus dem Konstruktor");
-  ESP_LOGVV(TAG, "Ende aus dem Konstruktor");
 }
 
 /// @brief name und Id setzten  
@@ -55,6 +54,7 @@ void RollerShutterComponent::SetIdAndName(std::string myId, std::string myName)
 /// @param allInputIsSlave
 void RollerShutterComponent::SetButtons(std::string btnUpId, std::string btnDownId, std::string btnHollidayId,
                                         bool allInputIsMaster, bool allInputIsSlave) {
+  ESP_LOGI(TAG, "SetButtons");
   this->btnUpId = btnUpId;
   this->btnDownId = btnDownId;
   this->btnHollidayId = btnHollidayId;
@@ -75,6 +75,7 @@ RollerShutterComponent::~RollerShutterComponent() {
 /// @param millisecondGap 
 void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int millisecondDown, int millisecondGap)
 {
+  ESP_LOGI(TAG, "AddTime");
   RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
   this->movingTimes->push_back(item); 
 }
@@ -91,6 +92,7 @@ void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int mill
 void RollerShutterComponent::AddGroup(std::string id, std::string name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
+  ESP_LOGI(TAG, "AddGroup mit SD");
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
@@ -101,6 +103,7 @@ void RollerShutterComponent::AddGroup(std::string id, std::string name,
 /// @param name 
 void RollerShutterComponent::AddGroup(std::string id, std::string name)
 {
+  ESP_LOGI(TAG, "AddGroup ohne SD");
   RL_SunDowner *sd = new RL_SunDowner();
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
@@ -118,6 +121,7 @@ void RollerShutterComponent::AddGroup(std::string id, std::string name)
 void RollerShutterComponent::AddShutter(std::string id, std::string name, std::string idGroup, std::string idTime,
                                         std::string btnUpId, std::string btDownId, std::string relUpId,
                                         std::string relDownId) {
+  ESP_LOGI(TAG, "AddShutter");
   RL_Time *time = getTimeById(idTime);
   RL_Group *group = getGroupById(idGroup);
   RollerShutter *shutter = new RollerShutter(id, name, group, time, this, btnUpId, btnDownId, relUpId, relDownId);
@@ -198,6 +202,7 @@ void RollerShutterComponent::PrepareShutters() {
 
 /// @brief erstes Ausführen
 void RollerShutterComponent::InitialRun() {
+  ESP_LOGI(TAG, "Initial Run");
   for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
     RollerShutter *shutter = *itter;
     shutter->Setup();
