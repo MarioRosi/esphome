@@ -174,5 +174,5 @@ async def to_code(config):
             rlshutter[CONF_RLS_SH_OSU],
             rlshutter[CONF_RLS_SH_OSD],
         ))
-    await var.InitialRun()
+    cg.add(var.InitialRun())
     LOGGER.info("to_code ENDE")
