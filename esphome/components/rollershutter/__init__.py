@@ -145,3 +145,12 @@ async def to_code(config):
                 rlssundowner[CONF_RLS_SD_UH],
                 rlssundowner[CONF_RLS_SD_UM],
             ))
+    if CONF_RLS_ALLSH in rlsRoot:
+        cg.add(var.SetButtons(
+            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
+            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
+            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
+            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
+            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
+        ))
+    # cg.add(var.InitialRun())
