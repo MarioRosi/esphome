@@ -79,7 +79,6 @@ void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int mill
   this->movingTimes->push_back(item); 
 }
 
-
 /// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu
 /// @param id 
 /// @param name 
