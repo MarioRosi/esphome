@@ -217,19 +217,24 @@ void RollerShutterComponent::setup() {
   ESP_LOGD(TAG, "Hallo aus dem Setup");
   /*
   InitialRun();
+  */
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
+        ESP_LOGD(TAG, "Get all btn up");
         this->btnUp = getBinarySensorById(this->btnUpId);
         this->btnUpIsRemote = false;
+        ESP_LOGD(TAG, "Has all btn up");
       } else {
         this->btnUp = nullptr;
         this->btnUpIsRemote = false;
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
+          ESP_LOGD(TAG, "Get all btn down");
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDownIsRemote = false;
+          ESP_LOGD(TAG, "has all btn down");
         } else {
           this->btnDown = nullptr;
           this->btnDownIsRemote = false;
