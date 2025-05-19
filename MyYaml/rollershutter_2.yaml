@@ -310,6 +310,7 @@ external_components:
 
 rollershutter:
   id: rollershutter_2
+  name: rollershutter_2
 
   rstimes:
     - id: TIME_NORMAL
