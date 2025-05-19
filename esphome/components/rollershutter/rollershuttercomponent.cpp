@@ -215,7 +215,8 @@ void RollerShutterComponent::InitialRun() {
 /// @brief onSetup
 void RollerShutterComponent::setup() {
   ESP_LOGD(TAG, "Hallo aus dem Setup");
-  // InitialRun();
+  /*
+  InitialRun();
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
@@ -266,11 +267,13 @@ void RollerShutterComponent::setup() {
   } else {
     this->hasSetup = true;
   }    
+  */
     ESP_LOGD(TAG, "Ende aus dem Setup");        
 }
 
 /// @brief onLoop
 void RollerShutterComponent::loop() {
+  /*
   if (hasSetup) {
     // zu erst die Haupt-Buttons abfragen
     if (!this->btnUpIsRemote) {
@@ -338,6 +341,7 @@ void RollerShutterComponent::loop() {
       shutter->CheckTimerStop();
     }
   }
+  */
 }
 
 /// @brief Dump-Config
