@@ -272,8 +272,8 @@ void RollerShutterComponent::setup() {
   } else {
     this->hasSetup = true;
   }    
-  */
-    ESP_LOGD(TAG, "Ende aus dem Setup");        
+  /**/
+  ESP_LOGD(TAG, "Ende aus dem Setup");        
 }
 
 /// @brief onLoop
