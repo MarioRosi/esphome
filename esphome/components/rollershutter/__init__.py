@@ -120,13 +120,13 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
-    for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
-        cg.add(var.AddTime(
-            rlstime[CONF_ID].__str__(),
-            rlstime[CONF_RLS_TIMES_MSU],
-            rlstime[CONF_RLS_TIMES_MSD],
-            rlstime[CONF_RLS_TIMES_MSGD]
-        ))
+    # for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
+    #     cg.add(var.AddTime(
+    #         rlstime[CONF_ID].__str__(),
+    #         rlstime[CONF_RLS_TIMES_MSU],
+    #         rlstime[CONF_RLS_TIMES_MSD],
+    #         rlstime[CONF_RLS_TIMES_MSGD]
+    #     ))
     # for rlsgroup in rlsRoot.get(CONF_RLS_GROUPS, []):
     #     rlssundowner = rlsgroup.get(CONF_RLS_SD)
     #     if CONF_RLS_SD_OFF in rlssundowner:
