@@ -47,7 +47,7 @@ CONF_RLS_ALLSH_MAS = "allinput_master"
 CONF_RLS_ALLSH_SLV = "allinput_slave"
 
 LOGGER = logging.getLogger(__name__)
-LOGGER.debug("init.py RollerShutter Start")
+LOGGER.info("init.py RollerShutter Start")
 
 CONFIG_RLS_TIME = cv.Schema(
     {
@@ -116,8 +116,9 @@ CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
 )
 
 async def to_code(config):    
-    var = cg.new_Pvariable(config[CONF_ID])
-    await cg.register_component(var, config)
+    LOGGER.info("init.py RollerShutter to_Code Start")
+    # var = cg.new_Pvariable(config[CONF_ID])
+    # await cg.register_component(var, config)
     # cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
     # for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
     #     cg.add(var.AddTime(
