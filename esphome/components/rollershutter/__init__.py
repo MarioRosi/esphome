@@ -116,9 +116,9 @@ CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
 )
 
 async def to_code(config):
-    # rlsRoot = config
-    # var = cg.new_Pvariable(config[CONF_ID])
-    # await cg.register_component(var, config)
+    rlsRoot = config
+    var = cg.new_Pvariable(config[CONF_ID])
+    await cg.register_component(var, config)
     # cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
     # for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
     #     cg.add(var.AddTime(
