@@ -120,14 +120,14 @@ async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
     cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
-    for rlstime in rlsRoot.get(CONF_RLS_TIMES, []):
+    for rlstime in config.get(CONF_RLS_TIMES, []):
         cg.add(var.AddTime(
             rlstime[CONF_ID].__str__(),
             rlstime[CONF_RLS_TIMES_MSU],
             rlstime[CONF_RLS_TIMES_MSD],
             rlstime[CONF_RLS_TIMES_MSGD]
         ))
-    for rlsgroup in rlsRoot.get(CONF_RLS_GROUPS, []):
+    for rlsgroup in config.get(CONF_RLS_GROUPS, []):
         rlssundowner = rlsgroup.get(CONF_RLS_SD)
         if CONF_RLS_SD_OFF in rlssundowner:
             cg.add(var.AddGroup(
@@ -145,15 +145,15 @@ async def to_code(config):
                 rlssundowner[CONF_RLS_SD_UH],
                 rlssundowner[CONF_RLS_SD_UM],
             ))
-    if CONF_RLS_ALLSH in rlsRoot:
+    if CONF_RLS_ALLSH in config:
         cg.add(var.SetButtons(
-            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
-            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
-            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
-            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
-            rlsRoot[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
         ))
-    for rlshutter in rlsRoot.get(CONF_RLS_SHUTTERS, []):
+    for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
         cg.add(var.AddShutter(
             rlshutter[CONF_ID].__str__(),
             rlshutter[CONF_NAME],
