@@ -279,7 +279,7 @@ void RollerShutter::CheckTimerStop() {
 void RollerShutter::CheckButtons() {
   if (hasSetup) {
     if (this->btnUp->has_state())
-      this->btnUpIsPress = this->btnUp->state
+      this->btnUpIsPress = this->btnUp->state;
     else
       this->btnUpIsPress = false;
     if (this->btnDown->has_state())
