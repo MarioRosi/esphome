@@ -26,7 +26,6 @@ static const char *TAG = "RollerShutterComponent.component";
 
 /// @brief Konstruktor
 RollerShutterComponent::RollerShutterComponent() {
-  ESP_LOGD(TAG, "Start aus dem Konstruktor");
   this->movingTimes = new std::vector<RL_Time *>();
   this->groups = new std::vector<RL_Group *>();
   this->shutters = new std::vector<RollerShutter *>();
@@ -35,7 +34,7 @@ RollerShutterComponent::RollerShutterComponent() {
   this->btnUpIsRemote = false;
   this->btnDownIsRemote = false;
   this->btnHollidayIsRemote = false;
-  ESP_LOGI(TAG, "Ende aus dem Konstruktor");
+  ESP_LOGD(TAG, "Ende aus dem Konstruktor");
 }
 
 /// @brief name und Id setzten  
@@ -92,7 +91,7 @@ void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int mill
 void RollerShutterComponent::AddGroup(std::string id, std::string name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
-  ESP_LOGD(TAG, "AddGroup mit SD");
+  ESP_LOGD(TAG, "AddGroup mit SD id = ", id);
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
