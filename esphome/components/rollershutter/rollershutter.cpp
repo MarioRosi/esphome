@@ -14,6 +14,8 @@
 namespace esphome {
 namespace rollershutter {
 
+static const char *TAG = "RollerShutter";
+
 /// @brief Konstruktor
 /// @param id String der id
 /// @param name String, Name
@@ -198,14 +200,23 @@ void RollerShutter::SetTime(RL_Time *myTime) { this->timeUpDown = myTime; }
 
 /// @brief Den Rolladen aktivieren
 void RollerShutter::Setup() {
+  ESP_LOGD(TAG, "setup id = ", this->myId);
   if (std::strlen(this->btnUpId.c_str()) > 1) {
+    ESP_LOGD(TAG, "Get btn up id = ", this->btnUpId);
     this->btnUp = getBinarySensorById(this->btnUpId);
+    ESP_LOGD(TAG, "Has btn up = ", this->btnUp->get_name());
     if (std::strlen(this->btnDownId.c_str()) > 1) {
+      ESP_LOGD(TAG, "Get btn down id = ", this->btnDownId);
       this->btnDown = getBinarySensorById(this->btnDownId);
+      ESP_LOGD(TAG, "Has btn down = ", this->btnDown->get_name());
       if (std::strlen(this->relUpId.c_str()) > 1) {
+        ESP_LOGD(TAG, "Get switch up id = ", this->relUpId);
         this->relUp = getSwitchById(this->relUpId);
+        ESP_LOGD(TAG, "Has switch up = ", this->relUp->get_name());
         if (std::strlen(this->relDownId.c_str()) > 1) {
+          ESP_LOGD(TAG, "Get switch down id = ", this->relDownId);
           this->relDown = getSwitchById(this->relDownId);
+          ESP_LOGD(TAG, "Has switch down = ", this->relDown->get_name());
           this->hasSetup = true;
           ResetRollerShutter();
         }
@@ -268,7 +279,7 @@ void RollerShutter::CheckTimerStop() {
 void RollerShutter::CheckButtons() {
   if (hasSetup) {
     if (this->btnUp->has_state())
-      this->btnUpIsPress = this->btnUp->state;
+      this->btnUpIsPress = this->btnUp->state
     else
       this->btnUpIsPress = false;
     if (this->btnDown->has_state())

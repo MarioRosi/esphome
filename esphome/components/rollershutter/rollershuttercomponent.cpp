@@ -221,29 +221,32 @@ void RollerShutterComponent::setup() {
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
-        ESP_LOGD(TAG, "Get all btn up");
+        ESP_LOGD(TAG, "Get all btn up id = ", this->btnUpId);
         this->btnUp = getBinarySensorById(this->btnUpId);
         this->btnUpIsRemote = false;
-        ESP_LOGD(TAG, "Has all btn up");
+        ESP_LOGD(TAG, "Has all btn up = ", this->btnUp->get_name());
       } else {
         this->btnUp = nullptr;
         this->btnUpIsRemote = false;
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
-          ESP_LOGD(TAG, "Get all btn down");
+          ESP_LOGD(TAG, "Get all btn down id = ", this->btnDownId);
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDownIsRemote = false;
-          ESP_LOGD(TAG, "has all btn down");
+          ESP_LOGD(TAG, "Has all btn down = ", this->btnDown->get_name());
         } else {
           this->btnDown = nullptr;
           this->btnDownIsRemote = false;
         }
         if (std::strlen(this->btnHollidayId.c_str()) > 1) {
           if (this->btnDownId.compare("remote") != 0) {
+            ESP_LOGD(TAG, "Get all btn holliday id = ", this->btnHollidayId);
             this->btnHolliday = getBinarySensorById(this->btnHollidayId);
             this->btnHollidayIsRemote = false;
+            ESP_LOGD(TAG, "has all btn holliday = ", this->btnHolliday->get_name());
           } else {
+            ESP_LOGD(TAG, "Has No Holliday");
             this->btnHolliday = nullptr;
             this->btnHollidayIsRemote = false;
           }
@@ -283,7 +286,7 @@ void RollerShutterComponent::loop() {
     // zu erst die Haupt-Buttons abfragen
     if (!this->btnUpIsRemote) {
       if (this->btnUp->has_state())
-        this->btnUpIsPress = this->btnUp->state;
+        this->btnUpIsPress = this->btxnUp->state;
       else
         this->btnUpIsPress = false;
     }
