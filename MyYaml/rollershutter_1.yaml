@@ -430,7 +430,7 @@ rollershutter:
         gaphour: 6
         gapminute: 30
         uphour: 11
-        upminute: 00
+        upminute: 0
 
     - id: HOUSE_WEST
       name: haus-west
