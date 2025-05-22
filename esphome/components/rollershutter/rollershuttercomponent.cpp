@@ -10,7 +10,7 @@
 #include "rollershutter.h"
 #include <string>
 #include <vector>
-#include <Esp.h>
+#include "esphome/core/helpers.h"
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()
@@ -96,7 +96,8 @@ void RollerShutterComponent::AddGroup(const char* id, const char* name,
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   ESP_LOGD(TAG, "AddGroup new SD");
   RL_Group *item = new RL_Group(id, name, sd);
-  ESP_LOGD(TAG, " Free Mem %d", ESP.getFreeHeap());
+  
+  ESP_LOGD(TAG, " Free Mem %d", system_get_free_heap_size());
   ESP_LOGD(TAG, "AddGroup new GRP %s", item->name.c_str());
   this->groups->push_back(item); 
   ESP_LOGD(TAG, "AddGroup mit SD id = %s", id);
