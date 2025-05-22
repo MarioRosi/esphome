@@ -91,7 +91,7 @@ class RL_Time {
   /// @param millisecondUp
   /// @param millisecondDown
   /// @param millisecondGap
-  RL_Time(std::string id, int millisecondUp, int millisecondDown, int millisecondGap) {
+  RL_Time(const char* id, int millisecondUp, int millisecondDown, int millisecondGap) {
     this->id = id;
     this->millisecondUp = (double) millisecondUp;
     this->millisecondDown = (double) millisecondDown;
@@ -159,7 +159,7 @@ class RL_Group {
   /// @param id
   /// @param name
   /// @param sundownner
-  RL_Group(std::string id, std::string name, RL_SunDowner *sundownner) {
+  RL_Group(const char*, const char* name, RL_SunDowner *sundownner) {
     this->id = id;
     this->name = name;
     this->sundownner = sundownner;
