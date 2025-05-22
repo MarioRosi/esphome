@@ -23,7 +23,7 @@
 namespace esphome {
 namespace rollershutter {
 
-static const char *TAG = "RollerShutterComponent.component";
+static const char *TAG = "RollerShutterComponent.cpp";
 
 /// @brief Konstruktor
 RollerShutterComponent::RollerShutterComponent() {
@@ -54,12 +54,12 @@ void RollerShutterComponent::SetIdAndName(std::string myId, std::string myName)
 /// @param allInputIsSlave
 void RollerShutterComponent::SetButtons(std::string btnUpId, std::string btnDownId, std::string btnHollidayId,
                                         bool allInputIsMaster, bool allInputIsSlave) {
-  ESP_LOGD(TAG, "SetButtons");
   this->btnUpId = btnUpId;
   this->btnDownId = btnDownId;
   this->btnHollidayId = btnHollidayId;
   this->allBtnIsMaster = allInputIsMaster;
   this->allBtnIsSlave = allInputIsSlave;
+  ESP_LOGD(TAG, "SetButtons");
 }
 
 RollerShutterComponent::~RollerShutterComponent() {
@@ -214,10 +214,7 @@ void RollerShutterComponent::InitialRun() {
 
 /// @brief onSetup
 void RollerShutterComponent::setup() {
-  ESP_LOGD(TAG, "Hallo aus dem Setup");
-  /*
-  InitialRun();
-  */
+  ESP_LOGD(TAG, "Setup RSC '%s'", this->myName.c_str());
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
@@ -274,8 +271,17 @@ void RollerShutterComponent::setup() {
     }
   } else {
     this->hasSetup = true;
-  }    
-  /**/
+  }  
+  if (this->hasSetup)  
+  {
+   /*   
+  InitialRun();
+  */
+  }
+  else
+  {
+    ESP_LOGW(TAG, "Setup NICHT erfolgreich");          
+  }
   ESP_LOGD(TAG, "Ende aus dem Setup");        
 }
 
@@ -354,7 +360,7 @@ void RollerShutterComponent::loop() {
 
 /// @brief Dump-Config
 void RollerShutterComponent::dump_config() {
-  ESP_LOGCONFIG(TAG, "Rollershutter");
+  ESP_LOGCONFIG(TAG, "Rollershutter '%s'", this->myName.c_str());
   ESP_LOGCONFIG(TAG, "  Anzahl der Rolläden = %zu", this->shutters->size());
   if (this->allBtnIsMaster) {
     ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Master = %s", this->btnDownIsRemote ? "nein" : "ja");
