@@ -74,7 +74,7 @@ RollerShutterComponent::~RollerShutterComponent() {
 /// @param millisecondGap 
 void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int millisecondDown, int millisecondGap)
 {
-  ESP_LOGD(TAG, "AddTime");
+  ESP_LOGD(TAG, "AddTime mit id = %s", id.c_str());
   RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
   this->movingTimes->push_back(item); 
 }
@@ -91,7 +91,7 @@ void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int mill
 void RollerShutterComponent::AddGroup(std::string id, std::string name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
-  ESP_LOGD(TAG, "AddGroup mit SD id = ", id.c_str());
+  ESP_LOGD(TAG, "AddGroup mit SD id = %s", id.c_str());
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
@@ -102,7 +102,7 @@ void RollerShutterComponent::AddGroup(std::string id, std::string name,
 /// @param name 
 void RollerShutterComponent::AddGroup(std::string id, std::string name)
 {
-  ESP_LOGD(TAG, "AddGroup ohne SD");
+  ESP_LOGD(TAG, "AddGroup ohne SD mit id = %s", id.c_str());
   RL_SunDowner *sd = new RL_SunDowner();
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
@@ -120,7 +120,7 @@ void RollerShutterComponent::AddGroup(std::string id, std::string name)
 void RollerShutterComponent::AddShutter(std::string id, std::string name, std::string idGroup, std::string idTime,
                                         std::string btnUpId, std::string btDownId, std::string relUpId,
                                         std::string relDownId) {
-  ESP_LOGD(TAG, "AddShutter");
+  ESP_LOGD(TAG, "AddShutter mit id = %s", id.c_str());
   RL_Time *time = getTimeById(idTime);
   RL_Group *group = getGroupById(idGroup);
   RollerShutter *shutter = new RollerShutter(id, name, group, time, this, btnUpId, btnDownId, relUpId, relDownId);
@@ -220,30 +220,30 @@ void RollerShutterComponent::setup() {
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
-        ESP_LOGD(TAG, "Get all btn up id = ", this->btnUpId);
+        ESP_LOGD(TAG, "Get all btn up id = %s", this->btnUpId.c_str());
         this->btnUp = getBinarySensorById(this->btnUpId);
         this->btnUpIsRemote = false;
-        ESP_LOGD(TAG, "Has all btn up = ", this->btnUp->get_name());
+        ESP_LOGD(TAG, "Has all btn up = %s", this->btnUp->get_name().c_str());
       } else {
         this->btnUp = nullptr;
         this->btnUpIsRemote = false;
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
-          ESP_LOGD(TAG, "Get all btn down id = ", this->btnDownId);
+          ESP_LOGD(TAG, "Get all btn down id = %s", this->btnDownId).c_str());
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDownIsRemote = false;
-          ESP_LOGD(TAG, "Has all btn down = ", this->btnDown->get_name());
+          ESP_LOGD(TAG, "Has all btn down = %s", this->btnDown->get_name().c_str());
         } else {
           this->btnDown = nullptr;
           this->btnDownIsRemote = false;
         }
         if (std::strlen(this->btnHollidayId.c_str()) > 1) {
           if (this->btnDownId.compare("remote") != 0) {
-            ESP_LOGD(TAG, "Get all btn holliday id = ", this->btnHollidayId);
+            ESP_LOGD(TAG, "Get all btn holliday id = %s", this->btnHollidayId.c_str());
             this->btnHolliday = getBinarySensorById(this->btnHollidayId);
             this->btnHollidayIsRemote = false;
-            ESP_LOGD(TAG, "has all btn holliday = ", this->btnHolliday->get_name());
+            ESP_LOGD(TAG, "has all btn holliday = %s", this->btnHolliday->get_name().c_str());
           } else {
             ESP_LOGD(TAG, "Has No Holliday");
             this->btnHolliday = nullptr;
@@ -354,15 +354,15 @@ void RollerShutterComponent::loop() {
 /// @brief Dump-Config
 void RollerShutterComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "Rollershutter");
-  ESP_LOGCONFIG(TAG, "  Anzahl der Rolläden = ", this->shutters->size());
+  ESP_LOGCONFIG(TAG, "  Anzahl der Rolläden = %zu", this->shutters->size());
   if (this->allBtnIsMaster) {
-    ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Master = ", !this->btnDownIsRemote);
-    ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Master = ", !this->btnUpIsRemote);
-    ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Master = ", !this->btnHollidayIsRemote);
+    ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Master = %s", this->btnDownIsRemote ? "nein" : "ja");
+    ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Master = %s", this->btnUpIsRemote ? "nein" : "ja");
+    ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Master = %s", this->btnHollidayIsRemote ? "nein" : "ja");
   } else if (this->allBtnIsMaster) {
-    ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Remote = ", this->btnDownIsRemote);
-    ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Remote = ", this->btnUpIsRemote);
-    ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Remote = ", this->btnHollidayIsRemote);
+    ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Remote = %s", this->btnDownIsRemote ? "ja" : "nein");
+    ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Remote = %s", this->btnUpIsRemote ? "ja" : "nein");
+    ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Remote = %s", this->btnHollidayIsRemote ? "ja" : "nein");
   } else {
     ESP_LOGCONFIG(TAG, "  Alles Runter, wird nicht genutzt");
     ESP_LOGCONFIG(TAG, "  Alles Hoch, wird nicht genutzt");
