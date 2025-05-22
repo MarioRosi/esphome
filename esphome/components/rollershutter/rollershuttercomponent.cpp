@@ -10,6 +10,7 @@
 #include "rollershutter.h"
 #include <string>
 #include <vector>
+#include "esphome/core/log.h"
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()
@@ -230,7 +231,7 @@ void RollerShutterComponent::setup() {
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
-          ESP_LOGD(TAG, "Get all btn down id = %s", this->btnDownId).c_str());
+          ESP_LOGD(TAG, "Get all btn down id = %s", this->btnDownId.c_str());
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDownIsRemote = false;
           ESP_LOGD(TAG, "Has all btn down = %s", this->btnDown->get_name().c_str());
