@@ -160,7 +160,7 @@ class RL_Group {
   /// @param name
   /// @param sundownner
   RL_Group(const char* id, const char* name, RL_SunDowner *sundownner) {
-    ESP_LOGD("RL_Group", "new Group %s", id.c_str());
+    ESP_LOGD("RL_Group", "new Group %s", id);
     this->id = id;
     this->name = name;
     this->sundownner = sundownner;
