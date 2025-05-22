@@ -74,9 +74,9 @@ RollerShutterComponent::~RollerShutterComponent() {
 /// @param millisecondGap 
 void RollerShutterComponent::AddTime(const char* id, int millisecondUp, int millisecondDown, int millisecondGap)
 {
-  ESP_LOGD(TAG, "AddTime mit id = %s", id);
   RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
   this->movingTimes->push_back(item); 
+  ESP_LOGD(TAG, "AddTime mit id = %s", id);
 }
 
 /// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu
@@ -102,10 +102,10 @@ void RollerShutterComponent::AddGroup(const char* id, const char* name,
 /// @param name 
 void RollerShutterComponent::AddGroup(const char* id, const char* name)
 {
-  ESP_LOGD(TAG, "AddGroup ohne SD mit id = %s", id);
   RL_SunDowner *sd = new RL_SunDowner();
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
+  ESP_LOGD(TAG, "AddGroup ohne SD mit id = %s", id);
 }
 
 /// @brief Einfügen eines Rolladen in die Liste
@@ -120,11 +120,11 @@ void RollerShutterComponent::AddGroup(const char* id, const char* name)
 void RollerShutterComponent::AddShutter(const char* id, const char* name, const char* idGroup, const char* idTime,
                                         const char* btnUpId, const char* btnDownId, const char* relUpId,
                                         const char* relDownId) {
-  ESP_LOGD(TAG, "AddShutter mit id = %s", id);
   RL_Time *time = getTimeById(idTime);
   RL_Group *group = getGroupById(idGroup);
   RollerShutter *shutter = new RollerShutter(id, name, group, time, this, btnUpId, btnDownId, relUpId, relDownId);
   shutters->push_back(shutter);
+  ESP_LOGD(TAG, "AddShutter mit id = %s", id);
 }
 
 /// @brief Gibt die Time entsprechend der Id zurück
