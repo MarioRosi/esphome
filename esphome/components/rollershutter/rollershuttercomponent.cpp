@@ -10,7 +10,6 @@
 #include "rollershutter.h"
 #include <string>
 #include <vector>
-#include "esphome/core/log.h"
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()
@@ -39,7 +38,7 @@ RollerShutterComponent::RollerShutterComponent() {
 }
 
 /// @brief name und Id setzten  
-void RollerShutterComponent::SetIdAndName(std::string myId, std::string myName)
+void RollerShutterComponent::SetIdAndName(const char* myId, const char* myName)
 {
   this->myId = myId;
   this->myName = myName;
@@ -52,7 +51,7 @@ void RollerShutterComponent::SetIdAndName(std::string myId, std::string myName)
 /// @param btnHollidayId
 /// @param allInputIsMaster
 /// @param allInputIsSlave
-void RollerShutterComponent::SetButtons(std::string btnUpId, std::string btnDownId, std::string btnHollidayId,
+void RollerShutterComponent::SetButtons(const char* btnUpId, const char* btnDownId, const char* btnHollidayId,
                                         bool allInputIsMaster, bool allInputIsSlave) {
   this->btnUpId = btnUpId;
   this->btnDownId = btnDownId;
@@ -73,9 +72,9 @@ RollerShutterComponent::~RollerShutterComponent() {
 /// @param millisecondUp 
 /// @param millisecondDown 
 /// @param millisecondGap 
-void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int millisecondDown, int millisecondGap)
+void RollerShutterComponent::AddTime(const char* id, int millisecondUp, int millisecondDown, int millisecondGap)
 {
-  ESP_LOGD(TAG, "AddTime mit id = %s", id.c_str());
+  ESP_LOGD(TAG, "AddTime mit id = %s", id);
   RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
   this->movingTimes->push_back(item); 
 }
@@ -89,10 +88,10 @@ void RollerShutterComponent::AddTime(std::string id, int millisecondUp, int mill
 /// @param gapMinute 
 /// @param upHoure 
 /// @param upMinute 
-void RollerShutterComponent::AddGroup(std::string id, std::string name, 
+void RollerShutterComponent::AddGroup(const char* id, const char* name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
-  ESP_LOGD(TAG, "AddGroup mit SD id = %s", id.c_str());
+  ESP_LOGD(TAG, "AddGroup mit SD id = %s", id);
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
@@ -101,9 +100,9 @@ void RollerShutterComponent::AddGroup(std::string id, std::string name,
 /// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
 /// @param id 
 /// @param name 
-void RollerShutterComponent::AddGroup(std::string id, std::string name)
+void RollerShutterComponent::AddGroup(const char* id, const char* name)
 {
-  ESP_LOGD(TAG, "AddGroup ohne SD mit id = %s", id.c_str());
+  ESP_LOGD(TAG, "AddGroup ohne SD mit id = %s", id);
   RL_SunDowner *sd = new RL_SunDowner();
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
@@ -118,10 +117,10 @@ void RollerShutterComponent::AddGroup(std::string id, std::string name)
 /// @param pinInDown
 /// @param pinOutUp
 /// @param pinOutDown
-void RollerShutterComponent::AddShutter(std::string id, std::string name, std::string idGroup, std::string idTime,
-                                        std::string btnUpId, std::string btDownId, std::string relUpId,
-                                        std::string relDownId) {
-  ESP_LOGD(TAG, "AddShutter mit id = %s", id.c_str());
+void RollerShutterComponent::AddShutter(const char* id, const char* name, const char* idGroup, const char* idTime,
+                                        const char* btnUpId, const char* btDownId, const char* relUpId,
+                                        const char* relDownId) {
+  ESP_LOGD(TAG, "AddShutter mit id = %s", id);
   RL_Time *time = getTimeById(idTime);
   RL_Group *group = getGroupById(idGroup);
   RollerShutter *shutter = new RollerShutter(id, name, group, time, this, btnUpId, btnDownId, relUpId, relDownId);
@@ -131,7 +130,7 @@ void RollerShutterComponent::AddShutter(std::string id, std::string name, std::s
 /// @brief Gibt die Time entsprechend der Id zurück
 /// @param id
 /// @return default nullptr
-RL_Time *RollerShutterComponent::getTimeById(std::string id) {
+RL_Time *RollerShutterComponent::getTimeById(const char* id) {
   RL_Time *result = nullptr;
   if (!this->movingTimes->empty()) {
     for (auto itter = this->movingTimes->cbegin(), last = this->movingTimes->cend(); itter != last; itter++) {
@@ -148,7 +147,7 @@ RL_Time *RollerShutterComponent::getTimeById(std::string id) {
 /// @brief Gibt die Group entsprechend der Id zurück
 /// @param id
 /// @return default nullptr
-RL_Group *RollerShutterComponent::getGroupById(std::string id) {
+RL_Group *RollerShutterComponent::getGroupById(const char* id) {
   RL_Group *result = nullptr;
   if (!this->movingTimes->empty()) {
     for (auto itter = this->groups->cbegin(), last = this->groups->cend(); itter != last; itter++) {
@@ -215,6 +214,7 @@ void RollerShutterComponent::InitialRun() {
 /// @brief onSetup
 void RollerShutterComponent::setup() {
   ESP_LOGD(TAG, "Setup RSC '%s'", this->myName.c_str());
+  /*
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
@@ -273,15 +273,14 @@ void RollerShutterComponent::setup() {
     this->hasSetup = true;
   }  
   if (this->hasSetup)  
-  {
-   /*   
-  InitialRun();
-  */
+  {   
+  // InitialRun();
   }
   else
   {
     ESP_LOGW(TAG, "Setup NICHT erfolgreich");          
   }
+  /**/
   ESP_LOGD(TAG, "Ende aus dem Setup");        
 }
 
@@ -380,9 +379,9 @@ void RollerShutterComponent::dump_config() {
 /// @brief Gibt das Switch anhand seiner Id zurück
 /// @param hisId
 /// @return
-switch_::Switch *RollerShutterComponent::getSwitchById(const std::string hisId) {
+switch_::Switch *RollerShutterComponent::getSwitchById(const char* hisId) {
   for (auto *switchComponent : App.get_switches()) {
-    if (strcmp(switchComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (strcmp(switchComponent->get_object_id().c_str(), hisId) == 0)
       return switchComponent;
   }
   return nullptr;
@@ -391,9 +390,9 @@ switch_::Switch *RollerShutterComponent::getSwitchById(const std::string hisId) 
 /// @brief Gibt den Sensor anhand seiner Id Zurück
 /// @param hisId
 /// @return
-binary_sensor::BinarySensor *RollerShutterComponent::getBinarySensorById(const std::string hisId) {
+binary_sensor::BinarySensor *RollerShutterComponent::getBinarySensorById(const char* hisId) {
   for (auto *binSesorComponent : App.get_binary_sensors()) {
-    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId) == 0)
       return binSesorComponent;
   }
   return nullptr;

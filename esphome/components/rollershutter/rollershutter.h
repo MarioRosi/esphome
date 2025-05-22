@@ -228,9 +228,9 @@ class RollerShutter {
   /// @param btDownId String, id des Schalter down
   /// @param relUpId String, id des Relay up
   /// @param relDownId String, id des Relay down
-  RollerShutter(std::string id, std::string name, RL_Group *group, RL_Time *timeUpDown,
-                RollerShutterComponent *myComponent, std::string btnUpId, std::string btDownId, std::string relUpId,
-                std::string relDownId);
+  RollerShutter(const char* id, const char* name, RL_Group *group, RL_Time *timeUpDown,
+                RollerShutterComponent *myComponent, const char* btnUpId, 
+                const char* btDownId, const char* relUpId, const char* relDownId);
 
   /// @brief Rollladen zurücksetzten == hochfahren
   void ResetRollerShutter();
@@ -283,11 +283,11 @@ class RollerShutter {
   /// @brief Gibt das Switch anhand seiner Id zurück
   /// @param hisId
   /// @return
-  switch_::Switch *getSwitchById(const std::string hisId);
+  switch_::Switch *getSwitchById(const char* hisId);
   /// @brief Gibt den Sensor anhand seiner Id Zurück
   /// @param hisId
   /// @return
-  binary_sensor::BinarySensor *getBinarySensorById(const std::string hisId);
+  binary_sensor::BinarySensor *getBinarySensorById(const char* hisId);
 };
 
 }  // namespace rollershutter

@@ -96,12 +96,12 @@ class RollerShutterComponent : public Component {
   /// @brief Gibt die Time entsprechend der Id zurück
   /// @param id
   /// @return default nullptr
-  RL_Time *getTimeById(std::string id);
+  RL_Time *getTimeById(const char* id);
 
   /// @brief Gibt die Group entsprechend der Id zurück
   /// @param id
   /// @return default nullptr
-  RL_Group *getGroupById(std::string id);
+  RL_Group *getGroupById(const char* id);
 
  public:
   /// @brief Konstruktor
@@ -111,7 +111,7 @@ class RollerShutterComponent : public Component {
   ~RollerShutterComponent();
 
   /// @brief name und Id setzten  
-  void SetIdAndName(std::string myId, std::string myName);
+  void SetIdAndName(const char* myId, const char* myName);
 
   /// @brief Buttons für alle setzten
   /// @param btnUpId
@@ -119,15 +119,15 @@ class RollerShutterComponent : public Component {
   /// @param btnHollidayId
   /// @param allInputIsMaster
   /// @param allInputIsSlave
-  void SetButtons(std::string btnUpId, std::string btnDownId, std::string btnHollidayId, bool allInputIsMaster,
-                  bool allInputIsSlave);
+  void SetButtons(const char* btnUpId, const char* btnDownId, const char* btnHollidayId, 
+                  bool allInputIsMaster, bool allInputIsSlave);
 
   /// @brief Fügt eine RL_Time der Liste hinzu
   /// @param id 
   /// @param millisecondUp 
   /// @param millisecondDown 
   /// @param millisecondGap 
-  void AddTime(std::string id, int millisecondUp, int millisecondDown, int millisecondGap);
+  void AddTime(const char* id, int millisecondUp, int millisecondDown, int millisecondGap);
 
   // @brief Fügt eine Gruppe der Liste hinzu
 
@@ -140,13 +140,13 @@ class RollerShutterComponent : public Component {
   /// @param gapMinute 
   /// @param upHoure 
   /// @param upMinute 
-  void AddGroup(std::string id, std::string name, 
+  void AddGroup(const char* id, const char* name, 
     int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute);
 
   /// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
   /// @param id 
   /// @param name 
-  void AddGroup(std::string id, std::string name);
+  void AddGroup(const char* id, const char* name);
 
 
   /// @brief Einfügen eines Rolladen in die Liste
@@ -158,9 +158,9 @@ class RollerShutterComponent : public Component {
   /// @param pinInDown
   /// @param pinOutUp
   /// @param pinOutDown
-  void AddShutter(std::string id, std::string name, std::string idGroup, 
-                  std::string idTime, std::string btnUpId, std::string btDownId, 
-                  std::string relUpId, std::string relDownId);
+  void AddShutter(const char* id, const char* name, const char* idGroup, 
+                  const char* idTime, const char* btnUpId, const char* btDownId, 
+                  const char* relUpId, const char* relDownId);
 
   /// @brief Erzeugt die Listen für das Abarbeiten der Buttons
   void PrepareShutters();
@@ -180,12 +180,12 @@ class RollerShutterComponent : public Component {
   /// @brief Gibt das Switch anhand seiner Id zurück
   /// @param hisId
   /// @return
-  switch_::Switch *getSwitchById(const std::string hisId);
+  switch_::Switch *getSwitchById(const char* hisId);
 
   /// @brief Gibt den Sensor anhand seiner Id Zurück
   /// @param hisId
   /// @return
-  binary_sensor::BinarySensor *getBinarySensorById(const std::string hisId);
+  binary_sensor::BinarySensor *getBinarySensorById(const char* hisId);
 };
 
 }  // namespace rollershutter

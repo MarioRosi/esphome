@@ -26,9 +26,9 @@ static const char *TAG = "RollerShutter";
 /// @param btDownId String, id des Schalter down
 /// @param relUpId String, id des Relay up
 /// @param relDownId String, id des Relay down
-RollerShutter::RollerShutter(std::string id, std::string name, RL_Group *group, RL_Time *timeUpDown,
-                             RollerShutterComponent *myComponent, std::string btnUpId, std::string btDownId,
-                             std::string relUpId, std::string relDownId) {
+RollerShutter::RollerShutter(const char* id, const char* name, RL_Group *group, RL_Time *timeUpDown,
+                             RollerShutterComponent *myComponent, const char* btnUpId, const char* btDownId,
+                             const char* relUpId, const char* relDownId) {
   this->myId = id;
   this->name = name;
   this->group = group;
@@ -203,19 +203,19 @@ void RollerShutter::Setup() {
   ESP_LOGD(TAG, "setup id = ", this->myId);
   if (std::strlen(this->btnUpId.c_str()) > 1) {
     ESP_LOGD(TAG, "Get btn up id = ", this->btnUpId);
-    this->btnUp = getBinarySensorById(this->btnUpId);
+    this->btnUp = getBinarySensorById(this->btnUpId.c_str());
     ESP_LOGD(TAG, "Has btn up = ", this->btnUp->get_name());
     if (std::strlen(this->btnDownId.c_str()) > 1) {
       ESP_LOGD(TAG, "Get btn down id = ", this->btnDownId);
-      this->btnDown = getBinarySensorById(this->btnDownId);
+      this->btnDown = getBinarySensorById(this->btnDownId.c_str());
       ESP_LOGD(TAG, "Has btn down = ", this->btnDown->get_name());
       if (std::strlen(this->relUpId.c_str()) > 1) {
         ESP_LOGD(TAG, "Get switch up id = ", this->relUpId);
-        this->relUp = getSwitchById(this->relUpId);
+        this->relUp = getSwitchById(this->relUpId.c_str());
         ESP_LOGD(TAG, "Has switch up = ", this->relUp->get_name());
         if (std::strlen(this->relDownId.c_str()) > 1) {
           ESP_LOGD(TAG, "Get switch down id = ", this->relDownId);
-          this->relDown = getSwitchById(this->relDownId);
+          this->relDown = getSwitchById(this->relDownId.c_str());
           ESP_LOGD(TAG, "Has switch down = ", this->relDown->get_name());
           this->hasSetup = true;
           ResetRollerShutter();
@@ -361,9 +361,9 @@ void RollerShutter::StartGap() {
 /// @brief Gibt das Switch anhand seiner Id zurück
 /// @param hisId
 /// @return
-switch_::Switch *RollerShutter::getSwitchById(const std::string hisId) {
+switch_::Switch *RollerShutter::getSwitchById(const char* hisId) {
   for (auto *switchComponent : App.get_switches()) {
-    if (strcmp(switchComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (strcmp(switchComponent->get_object_id().c_str(), hisId) == 0)
       return switchComponent;
   }
   return nullptr;
@@ -372,9 +372,9 @@ switch_::Switch *RollerShutter::getSwitchById(const std::string hisId) {
 /// @brief Gibt den Sensor anhand seiner Id Zurück
 /// @param hisId
 /// @return
-binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::string hisId) {
+binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const char* hisId) {
   for (auto *binSesorComponent : App.get_binary_sensors()) {
-    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId) == 0)
       return binSesorComponent;
   }
   return nullptr;
