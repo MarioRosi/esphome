@@ -118,7 +118,7 @@ void RollerShutterComponent::AddGroup(const char* id, const char* name)
 /// @param pinOutUp
 /// @param pinOutDown
 void RollerShutterComponent::AddShutter(const char* id, const char* name, const char* idGroup, const char* idTime,
-                                        const char* btnUpId, const char* btDownId, const char* relUpId,
+                                        const char* btnUpId, const char* btnDownId, const char* relUpId,
                                         const char* relDownId) {
   ESP_LOGD(TAG, "AddShutter mit id = %s", id);
   RL_Time *time = getTimeById(idTime);
