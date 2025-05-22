@@ -91,10 +91,10 @@ void RollerShutterComponent::AddTime(const char* id, int millisecondUp, int mill
 void RollerShutterComponent::AddGroup(const char* id, const char* name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
-  ESP_LOGD(TAG, "AddGroup mit SD id = %s", id);
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
+  ESP_LOGD(TAG, "AddGroup mit SD id = %s", id);
 }
 
 /// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
