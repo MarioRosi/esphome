@@ -79,7 +79,7 @@ void RollerShutterComponent::AddTime(const char* id, int millisecondUp, int mill
   ESP_LOGD(TAG, "AddTime mit id = %s", id);
 }
 
-/// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu
+/// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu1
 /// @param id 
 /// @param name 
 /// @param monthFrom 
