@@ -10,6 +10,7 @@
 #include "rollershutter.h"
 #include <string>
 #include <vector>
+#include <Esp.h>
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()
