@@ -119,7 +119,7 @@ async def to_code(config):
     LOGGER.info("init.py RollerShutter to_Code Start")
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-    cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
+    cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME].__str__()))
     for rlstime in config.get(CONF_RLS_TIMES, []):
         cg.add(var.AddTime(
             rlstime[CONF_ID].__str__(),
@@ -132,12 +132,12 @@ async def to_code(config):
         if CONF_RLS_SD_OFF in rlssundowner:
             cg.add(var.AddGroup(
                 rlsgroup[CONF_ID].__str__(),
-                rlsgroup[CONF_NAME]
+                rlsgroup[CONF_NAME].__str__()
             ))
         else:
             cg.add(var.AddGroup(
                 rlsgroup[CONF_ID].__str__(),
-                rlsgroup[CONF_NAME],
+                rlsgroup[CONF_NAME].__str__(),
                 rlssundowner[CONF_RLS_SD_MF],
                 rlssundowner[CONF_RLS_SD_MT],
                 rlssundowner[CONF_RLS_SD_GH],
@@ -147,21 +147,21 @@ async def to_code(config):
             ))
     if CONF_RLS_ALLSH in config:
         cg.add(var.SetButtons(
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU].__str__(),
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD].__str__(),
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH].__str__(),
             config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
             config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
         ))
     for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
         cg.add(var.AddShutter(
             rlshutter[CONF_ID].__str__(),
-            rlshutter[CONF_NAME],
-            rlshutter[CONF_RLS_SH_GRP],
-            rlshutter[CONF_RLS_SH_TIM],
-            rlshutter[CONF_RLS_SH_IPU],
-            rlshutter[CONF_RLS_SH_IPD],
-            rlshutter[CONF_RLS_SH_OSU],
-            rlshutter[CONF_RLS_SH_OSD],
+            rlshutter[CONF_NAME].__str__(),
+            rlshutter[CONF_RLS_SH_GRP].__str__(),
+            rlshutter[CONF_RLS_SH_TIM].__str__(),
+            rlshutter[CONF_RLS_SH_IPU].__str__(),
+            rlshutter[CONF_RLS_SH_IPD].__str__(),
+            rlshutter[CONF_RLS_SH_OSU].__str__(),
+            rlshutter[CONF_RLS_SH_OSD].__str__(),
         ))
     # cg.add(var.InitialRun())
