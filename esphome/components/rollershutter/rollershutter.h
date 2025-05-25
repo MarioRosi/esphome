@@ -38,8 +38,6 @@
 namespace esphome {
 namespace rollershutter {
 
-static const char *TAG = "rollershutter.cpp";
-
 // extern definition
 class RollerShutterComponent;
 
@@ -127,7 +125,7 @@ class RL_SunDowner {
   /// @param upHoure
   /// @param upMinute
   RL_SunDowner(int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute) {
-    ESP_LOGD(TAG, "RL_SunDowner.ctor");
+    ESP_LOGD("rollershutter.h", "RL_SunDowner.ctor");
     this->monthFrom = monthFrom;
     this->monthTo = monthTo;
     this->gapHour = gapHour;
@@ -135,7 +133,7 @@ class RL_SunDowner {
     this->upHoure = upHoure;
     this->upMinute = upMinute;
     this->offline = false;
-    ESP_LOGD(TAG, "RL_SunDowner.ctor-End");
+    ESP_LOGD("rollershutter.h", "RL_SunDowner.ctor-End");
   }
 
   /// @brief leer-Konstruktor == offline
