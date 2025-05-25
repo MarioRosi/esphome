@@ -140,13 +140,13 @@ class RollerShutterComponent : public Component {
   /// @param gapMinute 
   /// @param upHoure 
   /// @param upMinute 
-  void AddGroup(const char* id, const char* name, 
+  void AddGroup(const std::string &id, const std::string &name, 
     int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute);
 
   /// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
   /// @param id 
   /// @param name 
-  void AddGroup(const char* id, const char* name);
+  void AddGroup(const std::string &id, const std::string &name);
 
 
   /// @brief Einfügen eines Rolladen in die Liste

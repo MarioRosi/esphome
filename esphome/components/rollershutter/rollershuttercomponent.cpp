@@ -88,10 +88,10 @@ void RollerShutterComponent::AddTime(const char* id, int millisecondUp, int mill
 /// @param gapMinute 
 /// @param upHoure 
 /// @param upMinute 
-void RollerShutterComponent::AddGroup(const char* id, const char* name, 
+void RollerShutterComponent::AddGroup(const std::string &id, const std::string &name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
-  ESP_LOGD(TAG, "AddGroup (id = %s, name=%s, monthFrom=%d, monthTo=%d, gapH=%d, gapM=%d, upH=%d, upM=%d)", id, name, monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
+  ESP_LOGD(TAG, "AddGroup (id = %s, name=%s, monthFrom=%d, monthTo=%d, gapH=%d, gapM=%d, upH=%d, upM=%d)", id.c_str(), name.c_str(), monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   ESP_LOGD(TAG, "AddGroup new SD");
   RL_Group *item = new RL_Group(id, name, sd);
@@ -103,12 +103,12 @@ void RollerShutterComponent::AddGroup(const char* id, const char* name,
 /// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
 /// @param id 
 /// @param name 
-void RollerShutterComponent::AddGroup(const char* id, const char* name)
+void RollerShutterComponent::AddGroup(const std::string &id, const std::string &name)
 {
   RL_SunDowner *sd = new RL_SunDowner();
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
-  ESP_LOGD(TAG, "AddGroup ohne SD mit id = %s", id);
+  ESP_LOGD(TAG, "AddGroup ohne SD mit id = %s", id.c_str());
 }
 
 /// @brief Einfügen eines Rolladen in die Liste
