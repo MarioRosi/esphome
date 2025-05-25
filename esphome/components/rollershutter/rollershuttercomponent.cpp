@@ -10,7 +10,6 @@
 #include "rollershutter.h"
 #include <string>
 #include <vector>
-#include "esphome/core/helpers.h"
 
 /* Wichtig, bei Verweung von Lambdafunktionen, sonst tu er nix !!
 ::update()
@@ -35,7 +34,7 @@ RollerShutterComponent::RollerShutterComponent() {
   this->btnUpIsRemote = false;
   this->btnDownIsRemote = false;
   this->btnHollidayIsRemote = false;  
-  ESP_LOGD(TAG, "Ende aus dem Konstruktor mem=%d", ESP.getFreeHeap());
+  ESP_LOGD(TAG, "Ende aus dem Konstruktor"); // mem=%d", heap_caps_get_free_size((1<<12)));
 }
 
 /// @brief name und Id setzten  
