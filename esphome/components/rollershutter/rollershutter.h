@@ -162,7 +162,7 @@ class RL_Group {
   /// @param name
   /// @param sundownner
   RL_Group(const std::string &id, const std::string &name, RL_SunDowner *sundownner) {
-    ESP_LOGD("rollershutter.h", "RL_Group.ctor-End");
+    ESP_LOGD("rollershutter.h", "RL_Group.ctor");
     this->id = id;
     this->name = name;
     this->sundownner = sundownner;

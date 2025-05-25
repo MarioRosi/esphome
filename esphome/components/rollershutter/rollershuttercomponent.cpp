@@ -92,7 +92,9 @@ void RollerShutterComponent::AddGroup(const std::string &id, const std::string &
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
   //ESP_LOGD(TAG, "AddGroup (id = %s, name=%s, monthFrom=%d, monthTo=%d, gapH=%d, gapM=%d, upH=%d, upM=%d)", id.c_str(), name.c_str(), monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
+  ESP_LOGD(TAG, "AddGroup new RL_SunDowner");
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
+  ESP_LOGD(TAG, "AddGroup after new RL_SunDowner");
   ESP_LOGD(TAG, "AddGroup new SD");
   RL_Group *item = new RL_Group(id, name, sd);
   //ESP_LOGD(TAG, "AddGroup new GRP %s", item->name.c_str());
