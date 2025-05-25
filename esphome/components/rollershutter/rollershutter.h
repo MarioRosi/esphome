@@ -38,6 +38,8 @@
 namespace esphome {
 namespace rollershutter {
 
+static const char *TAG = "rollershutter.cpp";
+
 // extern definition
 class RollerShutterComponent;
 
