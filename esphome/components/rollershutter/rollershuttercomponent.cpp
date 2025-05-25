@@ -91,7 +91,7 @@ void RollerShutterComponent::AddTime(const char* id, int millisecondUp, int mill
 void RollerShutterComponent::AddGroup(const std::string &id, const std::string &name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
-  ESP_LOGD(TAG, "AddGroup (id = %s, name=%s, monthFrom=%d, monthTo=%d, gapH=%d, gapM=%d, upH=%d, upM=%d)", id.c_str(), name.c_str(), monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
+  //ESP_LOGD(TAG, "AddGroup (id = %s, name=%s, monthFrom=%d, monthTo=%d, gapH=%d, gapM=%d, upH=%d, upM=%d)", id.c_str(), name.c_str(), monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
   ESP_LOGD(TAG, "AddGroup new SD");
   RL_Group *item = new RL_Group(id, name, sd);
