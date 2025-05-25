@@ -34,8 +34,8 @@ RollerShutterComponent::RollerShutterComponent() {
   this->hasSetup = false;
   this->btnUpIsRemote = false;
   this->btnDownIsRemote = false;
-  this->btnHollidayIsRemote = false;
-  ESP_LOGD(TAG, "Ende aus dem Konstruktor");
+  this->btnHollidayIsRemote = false;  
+  ESP_LOGD(TAG, "Ende aus dem Konstruktor mem=%d", ESP.getFreeHeap());
 }
 
 /// @brief name und Id setzten  
