@@ -382,14 +382,14 @@ binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::strin
   for (int idx = 0; idx < sensors.size(); idx++) {
     binary_sensor::BinarySensor *binSesorComponent = sensors.at(idx);
     ESP_LOGD(TAG, "getBinarySensorById %s", binSesorComponent->get_object_id().c_str());
-    /*
     if (binSesorComponent->get_object_id().compare(hisId) == 0)
-    {
+    {      
       ESP_LOGD(TAG, "getBinarySensorById found");
+      /*
       result = binSesorComponent;
       idx = sensors.size();
-    }
     /**/
+    }
   }
   sensors.clear();
   if (result == nullptr)
