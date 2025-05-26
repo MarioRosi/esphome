@@ -219,9 +219,9 @@ void RollerShutterComponent::InitialRun() {
     if (group != nullptr)
       ESP_LOGD(TAG, "Initial Run grpId=%s", group->id.c_str());
     ESP_LOGD(TAG, "Initial Run 4");
-    /*
     shutter->SetTimeUpDown(timeUD);
     ESP_LOGD(TAG, "Initial Run 5");
+    /*
     shutter->SetGroup(group);
     ESP_LOGD(TAG, "Initial Run 6");
     shutter->Setup();    
