@@ -195,8 +195,8 @@ void RollerShutter::Stop() {
 /// @brief Den Rolladen aktivieren
 void RollerShutter::Setup() {
   ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
-  /*
   this->timeUpDown = myComponent->GetTimeById(this->timeUpDownId);
+  /*
   this->group = myComponent->GetGroupById(this->groupId);
   if (std::strlen(this->btnUpId.c_str()) > 1) {
     ESP_LOGD(TAG, "Get btn up id = %s", this->btnUpId.c_str());
