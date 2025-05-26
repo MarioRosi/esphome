@@ -210,7 +210,8 @@ void RollerShutterComponent::InitialRun() {
     ESP_LOGD(TAG, "Initial Run 1");
     RollerShutter *shutter = this->shutters->at(idx);
     ESP_LOGD(TAG, "Initial Run 2");
-    shutter->Setup();
+    /*
+    shutter->Setup();    
     ESP_LOGD(TAG, "Initial Run 3");
     if ((shutter->GetShutterState() == enRollerShutterState::isUnknown)) {
       ESP_LOGD(TAG, "Initial Run 4");
@@ -218,6 +219,7 @@ void RollerShutterComponent::InitialRun() {
       ESP_LOGD(TAG, "Initial Run 5");
     }
     ESP_LOGD(TAG, "Initial Run 6");
+    /**/
   }
   /*
   for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
