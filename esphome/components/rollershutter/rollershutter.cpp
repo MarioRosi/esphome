@@ -195,7 +195,7 @@ void RollerShutter::Stop() {
 /// @brief Den Rolladen aktivieren
 void RollerShutter::Setup() {
   ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
-  /*
+  
   if (std::strlen(this->btnUpId.c_str()) > 1) {
     ESP_LOGD(TAG, "Get btn up id = %s", this->btnUpId.c_str());
     this->btnUp = getBinarySensorById(this->btnUpId);
@@ -213,12 +213,12 @@ void RollerShutter::Setup() {
           this->relDown = getSwitchById(this->relDownId);
           ESP_LOGD(TAG, "Has switch down = %s", this->relDown->get_name().c_str());
           this->hasSetup = true;
-          ResetRollerShutter();
+          //ResetRollerShutter();
         }
       }
     }
   }
-  /**/
+  
 }
 
 /// @brief Testet, ob die Zeit für Hoch, Runter, Lücke erreicht ist
