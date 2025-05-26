@@ -136,11 +136,11 @@ void RollerShutterComponent::AddShutter(const std::string &id, const std::string
 RL_Time *RollerShutterComponent::GetTimeById(const std::string &id) {
   RL_Time *result = nullptr;
   if (!this->movingTimes->empty()) {
-    for (auto itter = this->movingTimes->cbegin(), last = this->movingTimes->cend(); itter != last; itter++) {
-      RL_Time *time = *itter;
+    for (int idx=0; idx < this->movingTimes->size(); idx++) {
+      RL_Time *time = this->movingTimes->at(idx);
       if (time->id.compare(id) == 0) {
         result = time;
-        itter = last;
+        idx = this->movingTimes->size();
       }
     }
   }
@@ -152,12 +152,12 @@ RL_Time *RollerShutterComponent::GetTimeById(const std::string &id) {
 /// @return default nullptr
 RL_Group *RollerShutterComponent::GetGroupById(const std::string &id) {
   RL_Group *result = nullptr;
-  if (!this->movingTimes->empty()) {
-    for (auto itter = this->groups->cbegin(), last = this->groups->cend(); itter != last; itter++) {
-      RL_Group *group = *itter;
+  if (!this->groups->empty()) {
+    for (int idx=0; idx < this->groups->size(); idx++) {
+      RL_Group *group = *this->groups->at(idx);
       if (group->id.compare(id) == 0) {
         result = group;
-        itter = last;
+        idx = this->groups->size();
       }
     }
   }
@@ -211,9 +211,11 @@ void RollerShutterComponent::InitialRun() {
     RollerShutter *shutter = this->shutters->at(idx);    
     ESP_LOGD(TAG, "Initial Run 2");
     RL_Time *timeUD = GetTimeById(shutter->GetTimeUpDownId());
+    ESP_LOGD(TAG, "Initial Run 3");
     if (timeUD != nullptr)
       ESP_LOGD(TAG, "Initial Run timeId=%s", timeUD->id.c_str());
-    ESP_LOGD(TAG, "Initial Run 3");
+    ESP_LOGD(TAG, "Initial Run 4");
+    /*
     RL_Group *group = GetGroupById(shutter->GetGroupId());
     if (group != nullptr)
       ESP_LOGD(TAG, "Initial Run grpId=%s", group->id.c_str());
