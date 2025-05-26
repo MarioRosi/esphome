@@ -154,7 +154,7 @@ RL_Group *RollerShutterComponent::GetGroupById(const std::string &id) {
   RL_Group *result = nullptr;
   if (!this->groups->empty()) {
     for (int idx=0; idx < this->groups->size(); idx++) {
-      RL_Group *group = *this->groups->at(idx);
+      RL_Group *group = this->groups->at(idx);
       if (group->id.compare(id) == 0) {
         result = group;
         idx = this->groups->size();
