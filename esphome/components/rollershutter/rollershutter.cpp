@@ -26,9 +26,9 @@ static const char *TAG = "RollerShutter";
 /// @param btDownId String, id des Schalter down
 /// @param relUpId String, id des Relay up
 /// @param relDownId String, id des Relay down
-RollerShutter::RollerShutter(const char* id, const char* name, RL_Group *group, RL_Time *timeUpDown,
-                             RollerShutterComponent *myComponent, const char* btnUpId, const char* btDownId,
-                             const char* relUpId, const char* relDownId) {
+RollerShutter::RollerShutter(const std::string &id, const std::string &name, RL_Group *group, RL_Time *timeUpDown,
+                             RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btDownId,
+                             const std::string &relUpId, const std::string &relDownId) {
   this->myId = id;
   this->name = name;
   this->group = group;
@@ -361,24 +361,33 @@ void RollerShutter::StartGap() {
 /// @brief Gibt das Switch anhand seiner Id zurück
 /// @param hisId
 /// @return
-switch_::Switch *RollerShutter::getSwitchById(const char* hisId) {
+switch_::Switch *RollerShutter::getSwitchById(const std::string &hisId) {
+  ESP_LOGD(TAG, "getSwitchById in");
   for (auto *switchComponent : App.get_switches()) {
-    if (strcmp(switchComponent->get_object_id().c_str(), hisId) == 0)
+    if (strcmp(switchComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    {
+      ESP_LOGD(TAG, "getSwitchById found");
       return switchComponent;
+    }
   }
+  ESP_LOGD(TAG, "getSwitchById not found");
   return nullptr;
 }
 
 /// @brief Gibt den Sensor anhand seiner Id Zurück
 /// @param hisId
 /// @return
-binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const char* hisId) {
+binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::string &hisId) {
+  ESP_LOGD(TAG, "getBinarySensorById in");
   for (auto *binSesorComponent : App.get_binary_sensors()) {
-    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId) == 0)
+    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    {
+      ESP_LOGD(TAG, "getBinarySensorById found");
       return binSesorComponent;
+    }
   }
-  return nullptr;
-}
+  ESP_LOGD(TAG, "getBinarySensorById not found");
+  return nullptr;}
 
 }  // namespace rollershutter
 }  // namespace esphome
