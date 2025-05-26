@@ -19,20 +19,20 @@ static const char *TAG = "RollerShutter";
 /// @brief Konstruktor
 /// @param id String der id
 /// @param name String, Name
-/// @param group RL_Group* mit der Gruppe / Sonnenseite
-/// @param timeUpDown RL_Time* mit den Laufzeiten
+/// @param groupId ID der mit der Gruppe / Sonnenseite
+/// @param timeUpDownId ID mit den Laufzeiten
 /// @param myComponent RollerShutterComponent* die umschließende Componente
 /// @param btnUpId String, id des Schalter up
 /// @param btDownId String, id des Schalter down
 /// @param relUpId String, id des Relay up
 /// @param relDownId String, id des Relay down
-RollerShutter::RollerShutter(const std::string &id, const std::string &name, RL_Group *group, RL_Time *timeUpDown,
+RollerShutter::RollerShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeUpDownId,
                              RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btDownId,
                              const std::string &relUpId, const std::string &relDownId) {
   this->myId = id;
   this->name = name;
-  this->group = group;
-  this->timeUpDown = timeUpDown;
+  this->groupId = groupId;
+  this->timeUpDownId = timeUpDownId;
   this->myComponent = myComponent;
   this->btnUpId = btnUpId;
   this->btnDownId = btnDownId;
@@ -191,16 +191,12 @@ void RollerShutter::Stop() {
   }
 }
 
-/// @brief Setzt die zugehörige Gruppe
-/// @param mygroup
-void RollerShutter::SetGroup(RL_Group *mygroup) { this->group = mygroup; }
-/// @brief Setzt die zugehörige Zeiteinstellung
-/// @param myTime
-void RollerShutter::SetTime(RL_Time *myTime) { this->timeUpDown = myTime; }
 
 /// @brief Den Rolladen aktivieren
 void RollerShutter::Setup() {
   ESP_LOGD(TAG, "setup id = ", this->myId);
+  this->timeUpDown = myComponent->GetTimeById(this->timeUpDownId);
+  this->group = myComponent->GetGroupById(this->groupId);
   if (std::strlen(this->btnUpId.c_str()) > 1) {
     ESP_LOGD(TAG, "Get btn up id = ", this->btnUpId);
     this->btnUp = getBinarySensorById(this->btnUpId.c_str());

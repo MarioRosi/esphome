@@ -93,16 +93,6 @@ class RollerShutterComponent : public Component {
   /// @brief true, wenn das Setup abgeschlossen ist
   bool hasSetup;
 
-  /// @brief Gibt die Time entsprechend der Id zurück
-  /// @param id
-  /// @return default nullptr
-  RL_Time *getTimeById(const std::string &id);
-
-  /// @brief Gibt die Group entsprechend der Id zurück
-  /// @param id
-  /// @return default nullptr
-  RL_Group *getGroupById(const std::string &id);
-
  public:
   /// @brief Konstruktor
   RollerShutterComponent();
@@ -148,6 +138,15 @@ class RollerShutterComponent : public Component {
   /// @param name 
   void AddGroup(const std::string &id, const std::string &name);
 
+  /// @brief Gibt die Time entsprechend der Id zurück
+  /// @param id
+  /// @return default nullptr
+  RL_Time *GetTimeById(const std::string &id);
+
+  /// @brief Gibt die Group entsprechend der Id zurück
+  /// @param id
+  /// @return default nullptr
+  RL_Group *GetGroupById(const std::string &id);
 
   /// @brief Einfügen eines Rolladen in die Liste
   /// @param id

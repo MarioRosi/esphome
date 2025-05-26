@@ -212,10 +212,15 @@ class RollerShutter {
 
   /// @brief Die Position des Rolladen 0.0 == oben, 100.0 = vollständig geschlossen
   double closingPosition;
-  /** Die zugehörige Gruppe */
+
+  /// @brief ID für die zugehörige Gruppe 
+  std::string groupId;
+  /// @brief  Die zugehörige Gruppe 
   RL_Group *group;
 
-  /** die Zeiten für Hoch und runter fahren */
+  /// @brief ID für die Zeiten für Hoch und runter fahren
+  std::string timeUpDownId;
+  /// @brief die Zeiten für Hoch und runter fahren
   RL_Time *timeUpDown;
 
   /// @brief die umschließende Komponente
@@ -225,26 +230,20 @@ class RollerShutter {
   /// @brief Konstruktor
   /// @param id String der id
   /// @param name String, Name
-  /// @param group RL_Group* mit der Gruppe / Sonnenseite
-  /// @param timeUpDown RL_Time* mit den Laufzeiten
+  /// @param groupId ID mit der Gruppe / Sonnenseite
+  /// @param timeUpDownId ID mit den Laufzeiten
   /// @param myComponent RollerShutterComponent* die umschließende Componente
   /// @param btnUpId String, id des Schalter up
   /// @param btDownId String, id des Schalter down
   /// @param relUpId String, id des Relay up
   /// @param relDownId String, id des Relay down
-  RollerShutter(const std::string &id, const std::string &name, RL_Group *group, RL_Time *timeUpDown,
+  RollerShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeUpDownId,
                 RollerShutterComponent *myComponent, const std::string &btnUpId, 
                 const std::string &btDownId, const std::string &relUpId, const std::string &relDownId);
 
   /// @brief Rollladen zurücksetzten == hochfahren
   void ResetRollerShutter();
 
-  /// @brief Setzt die zugehörige Gruppe
-  /// @param mygroup
-  void SetGroup(RL_Group *mygroup);
-  /// @brief Setzt die zugehörige Zeiteinstellung
-  /// @param myTime
-  void SetTime(RL_Time *myTime);
   /// @brief Starte das Hochfahren
   /// @return true erfolgreich gestartet, false == gestoppt oder nix zu tun
   bool StartUp();

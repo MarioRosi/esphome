@@ -122,12 +122,10 @@ void RollerShutterComponent::AddGroup(const std::string &id, const std::string &
 /// @param pinInDown
 /// @param pinOutUp
 /// @param pinOutDown
-void RollerShutterComponent::AddShutter(const std::string &id, const std::string &name, const std::string &idGroup, const std::string &idTime,
+void RollerShutterComponent::AddShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeId,
                                         const std::string &btnUpId, const std::string &btnDownId, const std::string &relUpId,
                                         const std::string &relDownId) {
-  RL_Time *time = getTimeById(idTime);
-  RL_Group *group = getGroupById(idGroup);
-  RollerShutter *shutter = new RollerShutter(id, name, group, time, this, btnUpId, btnDownId, relUpId, relDownId);
+  RollerShutter *shutter = new RollerShutter(id, name, groupId, timeId, this, btnUpId, btnDownId, relUpId, relDownId);
   shutters->push_back(shutter);
   ESP_LOGD(TAG, "AddShutter mit id"); // = %s", id);
 }
@@ -135,7 +133,7 @@ void RollerShutterComponent::AddShutter(const std::string &id, const std::string
 /// @brief Gibt die Time entsprechend der Id zurück
 /// @param id
 /// @return default nullptr
-RL_Time *RollerShutterComponent::getTimeById(const std::string &id) {
+RL_Time *RollerShutterComponent::GetTimeById(const std::string &id) {
   RL_Time *result = nullptr;
   if (!this->movingTimes->empty()) {
     for (auto itter = this->movingTimes->cbegin(), last = this->movingTimes->cend(); itter != last; itter++) {
@@ -152,7 +150,7 @@ RL_Time *RollerShutterComponent::getTimeById(const std::string &id) {
 /// @brief Gibt die Group entsprechend der Id zurück
 /// @param id
 /// @return default nullptr
-RL_Group *RollerShutterComponent::getGroupById(const std::string &id) {
+RL_Group *RollerShutterComponent::GetGroupById(const std::string &id) {
   RL_Group *result = nullptr;
   if (!this->movingTimes->empty()) {
     for (auto itter = this->groups->cbegin(), last = this->groups->cend(); itter != last; itter++) {
