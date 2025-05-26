@@ -198,9 +198,9 @@ void RollerShutter::Setup() {
   
   if (std::strlen(this->btnUpId.c_str()) > 1) {
     ESP_LOGD(TAG, "Get btn up id = %s", this->btnUpId.c_str());
-    /*
     this->btnUp = getBinarySensorById(this->btnUpId);
     ESP_LOGD(TAG, "Has btn up = %s", this->btnUp->get_name().c_str());
+    /*
     if (std::strlen(this->btnDownId.c_str()) > 1) {
       ESP_LOGD(TAG, "Get btn down id = %s", this->btnDownId.c_str());
       this->btnDown = getBinarySensorById(this->btnDownId);
