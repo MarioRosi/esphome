@@ -205,15 +205,14 @@ void RollerShutterComponent::PrepareShutters() {
 /// @brief erstes Ausführen
 void RollerShutterComponent::InitialRun() {
   ESP_LOGD(TAG, "Initial Run");
-  /*
+  
   for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
     RollerShutter *shutter = *itter;
     shutter->Setup();
     if ((shutter->GetShutterState() == enRollerShutterState::isUnknown)) {
       shutter->ResetRollerShutter();
     }
-  }
-  */
+  }  
 }
 
 /// @brief onSetup
@@ -278,7 +277,7 @@ void RollerShutterComponent::setup() {
   } 
   if (this->hasSetup)  
   {   
-    this->InitialRun();
+    // this->InitialRun();
     ESP_LOGW(TAG, "Setup war erfolgreich");   
   }
   else
