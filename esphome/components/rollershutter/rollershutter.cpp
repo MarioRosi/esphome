@@ -378,8 +378,8 @@ switch_::Switch *RollerShutter::getSwitchById(const std::string &hisId) {
 binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::string &hisId) {
   binary_sensor::BinarySensor * result = nullptr;
   ESP_LOGD(TAG, "getBinarySensorById in");
-  /*
   std::vector<binary_sensor::BinarySensor *> sensors = App.get_binary_sensors();
+  /*
   for (int idx = 0; idx < sensors.size(); idx++) {
     binary_sensor::BinarySensor *binSesorComponent = sensors.at(idx);
   //for (auto *binSesorComponent : App.get_binary_sensors()) {
@@ -390,8 +390,8 @@ binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::strin
       idx = sensors.size();
     }
   }
-  sensors.clear();
   /**/
+  sensors.clear();
   if (result == nullptr)
     ESP_LOGD(TAG, "getBinarySensorById not found");
   return result;
