@@ -155,15 +155,15 @@ async def to_code(config):
             config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
             config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
         ))
-    # for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
-    #     cg.add(var.AddShutter(
-    #         rlshutter[CONF_ID].__str__(),
-    #         rlshutter[CONF_NAME],
-    #         rlshutter[CONF_RLS_SH_GRP],
-    #         rlshutter[CONF_RLS_SH_TIM],
-    #         rlshutter[CONF_RLS_SH_IPU],
-    #         rlshutter[CONF_RLS_SH_IPD],
-    #         rlshutter[CONF_RLS_SH_OSU],
-    #         rlshutter[CONF_RLS_SH_OSD],
-    #     ))
+    for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
+        cg.add(var.AddShutter(
+            rlshutter[CONF_ID].__str__(),
+            rlshutter[CONF_NAME],
+            rlshutter[CONF_RLS_SH_GRP],
+            rlshutter[CONF_RLS_SH_TIM],
+            rlshutter[CONF_RLS_SH_IPU],
+            rlshutter[CONF_RLS_SH_IPD],
+            rlshutter[CONF_RLS_SH_OSU],
+            rlshutter[CONF_RLS_SH_OSD],
+        ))
     # cg.add(var.InitialRun())
