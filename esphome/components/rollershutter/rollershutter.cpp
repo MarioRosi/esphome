@@ -385,10 +385,8 @@ binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::strin
     if (binSesorComponent->get_object_id().compare(hisId) == 0)
     {      
       ESP_LOGD(TAG, "getBinarySensorById found");
-      /*
       result = binSesorComponent;
       idx = sensors.size();
-    /**/
     }
   }
   sensors.clear();
