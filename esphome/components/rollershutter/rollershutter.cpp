@@ -198,6 +198,7 @@ void RollerShutter::Setup() {
   
   if (std::strlen(this->btnUpId.c_str()) > 1) {
     ESP_LOGD(TAG, "Get btn up id = %s", this->btnUpId.c_str());
+    /*
     this->btnUp = getBinarySensorById(this->btnUpId);
     ESP_LOGD(TAG, "Has btn up = %s", this->btnUp->get_name().c_str());
     if (std::strlen(this->btnDownId.c_str()) > 1) {
@@ -217,6 +218,7 @@ void RollerShutter::Setup() {
         }
       }
     }
+    /**/
   }
   
 }
@@ -360,7 +362,7 @@ void RollerShutter::StartGap() {
 switch_::Switch *RollerShutter::getSwitchById(const std::string &hisId) {
   ESP_LOGD(TAG, "getSwitchById in");
   for (auto *switchComponent : App.get_switches()) {
-    if (strcmp(switchComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (switchComponent->get_object_id().compare(hisId) == 0)
     {
       ESP_LOGD(TAG, "getSwitchById found");
       return switchComponent;
@@ -375,8 +377,9 @@ switch_::Switch *RollerShutter::getSwitchById(const std::string &hisId) {
 /// @return
 binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::string &hisId) {
   ESP_LOGD(TAG, "getBinarySensorById in");
+  //std::vector<binary_sensor::BinarySensor *> sensors = 
   for (auto *binSesorComponent : App.get_binary_sensors()) {
-    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (binSesorComponent->get_object_id().compare(hisId) == 0)
     {
       ESP_LOGD(TAG, "getBinarySensorById found");
       return binSesorComponent;
