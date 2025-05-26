@@ -269,12 +269,18 @@ class RollerShutter {
   void CheckTimerStartGap();
   /// @brief Fährt auf Lücke, wenn das Rollo unten ist, wird "hochgefahren"
   void StartGap();
-  /// @brief Getter für Button-Up-Id
-  /// @return
-  std::string GetBtnUpId() { return this->btnUpId; }
-  /// @brief Getter für Button-Down-Id
-  /// @return
-  std::string GetBtnDownId() { return this->btnDownId; }
+  /// @brief Gibt die GruppenId zurück
+  /// @return 
+  std::string &GetGroupId() {return this->groupId;}
+  /// @brief Setter der Group
+  /// @param group 
+  void SetGroup(RL_Group* group)  { this->group = group;}
+  /// @brief Gibt die ZeitenId zurück
+  /// @return 
+  std::string &GetTimeUpDownId() {return this->timeUpDownId;}
+  /// @brief Setter der TimeUpDown
+  /// @param group 
+  void SetTimeUpDown(RL_Time* timeUpDown)  { this->timeUpDown = timeUpDown;}
   /// @brief Gibt den Status des Rolladen zurück
   /// @return
   enRollerShutterState GetShutterState() { return this->myState; }
