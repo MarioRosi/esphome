@@ -205,6 +205,10 @@ void RollerShutterComponent::PrepareShutters() {
 /// @brief erstes Ausführen
 void RollerShutterComponent::InitialRun() {
   ESP_LOGD(TAG, "Initial Run begin");  
+  ESP_LOGD(TAG, "Initial Run begin");  
+  ESP_LOGD(TAG, "Initial Run begin");  
+  ESP_LOGD(TAG, "Initial Run begin");  
+  ESP_LOGD(TAG, "Initial Run begin");  
   for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
     ESP_LOGD(TAG, "Initial Run 1");
     RollerShutter *shutter = *itter;
