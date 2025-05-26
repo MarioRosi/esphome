@@ -1,13 +1,42 @@
 esphome:
   name: roller-shutter-2
   friendly_name: Roller_Shutter_2
+  on_boot: 
+    priority: -100
+    then:
+      - lambda: |-
+          ESP_LOGI("boot", "nun sollte es spät genug sein !?");
+          id(rollershutter_2).InitialRun();       
 
 esp32:
   board: esp32dev
   framework:
     type: esp-idf
 
+debug:
+  update_interval: 10s
+
+text_sensor:
+  - platform: debug
+    device:
+      name: "Device Info"
+    reset_reason:
+      name: "Reset Reason"
+
+sensor:
+  - platform: debug
+    free:
+      name: "Heap Free"
+    block:
+      name: "Heap Max Block"
+    loop_time:
+      name: "Loop Time"
+    cpu_frequency:
+      name: "CPU Frequency"
+
+# Logger must be at least debug (default)
 logger:
+  level: debug
 
 api:
   encryption:
@@ -16,6 +45,10 @@ api:
 ota:
   - platform: esphome
     password: !secret ota_password2
+
+#wifi:
+#  ssid: !secret wifi_ssid
+#  password: !secret wifi_password
 
 ethernet:
   type: LAN8720
@@ -85,7 +118,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_SCH_I_U"
-    id: in_sch_u
     pin:
       pcf8574: inputs_1_8
       number: 0
@@ -94,7 +126,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_SCH_I_D"
-    id: in_sch_d
     pin:
       pcf8574: inputs_1_8
       number: 1
@@ -103,7 +134,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_GAR_I_U"
-    id: in_gar_u
     pin:
       pcf8574: inputs_1_8
       number: 2
@@ -112,7 +142,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_GAR_I_D"
-    id: in_gar_d
     pin:
       pcf8574: inputs_1_8
       number: 3
@@ -121,7 +150,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_BA2_I_U"
-    id: in_ba2_u
     pin:
       pcf8574: inputs_1_8
       number: 4
@@ -130,7 +158,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_BA2_I_D"
-    id: in_ba2_d
     pin:
       pcf8574: inputs_1_8
       number: 5
@@ -139,7 +166,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_SFN_I_U"
-    id: in_sfn_u
     pin:
       pcf8574: inputs_1_8
       number: 6
@@ -148,7 +174,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_SFN_I_D"
-    id: in_sfn_d
     pin:
       pcf8574: inputs_1_8
       number: 7
@@ -157,7 +182,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_SFS_I_U"
-    id: in_sfs_u
     pin:
       pcf8574: inputs_9_16
       number: 0
@@ -166,7 +190,6 @@ binary_sensor:
 
   - platform: gpio
     name: "RL_SFS_I_D"
-    id: in_sfs_d
     pin:
       pcf8574: inputs_9_16
       number: 1
@@ -175,7 +198,6 @@ binary_sensor:
 
   - platform: gpio
     name: "ZEN_I_U"
-    id: in_zen_u
     pin:
       pcf8574: inputs_9_16
       number: 2
@@ -184,7 +206,6 @@ binary_sensor:
 
   - platform: gpio
     name: "ZEN_I_D"
-    id: in_zen_d
     pin:
       pcf8574: inputs_9_16
       number: 3
@@ -193,7 +214,6 @@ binary_sensor:
 
   - platform: gpio
     name: "URL_I_UD"
-    id: in_url_ud
     pin:
       pcf8574: inputs_9_16
       number: 4
@@ -203,7 +223,6 @@ binary_sensor:
 switch:
   - platform: gpio
     name: "RL_SCH_O_U"
-    id: out_sch_u
     pin:
       pcf8574: outputs_1_8
       number: 0
@@ -212,7 +231,6 @@ switch:
 
   - platform: gpio
     name: "RL_SCH_O_D"
-    id: out_sch_d
     pin:
       pcf8574: outputs_1_8
       number: 1
@@ -221,7 +239,6 @@ switch:
 
   - platform: gpio
     name: "RL_GAR_O_U"
-    id: out_gar_u
     pin:
       pcf8574: outputs_1_8
       number: 2
@@ -230,7 +247,6 @@ switch:
 
   - platform: gpio
     name: "RL_GAR_O_D"
-    id: out_gar_d
     pin:
       pcf8574: outputs_1_8
       number: 3
@@ -239,7 +255,6 @@ switch:
 
   - platform: gpio
     name: "RL_BA2_O_U"
-    id: out_ba2_u
     pin:
       pcf8574: outputs_1_8
       number: 4
@@ -248,7 +263,6 @@ switch:
 
   - platform: gpio
     name: "RL_BA2_O_D"
-    id: out_ba2_d
     pin:
       pcf8574: outputs_1_8
       number: 5
@@ -257,7 +271,6 @@ switch:
 
   - platform: gpio
     name: "RL_SFN_O_U"
-    id: out_sfn_u
     pin:
       pcf8574: outputs_1_8
       number: 6
@@ -266,7 +279,6 @@ switch:
 
   - platform: gpio
     name: "RL_SFN_O_D"
-    id: out_sfn_d
     pin:
       pcf8574: outputs_1_8
       number: 7
@@ -275,7 +287,6 @@ switch:
 
   - platform: gpio
     name: "RL_SFS_O_U"
-    id: out_sfs_u
     pin:
       pcf8574: outputs_9_16
       number: 0
@@ -284,7 +295,6 @@ switch:
 
   - platform: gpio
     name: "RL_SFS_O_D"
-    id: out_sfs_d
     pin:
       pcf8574: outputs_9_16
       number: 1
@@ -293,7 +303,6 @@ switch:
 
   - platform: gpio
     name: "HOUSENUMBER"
-    id: out_housenumber
     pin:
       pcf8574: outputs_9_16
       number: 2
@@ -372,74 +381,47 @@ rollershutter:
     allinput_slave: False
 
   rshutters:
-    - id: rs_har
-      name: hausanschlussraum
-      rsgroup_id: HOUSE_SOUTH
-      rstime_id: TIME_NORMAL
-      inputup_id: in_har_u
-      inputdown_id: in_har_d
-      outputup_id: out_har_u
-      outputdown_id: out_har_d
-
-    - id: rs_kit
-      name: kueche
-      rsgroup_id: HOUSE_SOUTH
-      rstime_id: TIME_NORMAL
-      inputup_id: in_kit_u
-      inputdown_id: in_kit_d
-      outputup_id: out_kit_u
-      outputdown_id: out_kit_d
-
-    - id: rs_ba1
-      name: kinderbad
-      rsgroup_id: HOUSE_SOUTH
-      rstime_id: TIME_NORMAL
-      inputup_id: in_ba1_u
-      inputdown_id: in_ba1_d
-      outputup_id: out_ba1_u
-      outputdown_id: out_ba1_d
-
-    - id: rs_ki1
-      name: kinderzimmer
-      rsgroup_id: HOUSE_SOUTH
-      rstime_id: TIME_NORMAL
-      inputup_id: in_ki1_u
-      inputdown_id: in_ki1_d
-      outputup_id: out_ki1_u
-      outputdown_id: out_ki1_d
-
-    - id: rs_ki2
-      name: kinder-schlafen
+    - id: rs_sch
+      name: schlafzimmer
       rsgroup_id: HOUSE_WEST
       rstime_id: TIME_NORMAL
-      inputup_id: in_ki2_u
-      inputdown_id: in_ki2_d
-      outputup_id: out_ki2_u
-      outputdown_id: out_ki2_d
+      inputup_id: rl_sch_i_u
+      inputdown_id: rl_sch_i_d
+      outputup_id: rl_sch_o_u
+      outputdown_id: rl_sch_o_d
 
-    - id: rs_arb
-      name: arbeitsplatz
-      rsgroup_id: HOUSE_WEST
+    - id: rs_gar
+      name: garage
+      rsgroup_id: HOUSE_NORTH
       rstime_id: TIME_NORMAL
-      inputup_id: in_arb_u
-      inputdown_id: in_arb_d
-      outputup_id: out_arb_u
-      outputdown_id: out_arb_d
+      inputup_id: rl_gar_i_u
+      inputdown_id: rl_gar_i_d
+      outputup_id: rl_gar_o_u
+      outputdown_id: rl_gar_o_d
 
-    - id: rs_stt
-      name: stube-terassentuer
-      rsgroup_id: HOUSE_WEST
-      rstime_id: TIME_BIGDOOR
-      inputup_id: in_stt_u
-      inputdown_id: in_stt_d
-      outputup_id: out_stt_u
-      outputdown_id: out_stt_d
+    - id: rs_ba2
+      name: gad-gross
+      rsgroup_id: HOUSE_EAST
+      rstime_id: TIME_NORMAL
+      inputup_id: rl_ba2_i_u
+      inputdown_id: rl_ba2_i_d
+      outputup_id: rl_ba2_o_u
+      outputdown_id: rl_ba2_o_d
 
-    - id: rs_stf
-      name: stube-terassenfenster
-      rsgroup_id: HOUSE_WEST
-      rstime_id: TIME_WINDOW
-      inputup_id: in_stf_u
-      inputdown_id: in_stf_d
-      outputup_id: out_stf_u
-      outputdown_id: out_stf_d
+    - id: rs_sfn
+      name: stube-nord
+      rsgroup_id: HOUSE_EAST
+      rstime_id: TIME_NORMAL
+      inputup_id: rl_sfn_i_u
+      inputdown_id: rl_sfn_i_d
+      outputup_id: rl_sfn_o_u
+      outputdown_id: rl_sfn_o_d
+
+    - id: rs_sfs
+      name: stubesued
+      rsgroup_id: HOUSE_EAST
+      rstime_id: TIME_NORMAL
+      inputup_id: rl_sfs_i_u
+      inputdown_id: rl_sfs_i_d
+      outputup_id: rl_sfs_o_u
+      outputdown_id: rl_sfs_o_d
