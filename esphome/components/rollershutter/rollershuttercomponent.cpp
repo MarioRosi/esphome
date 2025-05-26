@@ -76,7 +76,7 @@ void RollerShutterComponent::AddTime(const std::string &id, int millisecondUp, i
 {
   RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
   this->movingTimes->push_back(item); 
-  ESP_LOGD(TAG, "AddTime mit id = %s", id);
+  ESP_LOGD(TAG, "AddTime mit id = %s", id.c_str());
 }
 
 /// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu1
