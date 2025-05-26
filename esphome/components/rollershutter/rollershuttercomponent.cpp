@@ -207,23 +207,12 @@ void RollerShutterComponent::InitialRun() {
   ESP_LOGD(TAG, "Initial Run begin"); 
   for (int idx = 0; idx < this->shutters->size(); idx++)
   {
-    ESP_LOGD(TAG, "Initial Run 1");
     RollerShutter *shutter = this->shutters->at(idx);    
-    ESP_LOGD(TAG, "Initial Run 2");
     RL_Time *timeUD = GetTimeById(shutter->GetTimeUpDownId());
-    ESP_LOGD(TAG, "Initial Run 3");
-    if (timeUD != nullptr)
-      ESP_LOGD(TAG, "Initial Run timeId=%s", timeUD->id.c_str());
-    ESP_LOGD(TAG, "Initial Run 4");
-    RL_Group *group = GetGroupById(shutter->GetGroupId());
-    if (group != nullptr)
-      ESP_LOGD(TAG, "Initial Run grpId=%s", group->id.c_str());
-    ESP_LOGD(TAG, "Initial Run 5");
     shutter->SetTimeUpDown(timeUD);
-    ESP_LOGD(TAG, "Initial Run 6");
+    RL_Group *group = GetGroupById(shutter->GetGroupId());
     shutter->SetGroup(group);
     ESP_LOGD(TAG, "Initial Run 7");
-    /*
     shutter->Setup();    
     ESP_LOGD(TAG, "Initial Run 7");
     /*
