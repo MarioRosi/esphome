@@ -147,14 +147,14 @@ async def to_code(config):
                 rlssundowner[CONF_RLS_SD_UH],
                 rlssundowner[CONF_RLS_SD_UM],
             ))
-    # if CONF_RLS_ALLSH in config:
-    #     cg.add(var.SetButtons(
-    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
-    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
-    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
-    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
-    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
-    #     ))
+    if CONF_RLS_ALLSH in config:
+        cg.add(var.SetButtons(
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
+            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
+        ))
     # for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
     #     cg.add(var.AddShutter(
     #         rlshutter[CONF_ID].__str__(),

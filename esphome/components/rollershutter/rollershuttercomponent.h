@@ -96,12 +96,12 @@ class RollerShutterComponent : public Component {
   /// @brief Gibt die Time entsprechend der Id zurück
   /// @param id
   /// @return default nullptr
-  RL_Time *getTimeById(const char* id);
+  RL_Time *getTimeById(const std::string &id);
 
   /// @brief Gibt die Group entsprechend der Id zurück
   /// @param id
   /// @return default nullptr
-  RL_Group *getGroupById(const char* id);
+  RL_Group *getGroupById(const std::string &id);
 
  public:
   /// @brief Konstruktor
@@ -111,7 +111,7 @@ class RollerShutterComponent : public Component {
   ~RollerShutterComponent();
 
   /// @brief name und Id setzten  
-  void SetIdAndName(const char* myId, const char* myName);
+  void SetIdAndName(const std::string &myId, const std::string &myName);
 
   /// @brief Buttons für alle setzten
   /// @param btnUpId
@@ -119,7 +119,7 @@ class RollerShutterComponent : public Component {
   /// @param btnHollidayId
   /// @param allInputIsMaster
   /// @param allInputIsSlave
-  void SetButtons(const char* btnUpId, const char* btnDownId, const char* btnHollidayId, 
+  void SetButtons(const std::string &btnUpId, const std::string &btnDownId, const std::string &btnHollidayId, 
                   bool allInputIsMaster, bool allInputIsSlave);
 
   /// @brief Fügt eine RL_Time der Liste hinzu
@@ -127,7 +127,7 @@ class RollerShutterComponent : public Component {
   /// @param millisecondUp 
   /// @param millisecondDown 
   /// @param millisecondGap 
-  void AddTime(const char* id, int millisecondUp, int millisecondDown, int millisecondGap);
+  void AddTime(const std::string &id, int millisecondUp, int millisecondDown, int millisecondGap);
 
   // @brief Fügt eine Gruppe der Liste hinzu
 
@@ -158,9 +158,9 @@ class RollerShutterComponent : public Component {
   /// @param pinInDown
   /// @param pinOutUp
   /// @param pinOutDown
-  void AddShutter(const char* id, const char* name, const char* idGroup, 
-                  const char* idTime, const char* btnUpId, const char* btDownId, 
-                  const char* relUpId, const char* relDownId);
+  void AddShutter(const std::string &id, const std::string &name, const std::string &idGroup, 
+                  const std::string &idTime, const std::string &btnUpId, const std::string &btDownId, 
+                  const std::string &relUpId, const std::string &relDownId);
 
   /// @brief Erzeugt die Listen für das Abarbeiten der Buttons
   void PrepareShutters();
@@ -180,12 +180,12 @@ class RollerShutterComponent : public Component {
   /// @brief Gibt das Switch anhand seiner Id zurück
   /// @param hisId
   /// @return
-  switch_::Switch *getSwitchById(const char* hisId);
+  switch_::Switch *getSwitchById(const std::string &hisId);
 
   /// @brief Gibt den Sensor anhand seiner Id Zurück
   /// @param hisId
   /// @return
-  binary_sensor::BinarySensor *getBinarySensorById(const char* hisId);
+  binary_sensor::BinarySensor *getBinarySensorById(const std::string &hisId);
 };
 
 }  // namespace rollershutter
