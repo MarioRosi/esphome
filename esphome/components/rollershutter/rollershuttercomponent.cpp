@@ -209,6 +209,7 @@ void RollerShutterComponent::InitialRun() {
   {
     ESP_LOGD(TAG, "Initial Run 1");
     RollerShutter *shutter = this->shutters->at(idx);
+    ESP_LOGD(TAG, "Initial Run shBthUpId = %s", shutter->GetBtnUpId().c_str());
     ESP_LOGD(TAG, "Initial Run 2");
     /*
     shutter->Setup();    
