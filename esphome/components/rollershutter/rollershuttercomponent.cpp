@@ -194,7 +194,9 @@ void RollerShutterComponent::InitialRun() {
 
 /// @brief onSetup
 void RollerShutterComponent::setup() {
+  ESP_LOGD(TAG, "Setup -1");
   if (this->allBtnIsMaster) {
+  ESP_LOGD(TAG, "Setup 0");
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
         ESP_LOGD(TAG, "Setup 1");
