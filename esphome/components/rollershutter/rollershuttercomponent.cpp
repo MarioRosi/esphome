@@ -197,33 +197,41 @@ void RollerShutterComponent::setup() {
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
+        ESP_LOGD(TAG, "Setup 1");
         this->btnUp = getBinarySensorById(this->btnUpId);
         this->btnUpIsRemote = false;
+        ESP_LOGD(TAG, "Setup 2");
       } else {
         this->btnUp = nullptr;
         this->btnUpIsRemote = false;
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
+          ESP_LOGD(TAG, "Setup 3");
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDownIsRemote = false;
+          ESP_LOGD(TAG, "Setup 4");
         } else {
           this->btnDown = nullptr;
           this->btnDownIsRemote = false;
         }
         if (std::strlen(this->btnHollidayId.c_str()) > 1) {
           if (this->btnDownId.compare("remote") != 0) {
+            ESP_LOGD(TAG, "Setup 5");
             this->btnHolliday = getBinarySensorById(this->btnHollidayId);
             this->btnHollidayIsRemote = false;
+            ESP_LOGD(TAG, "Setup 6");
           } else {
             this->btnHolliday = nullptr;
             this->btnHollidayIsRemote = false;
           }
         }
+        ESP_LOGD(TAG, "Setup 7");
         this->hasSetup = true;
       }
     }
   } else if (this->allBtnIsSlave) {
+    ESP_LOGD(TAG, "Setup 8");
     if (this->btnDownId.compare("remote") == 0) {
       this->btnUp = nullptr;
       this->btnUpIsRemote = true;
@@ -239,14 +247,16 @@ void RollerShutterComponent::setup() {
           this->btnHollidayIsRemote = true;
         }
       }
+        ESP_LOGD(TAG, "Setup 9");
       this->hasSetup = true;
     }
   } else {
+        ESP_LOGD(TAG, "Setup 10");
     this->hasSetup = true;
   } 
   if (this->hasSetup)  
   {   
-    // this->InitialRun();
+    this->InitialRun();
     ESP_LOGW(TAG, "Setup war erfolgreich");   
   }
   else
