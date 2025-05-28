@@ -258,7 +258,7 @@ void RollerShutterComponent::setup() {
   } 
   if (this->hasSetup)  
   {   
-    this->InitialRun();
+    //this->InitialRun();
     ESP_LOGW(TAG, "Setup war erfolgreich");   
   }
   else
