@@ -180,8 +180,6 @@ class RollerShutter {
 
   /** Button-Input-GPIO Hochfahren */
   std::string btnUpId;
-  /// @brief Pointer auf den GPIO-Pin BtnUp
-  binary_sensor::BinarySensor *btnUp;
   /// @brief der Button Up wurde gedrückt
   bool btnUpIsPress;
   /// @brief Relais-Output-GPIO Hochfahren
@@ -190,8 +188,6 @@ class RollerShutter {
   switch_::Switch *relUp;
   /// @brief Button-Input-GPIO Runterfahren
   std::string btnDownId;
-  /// @brief Pointer auf den GPIO-Pin BtnDown
-  binary_sensor::BinarySensor *btnDown;
   /// @brief der Button Down wurde gedrückt
   bool btnDownIsPress;
   /// @brief Relais-Output-GPIO Runterfahren
@@ -255,8 +251,12 @@ class RollerShutter {
   void Stop();
   /// @brief Testet, ob die Zeit für STOP- Hoch, Runter, Lücke erreicht ist
   void CheckTimerStop();
-  /// @brief Testet, ob die Buttons für Hoch oder Runter gedrückt sind
-  void CheckButtons();
+  /// @brief EventManager für ButtonUp
+  /// @param state 
+  void OnButtonUpStateChange(bool state);
+  /// @brief EventManager für ButtonDown
+  /// @param state 
+  void OnButtonDownStateChange(bool state);
   /// @brief führt die Befehle entsprechend der Buttons aus
   void MakeButtons();
   /// @brief Setzt den Wert für Button Up ist gedrückt (für Zentraltaster)

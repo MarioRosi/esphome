@@ -197,9 +197,11 @@ void RollerShutter::Setup() {
   ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
   
   if (std::strlen(this->btnUpId.c_str()) > 1) {
-    this->btnUp = getBinarySensorById(this->btnUpId);
+    binary_sensor::BinarySensor* btnUp = getBinarySensorById(this->btnUpId);
+    btnUp->add_on_state_callback([this](bool state){ this->OnButtonUpStateChange(state); });
     if (std::strlen(this->btnDownId.c_str()) > 1) {
-      this->btnDown = getBinarySensorById(this->btnDownId);
+      binary_sensor::BinarySensor *btnDown = getBinarySensorById(this->btnDownId);
+      btnDown->add_on_state_callback([this](bool state){ this->OnButtonDownStateChange(state); });
       if (std::strlen(this->relUpId.c_str()) > 1) {
         this->relUp = getSwitchById(this->relUpId);
         if (std::strlen(this->relDownId.c_str()) > 1) {
@@ -265,6 +267,31 @@ void RollerShutter::CheckTimerStop() {
   }
 }
 
+/// @brief EventManager für ButtonUp
+/// @param state 
+void RollerShutter::OnButtonUpStateChange(bool state)
+{
+  if (state) 
+  {
+    this->btnUpIsPress = true;
+    ESP_LOGD(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
+    MakeButtons();
+  }
+}
+/// @brief EventManager für ButtonDown
+/// @param state 
+void RollerShutter::OnButtonDownStateChange(bool state)
+{
+  if (state) 
+  {
+    this->btnDownIsPress = true;
+    ESP_LOGD(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
+    MakeButtons();
+  }
+}
+
+
+/*
 /// @brief Testet, ob die Buttons für Hoch oder Runter gedrückt sind
 void RollerShutter::CheckButtons() {
   if (hasSetup) {
@@ -286,7 +313,7 @@ void RollerShutter::CheckButtons() {
       this->btnDownIsPress = false;
   }
 }
-
+*/
 /// @brief führt die Befehle aus, entsprechend den gedrückten Buttons, Up hat Vorrang
 void RollerShutter::MakeButtons() {
   if (hasSetup) {

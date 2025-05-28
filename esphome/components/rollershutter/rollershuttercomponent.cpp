@@ -360,15 +360,17 @@ void RollerShutterComponent::loop() {
         shutter->SetButtonUpIsPress(true);
       else if (this->btnDownIsPress)
         shutter->SetButtonDownIsPress(true);
+      /*
       else
         shutter->CheckButtons();
+      */
     }
     this->btnUpIsPress = false;
     this->btnDownIsPress = false;
     // dann abarbeiten
     for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
       RollerShutter *shutter = *itter;
-      shutter->MakeButtons();
+      //shutter->MakeButtons();
       shutter->CheckTimerStartGap();
       shutter->CheckTimerStop();
     }
