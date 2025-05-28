@@ -269,11 +269,17 @@ void RollerShutter::CheckTimerStop() {
 void RollerShutter::CheckButtons() {
   if (hasSetup) {
     if (this->btnUp->has_state())
+    {
+      ESP_LOGD(TAG, "BTN UP is Press for %s", this->myId.c_str());
       this->btnUpIsPress = this->btnUp->state;
+    }
     else
       this->btnUpIsPress = false;
     if (this->btnDown->has_state())
+    {
+      ESP_LOGD(TAG, "BTN DOWN is Press for %s", this->myId.c_str());
       this->btnDownIsPress = this->btnDown->state;
+    }
     else
       this->btnDownIsPress = false;
   }
