@@ -117,8 +117,8 @@ CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
 
 #.__str__()
 
-async def to_code(config):    
-    LOGGER.info("init.py RollerShutter to_Code Start")
+# async def to_code(config):    
+    # LOGGER.info("init.py RollerShutter to_Code Start")
     # var = cg.new_Pvariable(config[CONF_ID])
     # await cg.register_component(var, config)
     # cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
