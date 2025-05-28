@@ -197,23 +197,17 @@ void RollerShutter::Setup() {
   ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
   
   if (std::strlen(this->btnUpId.c_str()) > 1) {
-    ESP_LOGD(TAG, "Get btn up id = %s", this->btnUpId.c_str());
     this->btnUp = getBinarySensorById(this->btnUpId);
-    ESP_LOGD(TAG, "Has btn up = %s", this->btnUp->get_name().c_str());
     if (std::strlen(this->btnDownId.c_str()) > 1) {
-      ESP_LOGD(TAG, "Get btn down id = %s", this->btnDownId.c_str());
       this->btnDown = getBinarySensorById(this->btnDownId);
-      ESP_LOGD(TAG, "Has btn down = %s", this->btnDown->get_name().c_str());
       if (std::strlen(this->relUpId.c_str()) > 1) {
-        ESP_LOGD(TAG, "Get switch up id = %s", this->relUpId.c_str());
         this->relUp = getSwitchById(this->relUpId);
-        ESP_LOGD(TAG, "Has switch up = %s", this->relUp->get_name().c_str());
         if (std::strlen(this->relDownId.c_str()) > 1) {
-          ESP_LOGD(TAG, "Get switch down id = %s", this->relDownId.c_str());
           this->relDown = getSwitchById(this->relDownId);
-          ESP_LOGD(TAG, "Has switch down = %s", this->relDown->get_name().c_str());
           this->hasSetup = true;
-          //ResetRollerShutter();
+          ESP_LOGD(TAG, "Before ResetShutter = %s", this->myId.c_str());
+          ResetRollerShutter();
+          ESP_LOGD(TAG, "After ResetShutter = %s", this->myId.c_str());
         }        
       }
     }
