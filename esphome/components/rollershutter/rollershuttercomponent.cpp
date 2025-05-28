@@ -305,13 +305,12 @@ void RollerShutterComponent::setup() {
 }
 
 /// @brief onLoop
-void RollerShutterComponent::loop() {
-  /*
+void RollerShutterComponent::loop() {  
   if (hasSetup) {
     // zu erst die Haupt-Buttons abfragen
     if (!this->btnUpIsRemote) {
       if (this->btnUp->has_state())
-        this->btnUpIsPress = this->btxnUp->state;
+        this->btnUpIsPress = this->btnUp->state;
       else
         this->btnUpIsPress = false;
     }
@@ -374,7 +373,6 @@ void RollerShutterComponent::loop() {
       shutter->CheckTimerStop();
     }
   }
-  */
 }
 
 /// @brief Dump-Config
