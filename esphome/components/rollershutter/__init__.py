@@ -119,50 +119,50 @@ CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
 
 async def to_code(config):    
     LOGGER.info("init.py RollerShutter to_Code Start")
-    var = cg.new_Pvariable(config[CONF_ID])
-    await cg.register_component(var, config)
-    cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
-    for rlstime in config.get(CONF_RLS_TIMES, []):
-        cg.add(var.AddTime(
-            rlstime[CONF_ID].__str__(),
-            rlstime[CONF_RLS_TIMES_MSU],
-            rlstime[CONF_RLS_TIMES_MSD],
-            rlstime[CONF_RLS_TIMES_MSGD]
-        ))
-    for rlsgroup in config.get(CONF_RLS_GROUPS, []):
-        rlssundowner = rlsgroup.get(CONF_RLS_SD)
-        if CONF_RLS_SD_OFF in rlssundowner:
-            cg.add(var.AddGroup(
-                rlsgroup[CONF_ID].__str__(),
-                rlsgroup[CONF_NAME]
-            ))
-        else:
-            cg.add(var.AddGroup(
-                rlsgroup[CONF_ID].__str__(),
-                rlsgroup[CONF_NAME],
-                rlssundowner[CONF_RLS_SD_MF],
-                rlssundowner[CONF_RLS_SD_MT],
-                rlssundowner[CONF_RLS_SD_GH],
-                rlssundowner[CONF_RLS_SD_GM],
-                rlssundowner[CONF_RLS_SD_UH],
-                rlssundowner[CONF_RLS_SD_UM],
-            ))
-    if CONF_RLS_ALLSH in config:
-        cg.add(var.SetButtons(
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
-        ))
-    for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
-        cg.add(var.AddShutter(
-            rlshutter[CONF_ID].__str__(),
-            rlshutter[CONF_NAME],
-            rlshutter[CONF_RLS_SH_GRP],
-            rlshutter[CONF_RLS_SH_TIM],
-            rlshutter[CONF_RLS_SH_IPU],
-            rlshutter[CONF_RLS_SH_IPD],
-            rlshutter[CONF_RLS_SH_OSU],
-            rlshutter[CONF_RLS_SH_OSD],
-        ))    
+    # var = cg.new_Pvariable(config[CONF_ID])
+    # await cg.register_component(var, config)
+    # cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
+    # for rlstime in config.get(CONF_RLS_TIMES, []):
+    #     cg.add(var.AddTime(
+    #         rlstime[CONF_ID].__str__(),
+    #         rlstime[CONF_RLS_TIMES_MSU],
+    #         rlstime[CONF_RLS_TIMES_MSD],
+    #         rlstime[CONF_RLS_TIMES_MSGD]
+    #     ))
+    # for rlsgroup in config.get(CONF_RLS_GROUPS, []):
+    #     rlssundowner = rlsgroup.get(CONF_RLS_SD)
+    #     if CONF_RLS_SD_OFF in rlssundowner:
+    #         cg.add(var.AddGroup(
+    #             rlsgroup[CONF_ID].__str__(),
+    #             rlsgroup[CONF_NAME]
+    #         ))
+    #     else:
+    #         cg.add(var.AddGroup(
+    #             rlsgroup[CONF_ID].__str__(),
+    #             rlsgroup[CONF_NAME],
+    #             rlssundowner[CONF_RLS_SD_MF],
+    #             rlssundowner[CONF_RLS_SD_MT],
+    #             rlssundowner[CONF_RLS_SD_GH],
+    #             rlssundowner[CONF_RLS_SD_GM],
+    #             rlssundowner[CONF_RLS_SD_UH],
+    #             rlssundowner[CONF_RLS_SD_UM],
+    #         ))
+    # if CONF_RLS_ALLSH in config:
+    #     cg.add(var.SetButtons(
+    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
+    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
+    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
+    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
+    #         config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
+    #     ))
+    # for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
+    #     cg.add(var.AddShutter(
+    #         rlshutter[CONF_ID].__str__(),
+    #         rlshutter[CONF_NAME],
+    #         rlshutter[CONF_RLS_SH_GRP],
+    #         rlshutter[CONF_RLS_SH_TIM],
+    #         rlshutter[CONF_RLS_SH_IPU],
+    #         rlshutter[CONF_RLS_SH_IPD],
+    #         rlshutter[CONF_RLS_SH_OSU],
+    #         rlshutter[CONF_RLS_SH_OSD],
+    #     ))    
