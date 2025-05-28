@@ -212,9 +212,7 @@ void RollerShutterComponent::InitialRun() {
     shutter->SetTimeUpDown(timeUD);
     RL_Group *group = GetGroupById(shutter->GetGroupId());
     shutter->SetGroup(group);
-    ESP_LOGD(TAG, "Initial Run 7");
     shutter->Setup();    
-    ESP_LOGD(TAG, "Initial Run 7");
     /*
     if ((shutter->GetShutterState() == enRollerShutterState::isUnknown)) {
       ESP_LOGD(TAG, "Initial Run 4");
@@ -248,32 +246,25 @@ void RollerShutterComponent::setup() {
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
-        ESP_LOGD(TAG, "Get all btn up id = %s", this->btnUpId.c_str());
         this->btnUp = getBinarySensorById(this->btnUpId);
         this->btnUpIsRemote = false;
-        ESP_LOGD(TAG, "Has all btn up = %s", this->btnUp->get_name().c_str());
       } else {
         this->btnUp = nullptr;
         this->btnUpIsRemote = false;
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
-          ESP_LOGD(TAG, "Get all btn down id = %s", this->btnDownId.c_str());
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDownIsRemote = false;
-          ESP_LOGD(TAG, "Has all btn down = %s", this->btnDown->get_name().c_str());
         } else {
           this->btnDown = nullptr;
           this->btnDownIsRemote = false;
         }
         if (std::strlen(this->btnHollidayId.c_str()) > 1) {
           if (this->btnDownId.compare("remote") != 0) {
-            ESP_LOGD(TAG, "Get all btn holliday id = %s", this->btnHollidayId.c_str());
             this->btnHolliday = getBinarySensorById(this->btnHollidayId);
             this->btnHollidayIsRemote = false;
-            ESP_LOGD(TAG, "has all btn holliday = %s", this->btnHolliday->get_name().c_str());
           } else {
-            ESP_LOGD(TAG, "Has No Holliday");
             this->btnHolliday = nullptr;
             this->btnHollidayIsRemote = false;
           }
@@ -311,8 +302,6 @@ void RollerShutterComponent::setup() {
   {
     ESP_LOGW(TAG, "Setup NICHT erfolgreich");          
   }
-  /**/
-  ESP_LOGD(TAG, "Ende aus dem Setup");        
 }
 
 /// @brief onLoop
@@ -411,15 +400,12 @@ void RollerShutterComponent::dump_config() {
 /// @param hisId
 /// @return
 switch_::Switch *RollerShutterComponent::getSwitchById(const std::string &hisId) {
-  ESP_LOGD(TAG, "getSwitchById in");
   for (auto *switchComponent : App.get_switches()) {
-    if (strcmp(switchComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (switchComponent->get_object_id().compare(hisId) == 0)
     {
-      ESP_LOGD(TAG, "getSwitchById found");
       return switchComponent;
     }
   }
-  ESP_LOGD(TAG, "getSwitchById not found");
   return nullptr;
 }
 
@@ -427,15 +413,12 @@ switch_::Switch *RollerShutterComponent::getSwitchById(const std::string &hisId)
 /// @param hisId
 /// @return
 binary_sensor::BinarySensor *RollerShutterComponent::getBinarySensorById(const std::string &hisId) {
-  ESP_LOGD(TAG, "getBinarySensorById in");
   for (auto *binSesorComponent : App.get_binary_sensors()) {
-    if (strcmp(binSesorComponent->get_object_id().c_str(), hisId.c_str()) == 0)
+    if (binSesorComponent->get_object_id().compare(hisId) == 0)
     {
-      ESP_LOGD(TAG, "getBinarySensorById found");
       return binSesorComponent;
     }
   }
-  ESP_LOGD(TAG, "getBinarySensorById not found");
   return nullptr;
 }
 

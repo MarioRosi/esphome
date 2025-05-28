@@ -23,11 +23,11 @@ static const char *TAG = "RollerShutter";
 /// @param timeUpDownId ID mit den Laufzeiten
 /// @param myComponent RollerShutterComponent* die umschließende Componente
 /// @param btnUpId String, id des Schalter up
-/// @param btDownId String, id des Schalter down
+/// @param btnDownId String, id des Schalter down
 /// @param relUpId String, id des Relay up
 /// @param relDownId String, id des Relay down
 RollerShutter::RollerShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeUpDownId,
-                             RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btDownId,
+                             RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btnDownId,
                              const std::string &relUpId, const std::string &relDownId) {
   this->myId = id;
   this->name = name;
@@ -204,7 +204,6 @@ void RollerShutter::Setup() {
       ESP_LOGD(TAG, "Get btn down id = %s", this->btnDownId.c_str());
       this->btnDown = getBinarySensorById(this->btnDownId);
       ESP_LOGD(TAG, "Has btn down = %s", this->btnDown->get_name().c_str());
-    /*
       if (std::strlen(this->relUpId.c_str()) > 1) {
         ESP_LOGD(TAG, "Get switch up id = %s", this->relUpId.c_str());
         this->relUp = getSwitchById(this->relUpId);
@@ -217,7 +216,6 @@ void RollerShutter::Setup() {
           //ResetRollerShutter();
         }        
       }
-      /**/
     }
   }
   
