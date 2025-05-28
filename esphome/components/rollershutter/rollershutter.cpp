@@ -207,9 +207,7 @@ void RollerShutter::Setup() {
         if (std::strlen(this->relDownId.c_str()) > 1) {
           this->relDown = getSwitchById(this->relDownId);
           this->hasSetup = true;
-          ESP_LOGD(TAG, "Before ResetShutter = %s", this->myId.c_str());
           ResetRollerShutter();
-          ESP_LOGD(TAG, "After ResetShutter = %s", this->myId.c_str());
         }        
       }
     }
@@ -274,7 +272,7 @@ void RollerShutter::OnButtonUpStateChange(bool state)
   if (state) 
   {
     this->btnUpIsPress = true;
-    ESP_LOGD(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
+    ESP_LOGI(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
     MakeButtons();
   }
 }
@@ -285,7 +283,7 @@ void RollerShutter::OnButtonDownStateChange(bool state)
   if (state) 
   {
     this->btnDownIsPress = true;
-    ESP_LOGD(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
+    ESP_LOGI(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
     MakeButtons();
   }
 }

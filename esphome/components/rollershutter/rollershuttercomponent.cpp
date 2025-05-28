@@ -34,7 +34,6 @@ RollerShutterComponent::RollerShutterComponent() {
   this->btnUpIsRemote = false;
   this->btnDownIsRemote = false;
   this->btnHollidayIsRemote = false;  
-  ESP_LOGD(TAG, "Ende aus dem Konstruktor"); // mem=%d", heap_caps_get_free_size((1<<12)));
 }
 
 /// @brief name und Id setzten  
@@ -58,7 +57,6 @@ void RollerShutterComponent::SetButtons(const std::string &btnUpId, const std::s
   this->btnHollidayId = btnHollidayId;
   this->allBtnIsMaster = allInputIsMaster;
   this->allBtnIsSlave = allInputIsSlave;
-  ESP_LOGD(TAG, "SetButtons");
 }
 
 RollerShutterComponent::~RollerShutterComponent() {
@@ -76,7 +74,6 @@ void RollerShutterComponent::AddTime(const std::string &id, int millisecondUp, i
 {
   RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
   this->movingTimes->push_back(item); 
-  ESP_LOGD(TAG, "AddTime mit id = %s", id.c_str());
 }
 
 /// @brief Fügt eine Gruppe mit Sundowner der Liste hinzu1
@@ -91,15 +88,9 @@ void RollerShutterComponent::AddTime(const std::string &id, int millisecondUp, i
 void RollerShutterComponent::AddGroup(const std::string &id, const std::string &name, 
   int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute)
 {
-  //ESP_LOGD(TAG, "AddGroup (id = %s, name=%s, monthFrom=%d, monthTo=%d, gapH=%d, gapM=%d, upH=%d, upM=%d)", id.c_str(), name.c_str(), monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
-  ESP_LOGD(TAG, "AddGroup new RL_SunDowner");
   RL_SunDowner *sd = new RL_SunDowner(monthFrom, monthTo, gapHour, gapMinute, upHoure, upMinute);
-  ESP_LOGD(TAG, "AddGroup after new RL_SunDowner");
-  ESP_LOGD(TAG, "AddGroup new SD");
   RL_Group *item = new RL_Group(id, name, sd);
-  ESP_LOGD(TAG, "AddGroup new GRP "); //%s", item->name.c_str());
   this->groups->push_back(item); 
-  ESP_LOGD(TAG, "AddGroup mit SD "); //id = %s", id);
 }
 
 /// @brief Fügt eine Gruppe ohne / mit deaktiviertem Sundowner der Liste hinzu
@@ -110,7 +101,6 @@ void RollerShutterComponent::AddGroup(const std::string &id, const std::string &
   RL_SunDowner *sd = new RL_SunDowner();
   RL_Group *item = new RL_Group(id, name, sd);
   this->groups->push_back(item); 
-  ESP_LOGD(TAG, "AddGroup ohne SD "); //mit id = %s", id.c_str());
 }
 
 /// @brief Einfügen eines Rolladen in die Liste
@@ -127,7 +117,6 @@ void RollerShutterComponent::AddShutter(const std::string &id, const std::string
                                         const std::string &relDownId) {
   RollerShutter *shutter = new RollerShutter(id, name, groupId, timeId, this, btnUpId, btnDownId, relUpId, relDownId);
   shutters->push_back(shutter);
-  ESP_LOGD(TAG, "AddShutter mit id"); // = %s", id);
 }
 
 /// @brief Gibt die Time entsprechend der Id zurück
@@ -164,47 +153,10 @@ RL_Group *RollerShutterComponent::GetGroupById(const std::string &id) {
   return result;
 }
 
-/// @brief Erzeugt die Listen für das Abarbeiten der Buttons
-void RollerShutterComponent::PrepareShutters() {
-  /*
-  if (shutters->size() > 0)
-  {
-    for (auto itter = this->shutters->cbegin(), last = this->shutters->cend();
-              itter != last; itter++)
-    {
-      RollerShutter* shutter = *itter;
-      auto itterUpIdToShutters = btnUpToSutters->find(shutter->GetBtnUpId());
-      if (itterUpIdToShutters == btnUpToSutters->end())
-      {
-        std::vector<RollerShutter*>* newList = new std::vector<RollerShutter*>();
-        newList->push_back(shutter);
-        this->btnUpToSutters->insert(std::pair<std::string, std::vector<RollerShutter*>*>(shutter->GetBtnUpId(),
-  newList));
-      }
-      else
-      {
-        itterUpIdToShutters->second->push_back(shutter);
-      }
-      auto itterDownIdToShutters = btnUpToSutters->find(shutter->GetBtnDownId());
-      if (itterDownIdToShutters == btnUpToSutters->end())
-      {
-        std::vector<RollerShutter*>* newList = new std::vector<RollerShutter*>();
-        newList->push_back(shutter);
-        this->btnDownToSutters->insert(std::pair<std::string, std::vector<RollerShutter*>*>(shutter->GetBtnDownId(),
-  newList));
-      }
-      else
-      {
-        itterDownIdToShutters->second->push_back(shutter);
-      }
-    }
-  }
-  */
-}
 
 /// @brief erstes Ausführen
 void RollerShutterComponent::InitialRun() {
-  ESP_LOGD(TAG, "Initial Run begin"); 
+  ESP_LOGI(TAG, "Initial Run begin"); 
   for (int idx = 0; idx < this->shutters->size(); idx++)
   {
     RollerShutter *shutter = this->shutters->at(idx);    
@@ -237,12 +189,11 @@ void RollerShutterComponent::InitialRun() {
     ESP_LOGD(TAG, "Initial Run 6");
   } 
   */ 
-  ESP_LOGD(TAG, "Initial Run End");
+  ESP_LOGI(TAG, "Initial Run End");
 }
 
 /// @brief onSetup
 void RollerShutterComponent::setup() {
-  ESP_LOGD(TAG, "Setup RSC '%s'", this->myName.c_str());    
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
