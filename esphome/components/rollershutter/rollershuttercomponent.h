@@ -167,8 +167,13 @@ class RollerShutterComponent : public Component {
   /// @brief Erstes Ausführen
   void InitialRun();
 
+  /*
   /// @brief onSetup
   void setup() override;
+  */
+
+  /// @brief eigenes Setup
+  void MySetup();
 
   /// @brief onLoop
   void loop() override;

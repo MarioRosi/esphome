@@ -193,7 +193,7 @@ void RollerShutterComponent::InitialRun() {
 }
 
 /// @brief onSetup
-void RollerShutterComponent::setup() {
+void RollerShutterComponent::MySetup() {
   ESP_LOGD(TAG, "Setup -1");
   if (this->allBtnIsMaster) {
   ESP_LOGD(TAG, "Setup 0");
