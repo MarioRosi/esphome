@@ -283,7 +283,7 @@ void RollerShutter::OnButtonDownStateChange(bool state)
   if (state) 
   {
     this->btnDownIsPress = true;
-    ESP_LOGI(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
+    ESP_LOGI(TAG, "Button Down id= %s is Press", this->btnDownId.c_str());
     MakeButtons();
   }
 }
