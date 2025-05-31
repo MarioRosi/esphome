@@ -17,9 +17,9 @@ RollerShutterComponent = rollershutter_ns.class_("RollerShutterComponent", cg.Co
 
 CONF_RLS_ROOT = "rollershutter"
 CONF_RLS_TIMES = "rstimes"
-CONF_RLS_TIMES_MSU = "milisecondsup"
-CONF_RLS_TIMES_MSD = "milisecondsdown"
-CONF_RLS_TIMES_MSGD = "milisecondsgap"
+CONF_RLS_TIMES_SU = "secondsup"
+CONF_RLS_TIMES_SD = "secondsdown"
+CONF_RLS_TIMES_SGD = "secondsgap"
 
 CONF_RLS_GROUPS = "rsgroups"
 CONF_RLS_SD = "sundowner"
@@ -52,9 +52,9 @@ LOGGER.info("init.py RollerShutter Start")
 CONFIG_RLS_TIME = cv.Schema(
     {
         cv.Required(CONF_ID): cv.declare_id(RL_Time),
-        cv.Required(CONF_RLS_TIMES_MSU): cv.int_range(0, 100000, True, True),
-        cv.Required(CONF_RLS_TIMES_MSD): cv.int_range(0, 100000, True, True),
-        cv.Required(CONF_RLS_TIMES_MSGD): cv.int_range(0, 100000, True, True),
+        cv.Required(CONF_RLS_TIMES_SU): cv.int_range(0, 100, True, True),
+        cv.Required(CONF_RLS_TIMES_SD): cv.int_range(0, 100, True, True),
+        cv.Required(CONF_RLS_TIMES_SGD): cv.int_range(0, 100, True, True),
     }
 )
 
@@ -125,9 +125,9 @@ async def to_code(config):
     for rlstime in config.get(CONF_RLS_TIMES, []):
         cg.add(var.AddTime(
             rlstime[CONF_ID].__str__(),
-            rlstime[CONF_RLS_TIMES_MSU],
-            rlstime[CONF_RLS_TIMES_MSD],
-            rlstime[CONF_RLS_TIMES_MSGD]
+            rlstime[CONF_RLS_TIMES_SU],
+            rlstime[CONF_RLS_TIMES_SD],
+            rlstime[CONF_RLS_TIMES_SGD]
         ))
     for rlsgroup in config.get(CONF_RLS_GROUPS, []):
         rlssundowner = rlsgroup.get(CONF_RLS_SD)

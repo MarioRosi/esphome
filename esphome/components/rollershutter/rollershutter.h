@@ -80,22 +80,22 @@ class RL_Time {
  public:
   /// @brief die Id
   std::string id;
-  /// @brief Anzahl Milisekunden für Hochfahren
-  double millisecondUp;
-  /// @brief Anzahl Milisekunden für Runterfahren
-  double millisecondDown;
-  /// @brief Anzahl Milisekunden für Runterfahren auf Lücke
-  double millisecondGap;
+  /// @brief Anzahl Sekunden für Hochfahren
+  double secondUp;
+  /// @brief Anzahl Sekunden für Runterfahren
+  double secondDown;
+  /// @brief Anzahl Sekunden für Runterfahren auf Lücke
+  double secondGap;
   /// @brief Konstruktor
   /// @param id
-  /// @param millisecondUp
-  /// @param millisecondDown
-  /// @param millisecondGap
-  RL_Time(const std::string &id, int millisecondUp, int millisecondDown, int millisecondGap) {
+  /// @param secondUp
+  /// @param secondDown
+  /// @param secondGap
+  RL_Time(const std::string &id, int secondUp, int secondDown, int secondGap) {
     this->id = id;
-    this->millisecondUp = (double) millisecondUp;
-    this->millisecondDown = (double) millisecondDown;
-    this->millisecondGap = (double) millisecondGap;
+    this->secondUp = (double) secondUp;
+    this->secondDown = (double) secondDown;
+    this->secondGap = (double) secondGap;
   }
 };
 
@@ -170,6 +170,64 @@ class RL_Group {
   }
 };
 
+/// @brief Meine eigene Timerklasse
+class Timer {
+  private:
+    /// @brief Bis dahin läuft der Timer // unix epoch time (seconds since UTC Midnight January 1, 1970)
+    time_t timeStampEnd;
+    /// @brief Bei dieser zeit wurde der Timer gestartet
+    time_t timeStampStart;
+    /// @brief Wieviele Sekunden ist der Timer gelaufen?
+    double secondsIsRunning;
+    /// @brief läuft der Timer?
+    bool timerIsRunning;
+  public:
+    /// @brief Startet den Timer
+    /// @param runningTimeMs 
+    /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
+    bool StartTimer(int runningTimeSeconds)
+    {
+      if (!timerIsRunning)
+      {
+        timeStampStart = std::time(nullptr);
+        timeStampEnd = timeStampStart + runningTimeSeconds;        
+        timerIsRunning = true;
+        return true;
+      }
+      return false;
+    }
+
+    /// @brief Testet, ob der Timer abgelaufen ist
+    /// @return true = Timer ist nich nicht zu ende, er läuft noch. false == Timer zu ende
+    bool CheckTimer()
+    {
+      time_t temp = std::time(nullptr);
+      if (temp >= timeStampEnd)
+      {
+        return StopTimer();
+      }
+      else 
+        secondsIsRunning = (double)( temp - timeStampStart);
+      return true;
+    }
+
+    double GetSecondsIsRunning() {return secondsIsRunning;}
+
+    /// @brief Stopt den Timer und gibt die LaufSekunden zurück
+    /// @return 0 == Timer war bereits gestoppt, >0 == Laufsekunden
+    double StopTimer()
+    {
+      if (timerIsRunning)
+      {
+        time_t stop = std::time(nullptr);
+        secondsIsRunning = (double)(stop - timeStampStart);
+        timerIsRunning = false;
+        return secondsIsRunning;
+      }
+      return 0;
+    }
+};
+
 /** Basisklasse für die Rolladensteuerung, ist ein Rolladen */
 class RollerShutter {
  private:
@@ -203,9 +261,8 @@ class RollerShutter {
   bool hasMakeGapOpenCatched;
   /// @brief Mein derzeitiger Status
   enRollerShutterState myState;
-  /// @brief Startzeitpunkt der Aktion Hoch- oder Runterfahren
-  time_t timestampStart;
-
+  /// @brief Mein eigener Timer
+  Timer *timer;
   /// @brief Die Position des Rolladen 0.0 == oben, 100.0 = vollständig geschlossen
   double closingPosition;
 

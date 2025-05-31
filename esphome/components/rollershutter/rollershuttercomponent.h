@@ -114,10 +114,10 @@ class RollerShutterComponent : public Component {
 
   /// @brief Fügt eine RL_Time der Liste hinzu
   /// @param id 
-  /// @param millisecondUp 
-  /// @param millisecondDown 
-  /// @param millisecondGap 
-  void AddTime(const std::string &id, int millisecondUp, int millisecondDown, int millisecondGap);
+  /// @param secondUp 
+  /// @param secondDown 
+  /// @param secondGap 
+  void AddTime(const std::string &id, int secondUp, int secondDown, int secondGap);
 
   // @brief Fügt eine Gruppe der Liste hinzu
 

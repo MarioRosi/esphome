@@ -323,19 +323,19 @@ rollershutter:
 
   rstimes:
     - id: TIME_NORMAL
-      milisecondsup: 20000
-      milisecondsdown: 20000
-      milisecondsgap: 14000
+      secondsup: 20
+      secondsdown: 20
+      secondsgap: 14
 
     - id: TIME_BIGWINDOW
-      milisecondsup: 27000
-      milisecondsdown: 27000
-      milisecondsgap: 17000
+      secondsup: 27
+      secondsdown: 27
+      secondsgap: 17
 
     - id: TIME_BIGDOOR
-      milisecondsup: 30000
-      milisecondsdown: 27000
-      milisecondsgap: 11000
+      secondsup: 30
+      secondsdown: 27
+      secondsgap: 11
 
   rsgroups:
     - id: HOUSE_SOUTH

@@ -67,12 +67,12 @@ RollerShutterComponent::~RollerShutterComponent() {
 
 /// @brief Fügt eine RL_Time der Liste hinzu
 /// @param id 
-/// @param millisecondUp 
-/// @param millisecondDown 
-/// @param millisecondGap 
-void RollerShutterComponent::AddTime(const std::string &id, int millisecondUp, int millisecondDown, int millisecondGap)
+/// @param secondUp 
+/// @param secondDown 
+/// @param secondGap 
+void RollerShutterComponent::AddTime(const std::string &id, int secondUp, int secondDown, int secondGap)
 {
-  RL_Time *item = new RL_Time(id, millisecondUp, millisecondDown, millisecondGap);
+  RL_Time *item = new RL_Time(id, secondUp, secondDown, secondGap);
   this->movingTimes->push_back(item); 
 }
 
