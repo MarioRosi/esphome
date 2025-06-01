@@ -130,7 +130,9 @@ bool RollerShutter::StartDown() {
 /// @return
 void RollerShutter::Stop() {
   if (hasSetup) {
-    double timeStartToStop = this->timer->StopTimer();
+    this->timer->StopTimer();
+    double timeStartToStop = this->timer->GetSecondsIsRunning();
+    this->timer->SleepTimer();
     switch (myState) {
       case enRollerShutterState::isDoTop:
         {

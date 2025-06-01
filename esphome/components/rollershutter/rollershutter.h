@@ -178,6 +178,8 @@ class Timer {
     /// @brief läuft der Timer?
     bool timerIsRunning;
   public:
+    /// @brief Konstructor
+    Timer() {secondsIsRunning = -1;}
     /// @brief Startet den Timer
     /// @param runningTimeMs 
     /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
@@ -188,7 +190,7 @@ class Timer {
         ESP_LOGD("Timer", "StartTimer for %d seconds", runningTimeSeconds);
         timeStampStart = std::time(nullptr);
         timeStampEnd = timeStampStart + runningTimeSeconds;        
-        timerIsRunning = true;
+        timerIsRunning = true;        
         return true;
       }
       return false;
@@ -232,6 +234,7 @@ class Timer {
       return 0;
     }
 
+    /// @brief Timer Schlafen legen
     void SleepTimer() { this->secondsIsRunning = -1.0;}
 };
 
