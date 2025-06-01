@@ -217,41 +217,39 @@ void RollerShutter::Setup() {
 /// @brief Testet, ob die Zeit für Hoch, Runter, Lücke erreicht ist
 void RollerShutter::CheckTimerStop() {
   if (hasSetup) {
-    ESP_LOGD("RollerShutter", "isSetup");
-    if (this->timer->IsTimerRunning())
+    double timeStartToCheck = this->timer->CheckTimer();
+    if (timeStartToCheck > 0)
+    {                
+      switch (myState) {
+        case enRollerShutterState::isDoTop:
+          if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <= 0.0)
+            Stop();
+          break;
+        case enRollerShutterState::isDoDown:
+          if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >= 100.0)
+            Stop();
+          break;
+        case enRollerShutterState::isGoToGapUp:
+          if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <=
+              (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
+            Stop();
+          break;
+        case enRollerShutterState::isGoToGapDown:
+          if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >=
+              (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
+            Stop();
+          break;
+      }
+    }
+    else if (timeStartToCheck == 0)
     {
-      ESP_LOGD("RollerShutter", "Timer is running");
-      if (this->timer->CheckTimer())
-      {        
-        double timeStartToCheck = this->timer->GetSecondsIsRunning();
-        ESP_LOGD("RollerShutter", "Timer is for %f seconds running", timeStartToCheck);
-        switch (myState) {
-          case enRollerShutterState::isDoTop:
-            if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <= 0.0)
-              Stop();
-            break;
-          case enRollerShutterState::isDoDown:
-            if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >= 100.0)
-              Stop();
-            break;
-          case enRollerShutterState::isGoToGapUp:
-            if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <=
-                (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
-              Stop();
-            break;
-          case enRollerShutterState::isGoToGapDown:
-            if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >=
-                (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
-              Stop();
-            break;
-        }
-      }
-      else
-      {
-        if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
-        ESP_LOGD("Timer", "Timer is stopped after %f seconds", this->timer->GetSecondsIsRunning());
-        Stop();
-      }
+      if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
+      ESP_LOGD("Timer", "Timer is stopped after %f seconds", this->timer->GetSecondsIsRunning());
+      Stop();
+    }
+    else if (timeStartToCheck < 0)
+    {
+      // nix tun ich schlafe
     }
   }
 }

@@ -197,8 +197,8 @@ class Timer {
     /// @return 
     bool IsTimerRunning() {return timerIsRunning;}
     /// @brief Testet, ob der Timer abgelaufen ist
-    /// @return true = Timer ist nich nicht zu ende, er läuft noch. false == Timer zu ende
-    bool CheckTimer()
+    /// @return >=1 = Timer ist nich nicht zu ende, er läuft noch. 0 == Timer zu ende. -1 == Timer schläft
+    double CheckTimer()
     {
       if (timerIsRunning)
       {
@@ -206,13 +206,14 @@ class Timer {
         
         if (temp >= timeStampEnd)
         {          
-          return StopTimer();
+          StopTimer();
+          return 0.0;
         }
         else 
           secondsIsRunning = (double)( temp - timeStampStart);
-        return true;
+        return secondsIsRunning;
       }
-      return false;
+      return -1.0;
     }
 
     double GetSecondsIsRunning() {return secondsIsRunning;}
@@ -230,6 +231,8 @@ class Timer {
       }
       return 0;
     }
+
+    void SleepTimer() { this->secondsIsRunning = -1.0;}
 };
 
 /** Basisklasse für die Rolladensteuerung, ist ein Rolladen */
