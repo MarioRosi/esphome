@@ -200,7 +200,7 @@ class Timer {
     bool IsTimerRunning() {return timerIsRunning;}
     /// @brief Testet, ob der Timer abgelaufen ist
     /// @return >=1 = Timer ist nich nicht zu ende, er läuft noch. 0 == Timer zu ende. -1 == Timer schläft
-    double CheckTimer()
+    int CheckTimer()
     {
       if (timerIsRunning)
       {
@@ -209,13 +209,13 @@ class Timer {
         if (temp >= timeStampEnd)
         {          
           StopTimer();
-          return 0.0;
+          return 0;
         }
         else 
           secondsIsRunning = (double)( temp - timeStampStart);
-        return secondsIsRunning;
+        return 1;
       }
-      return -1.0;
+      return -1;
     }
 
     double GetSecondsIsRunning() {return secondsIsRunning;}

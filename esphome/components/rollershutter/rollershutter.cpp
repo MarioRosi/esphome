@@ -219,8 +219,9 @@ void RollerShutter::Setup() {
 /// @brief Testet, ob die Zeit für Hoch, Runter, Lücke erreicht ist
 void RollerShutter::CheckTimerStop() {
   if (hasSetup) {
-    double timeStartToCheck = this->timer->CheckTimer();
-    if (timeStartToCheck > 0)
+    int checkTimer = this->timer->CheckTimer();
+    double timeStartToCheck = this->timer->GetSecondsIsRunning();
+    if (checkTimer > 0)
     {                
       switch (myState) {
         case enRollerShutterState::isDoTop:
@@ -243,13 +244,13 @@ void RollerShutter::CheckTimerStop() {
           break;
       }
     }
-    else if (timeStartToCheck == 0)
+    else if (checkTimer== 0)
     {
       if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
-      ESP_LOGD("Timer", "Timer is stopped after %f seconds", this->timer->GetSecondsIsRunning());
+      ESP_LOGD("RollerShutter", "Timer is stopped after %f seconds", this->timer->GetSecondsIsRunning());
       Stop();
     }
-    else if (timeStartToCheck < 0)
+    else if (checkTimer < 0)
     {
       // nix tun ich schlafe
     }
