@@ -45,15 +45,14 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
 
 /// @brief Rollladen zurücksetzten == hochfahren
 void RollerShutter::ResetRollerShutter() {
-  myState == enRollerShutterState::isStarting;
+  myState = enRollerShutterState::isStarting;
   if (timer->StartTimer(this->timeUpDown->secondUp))
   {
     relDown->turn_off();
     relUp->turn_on();
     hasMakeGapCatched = false;
     hasMakeGapOpenCatched = false;
-  }
-  ESP_LOGD(TAG, "ResetRollerShutter mystate==%d", (int)myState);
+  }  
 }
 
 /// @brief Starte das Hochfahren
