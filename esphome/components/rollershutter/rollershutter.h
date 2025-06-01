@@ -203,9 +203,9 @@ class Timer {
       if (timerIsRunning)
       {
         time_t temp = std::time(nullptr);
-        ESP_LOGD("Timer", "Timer is running %d seconds", temp - timeStampStart);
+        
         if (temp >= timeStampEnd)
-        {
+        {          
           return StopTimer();
         }
         else 
@@ -222,10 +222,11 @@ class Timer {
     double StopTimer()
     {
       if (timerIsRunning)
-      {
+      {        
         time_t stop = std::time(nullptr);
         secondsIsRunning = (double)(stop - timeStampStart);
         timerIsRunning = false;
+        ESP_LOGD("Timer", "Timer is stopped after %d seconds", secondsIsRunning);
         return secondsIsRunning;
       }
       return 0;
