@@ -53,6 +53,7 @@ void RollerShutter::ResetRollerShutter() {
     hasMakeGapCatched = false;
     hasMakeGapOpenCatched = false;
   }
+  ESP_LOGD(TAG, "ResetRollerShutter mystate==%d", (int)myState);
 }
 
 /// @brief Starte das Hochfahren
@@ -195,8 +196,7 @@ void RollerShutter::Stop() {
         }
         break;
       default:
-        int state = (int)myState;
-        ESP_LOGD(TAG, "Stop not taked mystate==%d", state);
+        ESP_LOGD(TAG, "Stop not taked mystate==%d", (int)myState);
         break;
     }
   }
