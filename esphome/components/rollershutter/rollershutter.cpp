@@ -246,6 +246,7 @@ void RollerShutter::CheckTimerStop() {
       else
       {
         if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
+        ESP_LOGD("Timer", "Timer is stopped after %f seconds", this->timer->GetSecondsIsRunning());
         Stop();
       }
     }
