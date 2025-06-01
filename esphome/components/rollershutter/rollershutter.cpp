@@ -217,11 +217,14 @@ void RollerShutter::Setup() {
 /// @brief Testet, ob die Zeit für Hoch, Runter, Lücke erreicht ist
 void RollerShutter::CheckTimerStop() {
   if (hasSetup) {
+    ESP_LOGD("RollerShutter", "isSetup");
     if (this->timer->IsTimerRunning())
     {
+      ESP_LOGD("RollerShutter", "Timer is running");
       if (this->timer->CheckTimer())
-      {
+      {        
         double timeStartToCheck = this->timer->GetSecondsIsRunning();
+        ESP_LOGD("RollerShutter", "Timer is for %f seconds running", timeStartToCheck);
         switch (myState) {
           case enRollerShutterState::isDoTop:
             if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <= 0.0)
