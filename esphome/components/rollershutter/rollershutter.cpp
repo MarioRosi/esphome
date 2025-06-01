@@ -45,7 +45,7 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
 
 /// @brief Rollladen zurücksetzten == hochfahren
 void RollerShutter::ResetRollerShutter() {
-  myState == isStarting;
+  myState == enRollerShutterState::isStarting;
   if (timer->StartTimer(this->timeUpDown->secondUp))
   {
     relDown->turn_off();
