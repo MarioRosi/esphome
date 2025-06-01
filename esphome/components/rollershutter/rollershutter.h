@@ -125,7 +125,6 @@ class RL_SunDowner {
   /// @param upHoure
   /// @param upMinute
   RL_SunDowner(int monthFrom, int monthTo, int gapHour, int gapMinute, int upHoure, int upMinute) {
-    ESP_LOGD("rollershutter.h", "RL_SunDowner.ctor");
     this->monthFrom = monthFrom;
     this->monthTo = monthTo;
     this->gapHour = gapHour;
@@ -133,7 +132,6 @@ class RL_SunDowner {
     this->upHoure = upHoure;
     this->upMinute = upMinute;
     this->offline = false;
-    ESP_LOGD("rollershutter.h", "RL_SunDowner.ctor-End");
   }
 
   /// @brief leer-Konstruktor == offline
@@ -161,12 +159,10 @@ class RL_Group {
   /// @param id
   /// @param name
   /// @param sundownner
-  RL_Group(const std::string &id, const std::string &name, RL_SunDowner *sundownner) {
-    ESP_LOGD("rollershutter.h", "RL_Group.ctor");
+  RL_Group(const std::string &id, const std::string &name, RL_SunDowner *sundownner) {    
     this->id = id;
     this->name = name;
-    this->sundownner = sundownner;
-    ESP_LOGD("rollershutter.h", "RL_Group.ctor-End");
+    this->sundownner = sundownner;    
   }
 };
 
@@ -189,6 +185,7 @@ class Timer {
     {
       if (!timerIsRunning)
       {
+        ESP_LOGD("Timer", "StartTimer for %d seconds", runningTimeSeconds);
         timeStampStart = std::time(nullptr);
         timeStampEnd = timeStampStart + runningTimeSeconds;        
         timerIsRunning = true;
@@ -196,19 +193,25 @@ class Timer {
       }
       return false;
     }
-
+    /// @brief Läuft überhaupt ein Timer?
+    /// @return 
+    bool IsTimerRunning() {return timerIsRunning;}
     /// @brief Testet, ob der Timer abgelaufen ist
     /// @return true = Timer ist nich nicht zu ende, er läuft noch. false == Timer zu ende
     bool CheckTimer()
     {
-      time_t temp = std::time(nullptr);
-      if (temp >= timeStampEnd)
+      if (timerIsRunning)
       {
-        return StopTimer();
+        time_t temp = std::time(nullptr);
+        if (temp >= timeStampEnd)
+        {
+          return StopTimer();
+        }
+        else 
+          secondsIsRunning = (double)( temp - timeStampStart);
+        return true;
       }
-      else 
-        secondsIsRunning = (double)( temp - timeStampStart);
-      return true;
+      return false;
     }
 
     double GetSecondsIsRunning() {return secondsIsRunning;}
@@ -318,10 +321,10 @@ class RollerShutter {
   void MakeButtons();
   /// @brief Setzt den Wert für Button Up ist gedrückt (für Zentraltaster)
   /// @param value
-  void SetButtonUpIsPress(bool value) { this->btnUpIsPress = value; }
+  void SetButtonUpIsPress(bool value);
   /// @brief Setzt den Wert für Button Down ist gedrückt (für Zentraltaster)
   /// @param value
-  void SetButtonDownIsPress(bool value) { this->btnDownIsPress = value; }
+  void SetButtonDownIsPress(bool value);
   /// @brief Testet, ob die Zeit für Fahre-Auf-Lücke erreicht ist
   void CheckTimerStartGap();
   /// @brief Fährt auf Lücke, wenn das Rollo unten ist, wird "hochgefahren"

@@ -165,75 +165,42 @@ void RollerShutterComponent::InitialRun() {
     RL_Group *group = GetGroupById(shutter->GetGroupId());
     shutter->SetGroup(group);
     shutter->Setup();    
-    /*
-    if ((shutter->GetShutterState() == enRollerShutterState::isUnknown)) {
-      ESP_LOGD(TAG, "Initial Run 4");
-      shutter->ResetRollerShutter();
-      ESP_LOGD(TAG, "Initial Run 5");
-    }
-    ESP_LOGD(TAG, "Initial Run 6");
-    /**/
   }
-  /*
-  for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
-    ESP_LOGD(TAG, "Initial Run 1");
-    RollerShutter *shutter = *itter;
-    ESP_LOGD(TAG, "Initial Run 2");
-    shutter->Setup();
-    ESP_LOGD(TAG, "Initial Run 3");
-    if ((shutter->GetShutterState() == enRollerShutterState::isUnknown)) {
-      ESP_LOGD(TAG, "Initial Run 4");
-      shutter->ResetRollerShutter();
-      ESP_LOGD(TAG, "Initial Run 5");
-    }
-    ESP_LOGD(TAG, "Initial Run 6");
-  } 
-  */ 
   ESP_LOGI(TAG, "Initial Run End");
 }
 
 /// @brief onSetup
 void RollerShutterComponent::MySetup() {
-  ESP_LOGD(TAG, "Setup -1");
   if (this->allBtnIsMaster) {
-  ESP_LOGD(TAG, "Setup 0");
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
-        ESP_LOGD(TAG, "Setup 1");
         this->btnUp = getBinarySensorById(this->btnUpId);
         this->btnUpIsRemote = false;
-        ESP_LOGD(TAG, "Setup 2");
       } else {
         this->btnUp = nullptr;
         this->btnUpIsRemote = false;
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
-          ESP_LOGD(TAG, "Setup 3");
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDownIsRemote = false;
-          ESP_LOGD(TAG, "Setup 4");
         } else {
           this->btnDown = nullptr;
           this->btnDownIsRemote = false;
         }
         if (std::strlen(this->btnHollidayId.c_str()) > 1) {
           if (this->btnDownId.compare("remote") != 0) {
-            ESP_LOGD(TAG, "Setup 5");
             this->btnHolliday = getBinarySensorById(this->btnHollidayId);
             this->btnHollidayIsRemote = false;
-            ESP_LOGD(TAG, "Setup 6");
           } else {
             this->btnHolliday = nullptr;
             this->btnHollidayIsRemote = false;
           }
         }
-        ESP_LOGD(TAG, "Setup 7");
         this->hasSetup = true;
       }
     }
   } else if (this->allBtnIsSlave) {
-    ESP_LOGD(TAG, "Setup 8");
     if (this->btnDownId.compare("remote") == 0) {
       this->btnUp = nullptr;
       this->btnUpIsRemote = true;
@@ -249,16 +216,13 @@ void RollerShutterComponent::MySetup() {
           this->btnHollidayIsRemote = true;
         }
       }
-        ESP_LOGD(TAG, "Setup 9");
       this->hasSetup = true;
     }
   } else {
-        ESP_LOGD(TAG, "Setup 10");
     this->hasSetup = true;
   } 
   if (this->hasSetup)  
   {   
-    //this->InitialRun();
     ESP_LOGW(TAG, "Setup war erfolgreich");   
   }
   else
@@ -271,6 +235,7 @@ void RollerShutterComponent::MySetup() {
 void RollerShutterComponent::loop() {  
   if (hasSetup) {
     // zu erst die Haupt-Buttons abfragen
+    /*
     if (!this->btnUpIsRemote) {
       if (this->btnUp->has_state())
         this->btnUpIsPress = this->btnUp->state;
@@ -289,6 +254,7 @@ void RollerShutterComponent::loop() {
       else
         this->btnHollidayIsOn = false;
     }
+    */
     // Wenn Urlaubssteuerung, hoch und runter zufällig zwischen 5-7 und 17-19
     if (this->btnHollidayIsOn) {
       int checkHourUp = 5;
@@ -323,20 +289,11 @@ void RollerShutterComponent::loop() {
         shutter->SetButtonUpIsPress(true);
       else if (this->btnDownIsPress)
         shutter->SetButtonDownIsPress(true);
-      /*
-      else
-        shutter->CheckButtons();
-      */
-    }
-    this->btnUpIsPress = false;
-    this->btnDownIsPress = false;
-    // dann abarbeiten
-    for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
-      RollerShutter *shutter = *itter;
-      //shutter->MakeButtons();
       shutter->CheckTimerStartGap();
       shutter->CheckTimerStop();
     }
+    this->btnUpIsPress = false;
+    this->btnDownIsPress = false;
   }
 }
 

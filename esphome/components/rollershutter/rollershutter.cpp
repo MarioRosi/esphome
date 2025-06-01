@@ -217,34 +217,37 @@ void RollerShutter::Setup() {
 /// @brief Testet, ob die Zeit für Hoch, Runter, Lücke erreicht ist
 void RollerShutter::CheckTimerStop() {
   if (hasSetup) {
-    if (this->timer->CheckTimer())
+    if (this->timer->IsTimerRunning())
     {
-      double timeStartToCheck = this->timer->GetSecondsIsRunning();
-      switch (myState) {
-        case enRollerShutterState::isDoTop:
-          if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <= 0.0)
-            Stop();
-          break;
-        case enRollerShutterState::isDoDown:
-          if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >= 100.0)
-            Stop();
-          break;
-        case enRollerShutterState::isGoToGapUp:
-          if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <=
-              (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
-            Stop();
-          break;
-        case enRollerShutterState::isGoToGapDown:
-          if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >=
-              (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
-            Stop();
-          break;
+      if (this->timer->CheckTimer())
+      {
+        double timeStartToCheck = this->timer->GetSecondsIsRunning();
+        switch (myState) {
+          case enRollerShutterState::isDoTop:
+            if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <= 0.0)
+              Stop();
+            break;
+          case enRollerShutterState::isDoDown:
+            if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >= 100.0)
+              Stop();
+            break;
+          case enRollerShutterState::isGoToGapUp:
+            if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <=
+                (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
+              Stop();
+            break;
+          case enRollerShutterState::isGoToGapDown:
+            if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >=
+                (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
+              Stop();
+            break;
+        }
       }
-    }
-    else
-    {
-      if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
-      Stop();
+      else
+      {
+        if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
+        Stop();
+      }
     }
   }
 }
@@ -270,6 +273,21 @@ void RollerShutter::OnButtonDownStateChange(bool state)
     ESP_LOGI(TAG, "Button Down id= %s is Press", this->btnDownId.c_str());
     MakeButtons();
   }
+}
+
+/// @brief Setzt den Wert für Button Up ist gedrückt (für Zentraltaster)
+/// @param value
+void RollerShutter::SetButtonUpIsPress(bool value) 
+{
+   this->btnUpIsPress = value; 
+   this->MakeButtons();
+}
+/// @brief Setzt den Wert für Button Down ist gedrückt (für Zentraltaster)
+/// @param value
+void  RollerShutter::SetButtonDownIsPress(bool value) 
+{
+   this->btnDownIsPress = value; 
+   this->MakeButtons();
 }
 
 
