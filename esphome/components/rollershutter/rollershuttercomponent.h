@@ -161,8 +161,12 @@ class RollerShutterComponent : public Component {
                   const std::string &idTime, const std::string &btnUpId, const std::string &btDownId, 
                   const std::string &relUpId, const std::string &relDownId);
 
-  /// @brief Erzeugt die Listen für das Abarbeiten der Buttons
-  void PrepareShutters();
+  /// @brief EventManager für ButtonUp
+  /// @param state 
+  void OnButtonUpStateChange(bool state);
+  /// @brief EventManager für ButtonDown
+  /// @param state 
+  void OnButtonDownStateChange(bool state);
 
   /// @brief Erstes Ausführen
   void InitialRun();

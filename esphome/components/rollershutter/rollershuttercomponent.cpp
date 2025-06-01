@@ -175,6 +175,7 @@ void RollerShutterComponent::MySetup() {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
         this->btnUp = getBinarySensorById(this->btnUpId);
+        this->btnUp->add_on_state_callback([this](bool state){ this->OnButtonUpStateChange(state); });
         this->btnUpIsRemote = false;
       } else {
         this->btnUp = nullptr;
@@ -183,6 +184,7 @@ void RollerShutterComponent::MySetup() {
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
           this->btnDown = getBinarySensorById(this->btnDownId);
+          this->btnDown->add_on_state_callback([this](bool state){ this->OnButtonDownStateChange(state); });
           this->btnDownIsRemote = false;
         } else {
           this->btnDown = nullptr;
@@ -230,6 +232,28 @@ void RollerShutterComponent::MySetup() {
     ESP_LOGW(TAG, "Setup NICHT erfolgreich");          
   }
 }
+
+/// @brief EventManager für ButtonUp
+/// @param state 
+void RollerShutterComponent::OnButtonUpStateChange(bool state)
+{
+  if (state) 
+  {
+    this->btnUpIsPress = true;
+    ESP_LOGI(TAG, "Button All-Up id= %s is Press", this->btnUpId.c_str());    
+  }
+}
+/// @brief EventManager für ButtonDown
+/// @param state 
+void RollerShutterComponent::OnButtonDownStateChange(bool state)
+{
+  if (state) 
+  {
+    this->btnDownIsPress = true;
+    ESP_LOGI(TAG, "Button All-Down id= %s is Press", this->btnDownId.c_str());    
+  }
+}
+
 
 /// @brief onLoop
 void RollerShutterComponent::loop() {  
@@ -283,17 +307,27 @@ void RollerShutterComponent::loop() {
       }
     }
     // zu erst die Buttons abfragen
+    if (btnUpIsPress || btnDownIsPress)
+    {
+      // wenn inzwischen beide gedrückt wurden, dann nix machen
+      if (!(btnUpIsPress && btnDownIsPress)) 
+      {
+        for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
+          RollerShutter *shutter = *itter;
+          if (this->btnUpIsPress)
+            shutter->SetButtonUpIsPress(true);
+          else if (this->btnDownIsPress)
+            shutter->SetButtonDownIsPress(true);
+        }
+      }
+      this->btnUpIsPress = false;
+      this->btnDownIsPress = false;
+    }
     for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
       RollerShutter *shutter = *itter;
-      if (this->btnUpIsPress)
-        shutter->SetButtonUpIsPress(true);
-      else if (this->btnDownIsPress)
-        shutter->SetButtonDownIsPress(true);
       shutter->CheckTimerStartGap();
       shutter->CheckTimerStop();
     }
-    this->btnUpIsPress = false;
-    this->btnDownIsPress = false;
   }
 }
 

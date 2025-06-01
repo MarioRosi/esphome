@@ -133,9 +133,11 @@ void RollerShutter::Stop() {
     this->timer->StopTimer();
     double timeStartToStop = this->timer->GetSecondsIsRunning();
     this->timer->SleepTimer();
+    ESP_LOGD(TAG, "Stop 1");
     switch (myState) {
       case enRollerShutterState::isDoTop:
         {
+          ESP_LOGD(TAG, "Stop isDoTop");
           relUp->turn_off();
           relDown->turn_off();
           this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->secondUp) * 100.0;
@@ -148,6 +150,7 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isDoDown:
         {
+          ESP_LOGD(TAG, "Stop isDoDown");
           relUp->turn_off();
           relDown->turn_off();          
           this->closingPosition += timeStartToStop / ((double) this->timeUpDown->secondDown) * 100.0;
@@ -160,6 +163,7 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isStarted:
         {
+          ESP_LOGD(TAG, "Stop isStarted");
           relUp->turn_off();
           relDown->turn_off();
           this->closingPosition = 0.0;
@@ -168,6 +172,7 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isGoToGapUp:
         {
+          ESP_LOGD(TAG, "Stop isGoToGapUp");
           relUp->turn_off();
           relDown->turn_off();          
           this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->secondUp) * 100.0;
@@ -179,6 +184,7 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isGoToGapDown:
         {
+          ESP_LOGD(TAG, "Stop isGoToGapDown");
           relUp->turn_off();
           relDown->turn_off();          
           this->closingPosition += timeStartToStop / ((double) this->timeUpDown->secondDown) * 100.0;
@@ -187,6 +193,10 @@ void RollerShutter::Stop() {
           else
             this->myState = enRollerShutterState::isStopGapDown;
         }
+        break;
+      default:
+        int state = (int)myState;
+        ESP_LOGD(TAG, "Stop not taked mystate==%d", state);
         break;
     }
   }
