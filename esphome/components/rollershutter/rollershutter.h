@@ -369,8 +369,6 @@ class RollerShutter : public text_sensor::TextSensor{
   /// @param hisId
   /// @return
   binary_sensor::BinarySensor *getBinarySensorById(const std::string &hisId);
-  
-  sensor::StateClass get_state_class() {return sensor::STATE_CLASS_NONE;}
 };
 
 }  // namespace rollershutter

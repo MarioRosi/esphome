@@ -1,3 +1,7 @@
+substitutions:
+  mydelay_on: 50ms
+  mydelay_off: 300ms
+
 esphome:
   name: roller-shutter-2
   friendly_name: Roller_Shutter_2
@@ -6,7 +10,8 @@ esphome:
     then:
       - lambda: |-
           ESP_LOGI("boot", "nun sollte es spät genug sein !?");
-          id(rollershutter_2).InitialRun();       
+          id(rollershutter_2).MySetup();
+          id(rollershutter_2).InitialRun();
 
 esp32:
   board: esp32dev
@@ -14,29 +19,10 @@ esp32:
     type: esp-idf
 
 debug:
-  update_interval: 10s
-
-text_sensor:
-  - platform: debug
-    device:
-      name: "Device Info"
-    reset_reason:
-      name: "Reset Reason"
-
-sensor:
-  - platform: debug
-    free:
-      name: "Heap Free"
-    block:
-      name: "Heap Max Block"
-    loop_time:
-      name: "Loop Time"
-    cpu_frequency:
-      name: "CPU Frequency"
 
 # Logger must be at least debug (default)
 logger:
-  level: debug
+  level: DEBUG
 
 api:
   encryption:
@@ -83,6 +69,8 @@ i2c:
     number: GPIO5
     ignore_strapping_warning: true
 
+text_sensor:
+
 pcf8574:
   - id: inputs_1_8
     address: 0x22
@@ -123,6 +111,9 @@ binary_sensor:
       number: 0
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_SCH_I_D"
@@ -131,6 +122,9 @@ binary_sensor:
       number: 1
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_GAR_I_U"
@@ -139,6 +133,9 @@ binary_sensor:
       number: 2
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_GAR_I_D"
@@ -147,6 +144,9 @@ binary_sensor:
       number: 3
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_BA2_I_U"
@@ -155,6 +155,9 @@ binary_sensor:
       number: 4
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_BA2_I_D"
@@ -163,6 +166,9 @@ binary_sensor:
       number: 5
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_SFN_I_U"
@@ -171,6 +177,9 @@ binary_sensor:
       number: 6
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_SFN_I_D"
@@ -179,6 +188,9 @@ binary_sensor:
       number: 7
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_SFS_I_U"
@@ -187,6 +199,9 @@ binary_sensor:
       number: 0
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_SFS_I_D"
@@ -195,6 +210,9 @@ binary_sensor:
       number: 1
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "ZEN_I_U"
@@ -203,6 +221,9 @@ binary_sensor:
       number: 2
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "ZEN_I_D"
@@ -211,6 +232,9 @@ binary_sensor:
       number: 3
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "URL_I_UD"
@@ -219,6 +243,9 @@ binary_sensor:
       number: 4
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
 switch:
   - platform: gpio
@@ -319,7 +346,7 @@ external_components:
 
 rollershutter:
   id: rollershutter_2
-  name: rollershutter_2
+  name: rollershutter-2
 
   rstimes:
     - id: TIME_NORMAL
@@ -374,9 +401,9 @@ rollershutter:
         upminute: 55
 
   rshutterAll:
-    allinputup_id: in_zen_u
-    allinputdown_id: in_zen_d
-    allinputhollyday_id: in_url_ud
+    allinputup_id: zen_i_u
+    allinputdown_id: zen_i_d
+    allinputhollyday_id: url_i_ud
     allinput_master: True
     allinput_slave: False
 
