@@ -415,7 +415,7 @@ rollershutter:
       inputup_id: rl_sch_i_u
       inputdown_id: rl_sch_i_d
       outputup_id: rl_sch_o_u
-      outputdown_id: rl_sch_o_d
+      outputdown_id: rl_sch_o_d      
 
     - id: rs_gar
       name: garage

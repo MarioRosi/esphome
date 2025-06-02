@@ -29,7 +29,7 @@ static const char *TAG = "RollerShutter";
 RollerShutter::RollerShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeUpDownId,
                              RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btnDownId,
                              const std::string &relUpId, const std::string &relDownId) {
-  this->myId = id;
+  this->myId = id;  
   this->name = name;
   this->groupId = groupId;
   this->timeUpDownId = timeUpDownId;
@@ -52,7 +52,7 @@ void RollerShutter::ResetRollerShutter() {
     relUp->turn_on();
     hasMakeGapCatched = false;
     hasMakeGapOpenCatched = false;
-    sendState(closingPosition);
+    sendState( -1.0 );
   }  
 }
 
@@ -136,11 +136,9 @@ void RollerShutter::Stop() {
     this->timer->StopTimer();
     double timeStartToStop = this->timer->GetSecondsIsRunning();
     this->timer->SleepTimer();
-    ESP_LOGD(TAG, "Stop 1");
     switch (myState) {
       case enRollerShutterState::isDoTop:
         {
-          ESP_LOGD(TAG, "Stop isDoTop");
           relUp->turn_off();
           relDown->turn_off();
           this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->secondUp) * 100.0;
@@ -153,7 +151,6 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isDoDown:
         {
-          ESP_LOGD(TAG, "Stop isDoDown");
           relUp->turn_off();
           relDown->turn_off();          
           this->closingPosition += timeStartToStop / ((double) this->timeUpDown->secondDown) * 100.0;
@@ -166,7 +163,6 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isStarted:
         {
-          ESP_LOGD(TAG, "Stop isStarted");
           relUp->turn_off();
           relDown->turn_off();
           this->closingPosition = 0.0;
@@ -175,7 +171,6 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isGoToGapUp:
         {
-          ESP_LOGD(TAG, "Stop isGoToGapUp");
           relUp->turn_off();
           relDown->turn_off();          
           this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->secondUp) * 100.0;
@@ -187,7 +182,6 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isGoToGapDown:
         {
-          ESP_LOGD(TAG, "Stop isGoToGapDown");
           relUp->turn_off();
           relDown->turn_off();          
           this->closingPosition += timeStartToStop / ((double) this->timeUpDown->secondDown) * 100.0;
@@ -305,7 +299,8 @@ void RollerShutter::sendState(double checkValue)
         (myState == enRollerShutterState::isGoToGapDown))
         newValue += "-down";
     else if ((myState == enRollerShutterState::isDoTop) ||
-        (myState == enRollerShutterState::isGoToGapUp))
+        (myState == enRollerShutterState::isGoToGapUp) ||
+        (myState == enRollerShutterState::isStarting))
         newValue += "-up";
   }
   newValue += ".svg";
