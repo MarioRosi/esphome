@@ -1,6 +1,7 @@
 import logging
 import esphome.codegen as cg
 import esphome.config_validation as cv
+from esphome.components import text_sensor
 from esphome.const import CONF_ID, CONF_NAME
 
 MULTI_CONF = True
@@ -12,7 +13,7 @@ rollershutter_ns = cg.esphome_ns.namespace("rollershutter")
 RL_Time = rollershutter_ns.class_("RL_Time")
 RL_SunDowner = rollershutter_ns.class_("RL_SunDowner")
 RL_Group = rollershutter_ns.class_("RL_Group")
-RollerShutter = rollershutter_ns.class_("RollerShutter")
+RollerShutter = rollershutter_ns.class_("RollerShutter", text_sensor.TextSensor)
 RollerShutterComponent = rollershutter_ns.class_("RollerShutterComponent", cg.Component)
 
 CONF_RLS_ROOT = "rollershutter"
