@@ -30,7 +30,7 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
                              RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btnDownId,
                              const std::string &relUpId, const std::string &relDownId) {
   this->myId = id;  
-  this->name = name;
+  this->set_name(name.c_str());
   this->groupId = groupId;
   this->timeUpDownId = timeUpDownId;
   this->myComponent = myComponent;
@@ -282,24 +282,24 @@ void RollerShutter::CheckTimerStop() {
 /// @brief Status bauen und senden
 void RollerShutter::sendState(double checkValue)
 {
-  ESP_LOGD(TAG, "stateValue %f", checkValue);
   std::string newValue = "window-shutter-";
   if (myState == enRollerShutterState::isUnknown)
     newValue += "error";
   else
   {
-    if (checkValue < 1.0)
+    if (checkValue < 10.0)
       newValue += "0";
-    else if (checkValue >= 10.0)
+    else if ((checkValue >= 10.0) && (checkValue < 30.0))
       newValue += "1";
-    else if (checkValue >= 30.0)
+    else if ((checkValue >= 30.0) && (checkValue < 50.0))
       newValue += "2";
-    else if (checkValue >= 50.0)
+    else if ((checkValue >= 50.0) && (checkValue < 60.0))
       newValue += "3";
-    else if (checkValue >= 60.0)
+    else if ((checkValue >= 60.0) && (checkValue < 90.0))
       newValue += "4";
     else if (checkValue >= 90.0)
       newValue += "5";
+
     if ((myState == enRollerShutterState::isDoDown) ||
         (myState == enRollerShutterState::isGoToGapDown))
         newValue += "-down";

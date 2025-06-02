@@ -245,8 +245,8 @@ class RollerShutter : public text_sensor::TextSensor{
  private:
   /// @brief die Id
   std::string myId;
-  /// @brief Gruppenname
-  std::string name;
+  // /// @brief Gruppenname
+  // std::string name;
   /// @brief der letzte State um das Senden zu verringern
   std::string lastState;
   /** Button-Input-GPIO Hochfahren */
