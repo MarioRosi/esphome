@@ -241,7 +241,7 @@ class Timer {
 };
 
 /** Basisklasse für die Rolladensteuerung, ist ein Rolladen */
-class RollerShutter : public text_sensor::TextSensor, Component{
+class RollerShutter : public text_sensor::TextSensor{
  private:
   /// @brief die Id
   std::string myId;
