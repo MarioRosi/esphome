@@ -1,12 +1,11 @@
 import logging
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import text_sensor
 from esphome.const import CONF_ID, CONF_NAME
 
 MULTI_CONF = True
 
-AUTO_LOAD = ["ethernet", "time", "uart", "i2c", "pcf8574", "binary_sensor", "switch", "logger"]
+AUTO_LOAD = ["ethernet", "time", "uart", "i2c", "pcf8574", "binary_sensor", "text_sensor", "switch", "logger"]
 
 CODEOWNERS = ["@esphome/core"]
 rollershutter_ns = cg.esphome_ns.namespace("rollershutter")
