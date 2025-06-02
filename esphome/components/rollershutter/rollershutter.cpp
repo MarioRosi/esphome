@@ -43,7 +43,7 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
   this->timer = new Timer();
   this->set_object_id(this->myId.c_str());
   ESP_LOGD(TAG, "id = %s", get_object_id().c_str());
-  ESP_LOGD(TAG, "name = %s", get_name().c_str());
+  //ESP_LOGD(TAG, "name = %s", get_name().c_str());
   //ESP_LOGD(TAG, "idHash = %d", get_object_id_hash());
 }
 
