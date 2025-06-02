@@ -30,7 +30,7 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
                              RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btnDownId,
                              const std::string &relUpId, const std::string &relDownId) {
   this->myId = id;  
-  this->set_name(name.c_str());
+  //this->set_name(name.c_str());
   this->groupId = groupId;
   this->timeUpDownId = timeUpDownId;
   this->myComponent = myComponent;
@@ -43,8 +43,8 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
   this->timer = new Timer();
   this->set_object_id(this->myId.c_str());
   ESP_LOGD(TAG, "id = %s", get_object_id().c_str());
-  ESP_LOGD(TAG, "name = %s", get_name().c_str());
-  ESP_LOGD(TAG, "idHash = %d", get_object_id_hash());
+  //ESP_LOGD(TAG, "name = %s", get_name().c_str());
+  //ESP_LOGD(TAG, "idHash = %d", get_object_id_hash());
 }
 
 /// @brief Rollladen zurücksetzten == hochfahren

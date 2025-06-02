@@ -1,8 +1,9 @@
 import logging
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.const import CONF_ID, CONF_NAME
 from esphome.components import text_sensor
+
+from esphome.const import (CONF_ID, CONF_NAME)
 MULTI_CONF = True
 
 AUTO_LOAD = ["ethernet", "time", "uart", "i2c", "pcf8574", "binary_sensor", "text_sensor", "switch", "logger"]
@@ -121,10 +122,10 @@ async def to_code(config):
     LOGGER.info("init.py RollerShutter to_Code Start")
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-    cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
+    cg.add(var.SetIdAndName(str(config[CONF_ID]), config[CONF_NAME]))
     for rlstime in config.get(CONF_RLS_TIMES, []):
         cg.add(var.AddTime(
-            rlstime[CONF_ID].__str__(),
+            str(rlstime[CONF_ID]),
             rlstime[CONF_RLS_TIMES_SU],
             rlstime[CONF_RLS_TIMES_SD],
             rlstime[CONF_RLS_TIMES_SGD]
@@ -133,12 +134,12 @@ async def to_code(config):
         rlssundowner = rlsgroup.get(CONF_RLS_SD)
         if CONF_RLS_SD_OFF in rlssundowner:
             cg.add(var.AddGroup(
-                rlsgroup[CONF_ID].__str__(),
+                str(rlsgroup[CONF_ID]),
                 rlsgroup[CONF_NAME]
             ))
         else:
             cg.add(var.AddGroup(
-                rlsgroup[CONF_ID].__str__(),
+                str(rlsgroup[CONF_ID]),
                 rlsgroup[CONF_NAME],
                 rlssundowner[CONF_RLS_SD_MF],
                 rlssundowner[CONF_RLS_SD_MT],
@@ -157,7 +158,7 @@ async def to_code(config):
         ))
     for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
         cg.add(var.AddShutter(
-            rlshutter[CONF_ID].__str__(),
+            str(rlshutter[CONF_ID]),
             rlshutter[CONF_NAME],
             rlshutter[CONF_RLS_SH_GRP],
             rlshutter[CONF_RLS_SH_TIM],
