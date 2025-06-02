@@ -179,7 +179,7 @@ class Timer {
     bool timerIsRunning;
   public:
     /// @brief Konstructor
-    Timer() {secondsIsRunning = -1;}
+    Timer() {secondsIsRunning = -1; timerIsRunning = false;}
     /// @brief Startet den Timer
     /// @param runningTimeMs 
     /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
