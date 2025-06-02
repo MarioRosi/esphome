@@ -160,7 +160,7 @@ void RollerShutter::Stop() {
           if (this->closingPosition >= 100.0) {
             this->closingPosition = 100.0;
             this->myState = enRollerShutterState::isDown;
-          }
+          }          
         }
         break;
       case enRollerShutterState::isStarted:
@@ -197,6 +197,7 @@ void RollerShutter::Stop() {
         ESP_LOGD(TAG, "Stop not taked mystate==%d", (int)myState);
         break;
     }
+    ESP_LOGD(TAG,"Stop with closingPosition=%f", closingPosition);
     sendState(closingPosition);
   }
 }
@@ -281,6 +282,7 @@ void RollerShutter::CheckTimerStop() {
 /// @brief Status bauen und senden
 void RollerShutter::sendState(double checkValue)
 {
+  ESP_LOGD(TAG, "stateValue %f", checkValue);
   std::string newValue = "window-shutter-";
   if (myState == enRollerShutterState::isUnknown)
     newValue += "error";
@@ -288,15 +290,15 @@ void RollerShutter::sendState(double checkValue)
   {
     if (checkValue < 1.0)
       newValue += "0";
-    else if (checkValue > 10.0)
+    else if (checkValue >= 10.0)
       newValue += "1";
-    else if (checkValue > 30.0)
+    else if (checkValue >= 30.0)
       newValue += "2";
-    else if (checkValue > 50.0)
+    else if (checkValue >= 50.0)
       newValue += "3";
-    else if (checkValue > 60.0)
+    else if (checkValue >= 60.0)
       newValue += "4";
-    else if (checkValue > 90.0)
+    else if (checkValue >= 90.0)
       newValue += "5";
     if ((myState == enRollerShutterState::isDoDown) ||
         (myState == enRollerShutterState::isGoToGapDown))
@@ -307,8 +309,12 @@ void RollerShutter::sendState(double checkValue)
         newValue += "-up";
   }
   newValue += ".svg";
-  ESP_LOGD(TAG, "Send state %s", newValue.c_str());
-  this->internal_send_state_to_frontend(newValue);
+  if (lastState.compare(newValue) != 0)
+  {
+    lastState = newValue;
+    ESP_LOGD(TAG, "Send state %s", newValue.c_str());
+    this->internal_send_state_to_frontend(newValue);
+  }
 }
 
 /// @brief EventManager für ButtonUp
