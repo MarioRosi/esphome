@@ -43,6 +43,8 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
   this->timer = new Timer();
   this->set_object_id(this->myId.c_str());
   ESP_LOGD(TAG, "id = %s", get_object_id().c_str());
+  ESP_LOGD(TAG, "name = %s", get_name().c_str());
+  ESP_LOGD(TAG, "idHash = %d", get_object_id_hash());
 }
 
 /// @brief Rollladen zurücksetzten == hochfahren
@@ -217,7 +219,7 @@ void RollerShutter::MySetup() {
         this->relUp = getSwitchById(this->relUpId);
         if (std::strlen(this->relDownId.c_str()) > 1) {
           this->relDown = getSwitchById(this->relDownId);
-          this->hasSetup = true;
+          this->hasSetup = true;          
           App.register_text_sensor(this);
           ResetRollerShutter();
         }        
