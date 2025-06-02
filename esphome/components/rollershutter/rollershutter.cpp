@@ -30,7 +30,7 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
                              RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btnDownId,
                              const std::string &relUpId, const std::string &relDownId) {
   this->myId = id;  
-  this->set_name(name.c_str());
+  //this->set_name(name.c_str());
   this->groupId = groupId;
   this->timeUpDownId = timeUpDownId;
   this->myComponent = myComponent;
