@@ -121,7 +121,6 @@ async def to_code(config):
     LOGGER.info("init.py RollerShutter to_Code Start")
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-    cg.register
     cg.add(var.SetIdAndName(config[CONF_ID].__str__(), config[CONF_NAME]))
     for rlstime in config.get(CONF_RLS_TIMES, []):
         cg.add(var.AddTime(
