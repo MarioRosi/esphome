@@ -164,7 +164,7 @@ void RollerShutterComponent::InitialRun() {
     shutter->SetTimeUpDown(timeUD);
     RL_Group *group = GetGroupById(shutter->GetGroupId());
     shutter->SetGroup(group);
-    shutter->Setup();    
+    shutter->MySetup();    
   }
   ESP_LOGI(TAG, "Initial Run End");
 }

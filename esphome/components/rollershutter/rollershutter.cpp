@@ -46,17 +46,14 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
 /// @brief Rollladen zurücksetzten == hochfahren
 void RollerShutter::ResetRollerShutter() {
   myState = enRollerShutterState::isStarting;
-  ESP_LOGD(TAG, "ResetShutter");
   if (timer->StartTimer(this->timeUpDown->secondUp))
   {
-    ESP_LOGD(TAG, "ResetShutter 1");
     relDown->turn_off();
     relUp->turn_on();
     hasMakeGapCatched = false;
     hasMakeGapOpenCatched = false;
-    ESP_LOGD(TAG, "ResetShutter 2");
+    sendState(closingPosition);
   }  
-  ESP_LOGD(TAG, "ResetShutter 3");
 }
 
 /// @brief Starte das Hochfahren
@@ -79,6 +76,7 @@ bool RollerShutter::StartUp() {
           relDown->turn_off();
           relUp->turn_on();
           this->myState = enRollerShutterState::isDoTop;
+          sendState(closingPosition);
         }
         break;
       case enRollerShutterState::isStarted:
@@ -116,6 +114,7 @@ bool RollerShutter::StartDown() {
           relUp->turn_off();
           relDown->turn_on();
           this->myState = enRollerShutterState::isDoDown;
+          sendState(closingPosition);
         }
         break;
       case enRollerShutterState::isDown:
@@ -202,12 +201,13 @@ void RollerShutter::Stop() {
         ESP_LOGD(TAG, "Stop not taked mystate==%d", (int)myState);
         break;
     }
+    sendState(closingPosition);
   }
 }
 
 
 /// @brief Den Rolladen aktivieren
-void RollerShutter::Setup() {
+void RollerShutter::MySetup() {
   ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
   
   if (std::strlen(this->btnUpId.c_str()) > 1) {
@@ -236,24 +236,35 @@ void RollerShutter::CheckTimerStop() {
     double timeStartToCheck = this->timer->GetSecondsIsRunning();
     if (checkTimer > 0)
     {                
+      double checkvalue = 0.0;
       switch (myState) {
         case enRollerShutterState::isDoTop:
-          if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <= 0.0)
+          checkvalue = this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0;
+          if (checkvalue <= 0.0)
             Stop();
+          else
+            sendState(checkvalue);
           break;
         case enRollerShutterState::isDoDown:
-          if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >= 100.0)
+          checkvalue = (this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0);
+          if ( checkvalue >= 100.0)
             Stop();
+          else
+            sendState(checkvalue);
           break;
         case enRollerShutterState::isGoToGapUp:
-          if ((this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0) <=
-              (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
+          checkvalue = (this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0);
+          if (checkvalue <= (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
             Stop();
+          else
+            sendState(checkvalue);
           break;
         case enRollerShutterState::isGoToGapDown:
-          if ((this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0) >=
-              (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
+          checkvalue = (this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0);
+          if (checkvalue >= (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
             Stop();
+          else
+            sendState(checkvalue);
           break;
       }
     }
@@ -268,6 +279,38 @@ void RollerShutter::CheckTimerStop() {
       // nix tun ich schlafe
     }
   }
+}
+
+/// @brief Status bauen und senden
+void RollerShutter::sendState(double checkValue)
+{
+  std::string newValue = "window-shutter-";
+  if (myState == enRollerShutterState::isUnknown)
+    newValue += "error";
+  else
+  {
+    if (checkValue < 1.0)
+      newValue += "0";
+    else if (checkValue > 10.0)
+      newValue += "1";
+    else if (checkValue > 30.0)
+      newValue += "2";
+    else if (checkValue > 50.0)
+      newValue += "3";
+    else if (checkValue > 60.0)
+      newValue += "4";
+    else if (checkValue > 90.0)
+      newValue += "5";
+    if ((myState == enRollerShutterState::isDoDown) ||
+        (myState == enRollerShutterState::isGoToGapDown))
+        newValue += "-down";
+    else if ((myState == enRollerShutterState::isDoTop) ||
+        (myState == enRollerShutterState::isGoToGapUp))
+        newValue += "-up";
+  }
+  newValue += ".svg";
+  ESP_LOGD(TAG, "Send state %s", newValue.c_str());
+  this->internal_send_state_to_frontend(newValue);
 }
 
 /// @brief EventManager für ButtonUp
@@ -371,6 +414,7 @@ void RollerShutter::StartGap() {
         relUp->turn_on();
         this->myState = enRollerShutterState::isGoToGapUp;
       }
+      sendState(closingPosition);
     }
   }
 }

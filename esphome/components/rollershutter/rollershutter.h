@@ -31,6 +31,7 @@
 #include "esphome/components/binary_sensor/binary_sensor.h"
 #include "esphome/components/switch/switch.h"
 #include "esphome/components/pcf8574/pcf8574.h"
+#include "esphome/components/text_sensor/text_sensor.h"
 
 #include "chrono"
 #include <string>
@@ -74,6 +75,7 @@ enum enRollerShutterState {
   /// @brief Ende der auf Lücke, hochfahren
   isGapEndGoUp = 14,
 };
+
 
 /// @brief Struktur für die Speicherung von Fahrzeiten
 class RL_Time {
@@ -239,7 +241,7 @@ class Timer {
 };
 
 /** Basisklasse für die Rolladensteuerung, ist ein Rolladen */
-class RollerShutter {
+class RollerShutter : public text_sensor::TextSensor, Component{
  private:
   /// @brief die Id
   std::string myId;
@@ -289,6 +291,9 @@ class RollerShutter {
   /// @brief die umschließende Komponente
   RollerShutterComponent *myComponent;
 
+  /// @brief Status bauen und senden
+  /// @param checkValue im Regelfall closingPosition oder die Vorberechnung
+  void sendState(double checkValue);
  public:
   /// @brief Konstruktor
   /// @param id String der id
@@ -306,7 +311,7 @@ class RollerShutter {
 
   /// @brief Rollladen zurücksetzten == hochfahren
   void ResetRollerShutter();
-
+  
   /// @brief Starte das Hochfahren
   /// @return true erfolgreich gestartet, false == gestoppt oder nix zu tun
   bool StartUp();
@@ -355,7 +360,7 @@ class RollerShutter {
   /// @param newState
   void SetShutterState(enRollerShutterState newState) { this->myState = newState; }
   /// @brief Den Rolladen einrichten
-  void Setup();
+  void MySetup();
   /// @brief Gibt das Switch anhand seiner Id zurück
   /// @param hisId
   /// @return
@@ -364,6 +369,8 @@ class RollerShutter {
   /// @param hisId
   /// @return
   binary_sensor::BinarySensor *getBinarySensorById(const std::string &hisId);
+  
+  sensor::StateClass get_state_class() {return sensor::STATE_CLASS_NONE;}
 };
 
 }  // namespace rollershutter
