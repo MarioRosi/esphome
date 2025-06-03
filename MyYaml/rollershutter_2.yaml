@@ -409,7 +409,7 @@ rollershutter:
 
   rshutters:
     - id: rs_sch
-      name: schlafzimmer
+      name: rs_schlafzimmer
       rsgroup_id: HOUSE_WEST
       rstime_id: TIME_NORMAL
       inputup_id: rl_sch_i_u
@@ -418,7 +418,7 @@ rollershutter:
       outputdown_id: rl_sch_o_d      
 
     - id: rs_gar
-      name: garage
+      name: rs_garage
       rsgroup_id: HOUSE_NORTH
       rstime_id: TIME_NORMAL
       inputup_id: rl_gar_i_u
@@ -427,7 +427,7 @@ rollershutter:
       outputdown_id: rl_gar_o_d
 
     - id: rs_ba2
-      name: gad-gross
+      name: rs_gad_gross
       rsgroup_id: HOUSE_EAST
       rstime_id: TIME_NORMAL
       inputup_id: rl_ba2_i_u
@@ -436,7 +436,7 @@ rollershutter:
       outputdown_id: rl_ba2_o_d
 
     - id: rs_sfn
-      name: stube-nord
+      name: rs_stube_nord
       rsgroup_id: HOUSE_EAST
       rstime_id: TIME_NORMAL
       inputup_id: rl_sfn_i_u
@@ -445,7 +445,7 @@ rollershutter:
       outputdown_id: rl_sfn_o_d
 
     - id: rs_sfs
-      name: stubesued
+      name: rs_stube_sued
       rsgroup_id: HOUSE_EAST
       rstime_id: TIME_NORMAL
       inputup_id: rl_sfs_i_u

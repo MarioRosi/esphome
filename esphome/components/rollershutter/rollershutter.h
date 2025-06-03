@@ -241,7 +241,7 @@ class Timer {
 };
 
 /** Basisklasse für die Rolladensteuerung, ist ein Rolladen */
-class RollerShutter : public text_sensor::TextSensor{
+class RollerShutter{
  private:
   /// @brief die Id
   std::string myId;
@@ -278,6 +278,10 @@ class RollerShutter : public text_sensor::TextSensor{
   Timer *timer;
   /// @brief Die Position des Rolladen 0.0 == oben, 100.0 = vollständig geschlossen
   double closingPosition;
+  /// @brief die ID des Textsensor für die Anzeige
+  std::string displayId;
+  /// @brief Die Icon Anzeige
+  text_sensor::TextSensor *display;
 
   /// @brief ID für die zugehörige Gruppe 
   std::string groupId;
@@ -308,7 +312,8 @@ class RollerShutter : public text_sensor::TextSensor{
   /// @param relDownId String, id des Relay down
   RollerShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeUpDownId,
                 RollerShutterComponent *myComponent, const std::string &btnUpId, 
-                const std::string &btDownId, const std::string &relUpId, const std::string &relDownId);
+                const std::string &btDownId, const std::string &relUpId, const std::string &relDownId,
+                const std::string &displayId);
 
   /// @brief Rollladen zurücksetzten == hochfahren
   void ResetRollerShutter();
@@ -370,6 +375,11 @@ class RollerShutter : public text_sensor::TextSensor{
   /// @param hisId
   /// @return
   binary_sensor::BinarySensor *getBinarySensorById(const std::string &hisId);
+
+  /// @brief Gibt den textsensor anhand seiner ID zurück
+  /// @param hisId 
+  /// @return 
+  text_sensor::TextSensor *getTextSensorById(const std::string &hisId);
 };
 
 }  // namespace rollershutter

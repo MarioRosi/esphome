@@ -39,6 +39,7 @@ CONF_RLS_SH_IPU = "inputup_id"
 CONF_RLS_SH_IPD = "inputdown_id"
 CONF_RLS_SH_OSU = "outputup_id"
 CONF_RLS_SH_OSD = "outputdown_id"
+CONF_RLS_SH_DIS = "display_id"
 
 CONF_RLS_ALLSH = "rshutterAll"
 CONF_RLS_ALLSH_IPU = "allinputup_id"
@@ -91,6 +92,7 @@ CONFIG_RLS_SHUTTER = cv.Schema(
         cv.Required(CONF_RLS_SH_IPD): cv.string,
         cv.Required(CONF_RLS_SH_OSU): cv.string,
         cv.Required(CONF_RLS_SH_OSD): cv.string,
+        cv.Required(CONF_RLS_SH_DIS): cv.string,
     }
 )
 

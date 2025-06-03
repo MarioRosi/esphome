@@ -28,7 +28,7 @@ static const char *TAG = "RollerShutter";
 /// @param relDownId String, id des Relay down
 RollerShutter::RollerShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeUpDownId,
                              RollerShutterComponent *myComponent, const std::string &btnUpId, const std::string &btnDownId,
-                             const std::string &relUpId, const std::string &relDownId) {
+                             const std::string &relUpId, const std::string &relDownId, const std::string &displayId) {
   this->myId = id;  
   //this->set_name(name.c_str());
   this->groupId = groupId;
@@ -38,13 +38,10 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
   this->btnDownId = btnDownId;
   this->relUpId = relUpId;
   this->relDownId = relDownId;
+  this->displayId = displayId;
   this->hasSetup = false;
   myState = enRollerShutterState::isUnknown;
   this->timer = new Timer();
-  this->set_object_id(this->myId.c_str());
-  ESP_LOGD(TAG, "id = %s", get_object_id().c_str());
-  //ESP_LOGD(TAG, "name = %s", get_name().c_str());
-  //ESP_LOGD(TAG, "idHash = %d", get_object_id_hash());
 }
 
 /// @brief Rollladen zurücksetzten == hochfahren
@@ -219,9 +216,11 @@ void RollerShutter::MySetup() {
         this->relUp = getSwitchById(this->relUpId);
         if (std::strlen(this->relDownId.c_str()) > 1) {
           this->relDown = getSwitchById(this->relDownId);
-          this->hasSetup = true;          
-          App.register_text_sensor(this);
-          ResetRollerShutter();
+          if (std::strlen(this->displayId.c_str()) > 1) {
+            this->display = getTextSensorById(this->displayId);
+            this->hasSetup = true;                      
+            ResetRollerShutter();
+          }
         }        
       }
     }
@@ -315,7 +314,8 @@ void RollerShutter::sendState(double checkValue)
   {
     lastState = newValue;
     ESP_LOGD(TAG, "Send state %s", newValue.c_str());
-    this->internal_send_state_to_frontend(newValue);
+    if (this->display != nullptr)
+      this->display->publish_state(newValue);
   }
 }
 
@@ -453,6 +453,25 @@ binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::strin
     if (binSesorComponent->get_object_id().compare(hisId) == 0)
     {      
       result = binSesorComponent;
+      idx = sensors.size();
+    }
+  }
+  sensors.clear();
+  return result;
+}
+
+  /// @brief Gibt den textsensor anhand seiner ID zurück
+  /// @param hisId 
+  /// @return 
+  text_sensor::TextSensor *RollerShutter::getTextSensorById(const std::string &hisId) {
+  text_sensor::TextSensor * result = nullptr;
+  std::vector<text_sensor::TextSensor *> sensors = App.get_text_sensors();
+  for (int idx = 0; idx < sensors.size(); idx++) {
+    text_sensor::TextSensor *textSensorComponent = sensors.at(idx);
+    ESP_LOGD(TAG," TextsensorId = %s", textSensorComponent->get_object_id().c_str());
+    if (textSensorComponent->get_object_id().compare(hisId) == 0)
+    {      
+      result = textSensorComponent;
       idx = sensors.size();
     }
   }
