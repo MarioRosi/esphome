@@ -159,7 +159,7 @@ class RollerShutterComponent : public Component {
   /// @param pinOutDown
   void AddShutter(const std::string &id, const std::string &name, const std::string &idGroup, 
                   const std::string &idTime, const std::string &btnUpId, const std::string &btDownId, 
-                  const std::string &relUpId, const std::string &relDownId);
+                  const std::string &relUpId, const std::string &relDownId, const std::string &displayId);
 
   /// @brief EventManager für ButtonUp
   /// @param state 

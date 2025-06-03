@@ -168,4 +168,5 @@ async def to_code(config):
             rlshutter[CONF_RLS_SH_IPD],
             rlshutter[CONF_RLS_SH_OSU],
             rlshutter[CONF_RLS_SH_OSD],
+            rlshutter[CONF_RLS_SH_DIS],
         ))    

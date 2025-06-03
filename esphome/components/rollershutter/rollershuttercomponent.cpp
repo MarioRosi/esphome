@@ -114,8 +114,9 @@ void RollerShutterComponent::AddGroup(const std::string &id, const std::string &
 /// @param pinOutDown
 void RollerShutterComponent::AddShutter(const std::string &id, const std::string &name, const std::string &groupId, const std::string &timeId,
                                         const std::string &btnUpId, const std::string &btnDownId, const std::string &relUpId,
-                                        const std::string &relDownId) {
-  RollerShutter *shutter = new RollerShutter(id, name, groupId, timeId, this, btnUpId, btnDownId, relUpId, relDownId);
+                                        const std::string &relDownId, const std::string &displayId) {
+  RollerShutter *shutter = new RollerShutter(id, name, groupId, timeId, this, btnUpId, 
+                                            btnDownId, relUpId, relDownId, displayId);
   shutters->push_back(shutter);
 }
 
