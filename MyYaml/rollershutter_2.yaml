@@ -70,6 +70,16 @@ i2c:
     ignore_strapping_warning: true
 
 text_sensor:
+  - platform: template
+    name: RL_Schlafzimmer
+  - platform: template
+    name: RL_Garage
+  - platform: template
+    name: RL_Bad
+  - platform: template
+    name: RL_Stube_Sofa
+  - platform: template
+    name: RL_Stube_Schrank
 
 pcf8574:
   - id: inputs_1_8
@@ -409,46 +419,51 @@ rollershutter:
 
   rshutters:
     - id: rs_sch
-      name: rs_schlafzimmer
+      name: schlafzimmer
       rsgroup_id: HOUSE_WEST
       rstime_id: TIME_NORMAL
       inputup_id: rl_sch_i_u
       inputdown_id: rl_sch_i_d
       outputup_id: rl_sch_o_u
       outputdown_id: rl_sch_o_d      
+      display_id: rl_schlafzimmer
 
     - id: rs_gar
-      name: rs_garage
+      name: garage
       rsgroup_id: HOUSE_NORTH
       rstime_id: TIME_NORMAL
       inputup_id: rl_gar_i_u
       inputdown_id: rl_gar_i_d
       outputup_id: rl_gar_o_u
       outputdown_id: rl_gar_o_d
+      display_id: rl_garage
 
     - id: rs_ba2
-      name: rs_gad_gross
+      name: gad-gross
       rsgroup_id: HOUSE_EAST
       rstime_id: TIME_NORMAL
       inputup_id: rl_ba2_i_u
       inputdown_id: rl_ba2_i_d
       outputup_id: rl_ba2_o_u
       outputdown_id: rl_ba2_o_d
+      display_id: rl_bad
 
     - id: rs_sfn
-      name: rs_stube_nord
+      name: stube-nord
       rsgroup_id: HOUSE_EAST
       rstime_id: TIME_NORMAL
       inputup_id: rl_sfn_i_u
       inputdown_id: rl_sfn_i_d
       outputup_id: rl_sfn_o_u
       outputdown_id: rl_sfn_o_d
+      display_id: rl_stube_sofa
 
     - id: rs_sfs
-      name: rs_stube_sued
+      name: stubesued
       rsgroup_id: HOUSE_EAST
       rstime_id: TIME_NORMAL
       inputup_id: rl_sfs_i_u
       inputdown_id: rl_sfs_i_d
       outputup_id: rl_sfs_o_u
       outputdown_id: rl_sfs_o_d
+      display_id: rl_stube_schrank

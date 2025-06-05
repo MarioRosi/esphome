@@ -309,7 +309,7 @@ void RollerShutter::sendState(double checkValue)
         (myState == enRollerShutterState::isStarting))
         newValue += "-up";
   }
-  newValue += ".svg";
+  //newValue += ".svg";
   if (lastState.compare(newValue) != 0)
   {
     lastState = newValue;
