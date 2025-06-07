@@ -230,13 +230,18 @@ void RollerShutterComponent::MySetup() {
     ESP_LOGI(TAG, "MySetup 5-5"); 
           this->btnHolliday = nullptr;
           this->btnHollidayIsRemote = true;
+    ESP_LOGI(TAG, "MySetup 5-6"); 
         }
       }
       this->hasSetup = true;
+    ESP_LOGI(TAG, "MySetup 5-7"); 
+
     }
   } else {
     this->hasSetup = true;
   } 
+ ESP_LOGI(TAG, "MySetup 6"); 
+
   if (this->hasSetup)  
   {   
     ESP_LOGW(TAG, "Setup war erfolgreich");   
