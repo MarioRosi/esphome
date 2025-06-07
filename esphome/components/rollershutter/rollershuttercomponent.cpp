@@ -205,29 +205,34 @@ void RollerShutterComponent::MySetup() {
     }
   } else if (this->allBtnIsSlave) {
     if (this->btnDownId.compare("remote") == 0) {
-      //this->btnUp = nullptr;
+      this->btnUp = nullptr;
       this->btnUpIsRemote = true;
     }
     if (std::strlen(this->btnDownId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") == 0) {
-        //this->btnDown = nullptr;
+        this->btnDown = nullptr;
         this->btnDownIsRemote = true;
       }
       if (std::strlen(this->btnHollidayId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") == 0) {
-          //this->btnHolliday = nullptr;
+          this->btnHolliday = nullptr;
           this->btnHollidayIsRemote = true;
         }
       }
       this->hasSetup = true;
-    ESP_LOGI(TAG, "MySetup 5-7"); 
-
     }
   } else {
     this->hasSetup = true;
   } 
  ESP_LOGI(TAG, "MySetup 6"); 
-
+ ESP_LOGI(TAG, "MySetup 61"); 
+ ESP_LOGI(TAG, "MySetup 62"); 
+ ESP_LOGI(TAG, "MySetup 63"); 
+ ESP_LOGI(TAG, "MySetup 64"); 
+ ESP_LOGI(TAG, "MySetup 65"); 
+ ESP_LOGI(TAG, "MySetup 66"); 
+ ESP_LOGI(TAG, "MySetup 67"); 
+ ESP_LOGI(TAG, "MySetup 68"); 
   if (this->hasSetup)  
   {   
     ESP_LOGW(TAG, "Setup war erfolgreich");   
@@ -236,6 +241,7 @@ void RollerShutterComponent::MySetup() {
   {
     ESP_LOGW(TAG, "Setup NICHT erfolgreich");          
   }
+  ESP_LOGI(TAG, "MySetup 7"); 
 }
 
 /// @brief EventManager für ButtonUp
