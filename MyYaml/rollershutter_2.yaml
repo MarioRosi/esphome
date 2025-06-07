@@ -9,7 +9,6 @@ esphome:
     priority: -100
     then:
       - lambda: |-
-          ESP_LOGI("boot", "nun sollte es spät genug sein !?");
           id(rollershutter_2).MySetup();
           id(rollershutter_2).InitialRun();
 
@@ -398,7 +397,7 @@ rollershutter:
         gaphour: 6
         gapminute: 30
         uphour: 11
-        upminute: 00
+        upminute: 0
 
     - id: HOUSE_WEST
       name: haus-west

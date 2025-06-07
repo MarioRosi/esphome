@@ -1,6 +1,10 @@
 # Die Device-Yaml für die Rolladensteuerung
 # LAN MAC F0:24:F9:5A:F7:7F
 # WIFI MAC F0:24:F9:5A:F7:7C
+substitutions:
+  mydelay_on: 50ms
+  mydelay_off: 300ms
+
 esphome:
   name: roller-shutter-1
   friendly_name: Roller_Shutter_1
@@ -8,7 +12,8 @@ esphome:
     priority: -100
     then:
       - lambda: |-          
-          id(rollershutter_1).InitialRun();       
+          id(rollershutter_1).MySetup();
+          id(rollershutter_1).InitialRun();
 
 esp32:
   board: esp32dev
@@ -16,29 +21,10 @@ esp32:
     type: esp-idf
 
 debug:
-  update_interval: 10s
-
-text_sensor:
-  - platform: debug
-    device:
-      name: "Device Info"
-    reset_reason:
-      name: "Reset Reason"
-
-sensor:
-  - platform: debug
-    free:
-      name: "Heap Free"
-    block:
-      name: "Heap Max Block"
-    loop_time:
-      name: "Loop Time"
-    cpu_frequency:
-      name: "CPU Frequency"
 
 # Logger must be at least debug (default)
 logger:
-  level: debug
+  level: DEBUG
 
 api:
   encryption:
@@ -84,6 +70,18 @@ i2c:
     number: GPIO5
     ignore_strapping_warning: true
 
+text_sensor:
+  - platform: template
+    name: RL_Schlafzimmer
+  - platform: template
+    name: RL_Garage
+  - platform: template
+    name: RL_Bad
+  - platform: template
+    name: RL_Stube_Sofa
+  - platform: template
+    name: RL_Stube_Schrank
+
 pcf8574:
   - id: inputs_1_8
     address: 0x22
@@ -124,6 +122,9 @@ binary_sensor:
       number: 0
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_HAR_I_D"
@@ -132,6 +133,9 @@ binary_sensor:
       number: 1
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_KIT_I_U"
@@ -140,6 +144,9 @@ binary_sensor:
       number: 2
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_KIT_I_D"
@@ -148,6 +155,9 @@ binary_sensor:
       number: 3
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_BA1_I_U"
@@ -156,6 +166,9 @@ binary_sensor:
       number: 4
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_BA1_I_D"
@@ -164,6 +177,9 @@ binary_sensor:
       number: 5
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_KI1_I_U"
@@ -172,6 +188,9 @@ binary_sensor:
       number: 6
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_KI1_I_D"
@@ -180,6 +199,9 @@ binary_sensor:
       number: 7
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_KI2_I_U"
@@ -188,6 +210,9 @@ binary_sensor:
       number: 0
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_KI2_I_D"
@@ -196,6 +221,9 @@ binary_sensor:
       number: 1
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_ARB_I_U"
@@ -204,6 +232,9 @@ binary_sensor:
       number: 2
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_ARB_I_D"
@@ -212,6 +243,9 @@ binary_sensor:
       number: 3
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_STT_I_U"
@@ -220,6 +254,9 @@ binary_sensor:
       number: 4
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_STT_I_D"
@@ -228,6 +265,9 @@ binary_sensor:
       number: 5
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_STF_I_U"
@@ -236,6 +276,9 @@ binary_sensor:
       number: 6
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
   - platform: gpio
     name: "RL_STF_I_D"
@@ -244,6 +287,9 @@ binary_sensor:
       number: 7
       mode: INPUT
       inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off     
 
 switch:
   - platform: gpio
@@ -384,7 +430,7 @@ external_components:
 
 rollershutter:
   id: rollershutter_1
-  name: rollershutter_1
+  name: rollershutter-1
 
   rstimes:
     - id: TIME_NORMAL
@@ -454,6 +500,7 @@ rollershutter:
       inputdown_id: rl_har_i_d
       outputup_id: rl_har_o_u
       outputdown_id: rl_har_o_d
+      display_id: rl_hausanschluss
 
     - id: rs_kit
       name: kueche
@@ -463,6 +510,7 @@ rollershutter:
       inputdown_id: rl_kit_i_d
       outputup_id: rl_kit_o_u
       outputdown_id: rl_kit_o_d
+      display_id: rl_kueche
 
     - id: rs_ba1
       name: kinderbad
@@ -472,6 +520,7 @@ rollershutter:
       inputdown_id: rl_ba1_i_d
       outputup_id: rl_ba1_o_u
       outputdown_id: rl_ba1_o_d
+      display_id: rl_bad_kinder
 
     - id: rs_ki1
       name: kinderzimmer
@@ -481,6 +530,7 @@ rollershutter:
       inputdown_id: rl_ki1_i_d
       outputup_id: rl_ki1_o_u
       outputdown_id: rl_ki1_o_d
+      display_id: rl_kizi_1
 
     - id: rs_ki2
       name: kinder-schlafen
@@ -490,6 +540,7 @@ rollershutter:
       inputdown_id: rl_ki2_i_d
       outputup_id: rl_ki2_o_u
       outputdown_id: rl_ki2_o_d
+      display_id: rl_kizi_2
 
     - id: rs_arb
       name: arbeitsplatz
@@ -499,6 +550,7 @@ rollershutter:
       inputdown_id: rl_arb_i_d
       outputup_id: rl_arb_o_u
       outputdown_id: rl_arb_o_d
+      display_id: rl_arbeit
 
     - id: rs_stt
       name: stube-terassentuer
@@ -508,6 +560,7 @@ rollershutter:
       inputdown_id: rl_stt_i_d
       outputup_id: rl_stt_o_u
       outputdown_id: rl_stt_o_d
+      display_id: rl_stube_ter_tuer
 
     - id: rs_stf
       name: stube-terassenfenster
@@ -517,3 +570,4 @@ rollershutter:
       inputdown_id: rl_stf_i_d
       outputup_id: rl_stf_o_u
       outputdown_id: rl_stf_o_d
+      display_id: rl_stube_terrasse

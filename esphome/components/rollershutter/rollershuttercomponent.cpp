@@ -173,29 +173,36 @@ void RollerShutterComponent::InitialRun() {
 /// @brief onSetup
 void RollerShutterComponent::MySetup() {
   if (this->allBtnIsMaster) {
+    ESP_LOGI(TAG, "MySetup 1"); 
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
+    ESP_LOGI(TAG, "MySetup 2a"); 
         this->btnUp = getBinarySensorById(this->btnUpId);
         this->btnUp->add_on_state_callback([this](bool state){ this->OnButtonUpStateChange(state); });
         this->btnUpIsRemote = false;
       } else {
+    ESP_LOGI(TAG, "MySetup 2b"); 
         this->btnUp = nullptr;
         this->btnUpIsRemote = false;
       }
       if (std::strlen(this->btnDownId.c_str()) > 1) {
         if (this->btnDownId.compare("remote") != 0) {
+    ESP_LOGI(TAG, "MySetup 3a"); 
           this->btnDown = getBinarySensorById(this->btnDownId);
           this->btnDown->add_on_state_callback([this](bool state){ this->OnButtonDownStateChange(state); });
           this->btnDownIsRemote = false;
         } else {
+    ESP_LOGI(TAG, "MySetup 3b"); 
           this->btnDown = nullptr;
           this->btnDownIsRemote = false;
         }
         if (std::strlen(this->btnHollidayId.c_str()) > 1) {
           if (this->btnDownId.compare("remote") != 0) {
+    ESP_LOGI(TAG, "MySetup 4a"); 
             this->btnHolliday = getBinarySensorById(this->btnHollidayId);
             this->btnHollidayIsRemote = false;
           } else {
+    ESP_LOGI(TAG, "MySetup 4b"); 
             this->btnHolliday = nullptr;
             this->btnHollidayIsRemote = false;
           }
@@ -204,17 +211,23 @@ void RollerShutterComponent::MySetup() {
       }
     }
   } else if (this->allBtnIsSlave) {
+    ESP_LOGI(TAG, "MySetup 5"); 
     if (this->btnDownId.compare("remote") == 0) {
+    ESP_LOGI(TAG, "MySetup 5-1"); 
       this->btnUp = nullptr;
       this->btnUpIsRemote = true;
     }
     if (std::strlen(this->btnDownId.c_str()) > 1) {
+    ESP_LOGI(TAG, "MySetup 5-2"); 
       if (this->btnDownId.compare("remote") == 0) {
+    ESP_LOGI(TAG, "MySetup 5-3"); 
         this->btnDown = nullptr;
         this->btnDownIsRemote = true;
       }
       if (std::strlen(this->btnHollidayId.c_str()) > 1) {
+    ESP_LOGI(TAG, "MySetup 5-4"); 
         if (this->btnDownId.compare("remote") == 0) {
+    ESP_LOGI(TAG, "MySetup 5-5"); 
           this->btnHolliday = nullptr;
           this->btnHollidayIsRemote = true;
         }
