@@ -41,12 +41,12 @@ CONF_RLS_SH_OSU = "outputup_id"
 CONF_RLS_SH_OSD = "outputdown_id"
 CONF_RLS_SH_DIS = "display_id"
 
-CONF_RLS_ALLSH = "rshutterAll"
-CONF_RLS_ALLSH_IPU = "allinputup_id"
-CONF_RLS_ALLSH_IPD = "allinputdown_id"
-CONF_RLS_ALLSH_IPH = "allinputhollyday_id"
-CONF_RLS_ALLSH_MAS = "allinput_master"
-CONF_RLS_ALLSH_SLV = "allinput_slave"
+# CONF_RLS_ALLSH = "rshutterAll"
+# CONF_RLS_ALLSH_IPU = "allinputup_id"
+# CONF_RLS_ALLSH_IPD = "allinputdown_id"
+# CONF_RLS_ALLSH_IPH = "allinputhollyday_id"
+# CONF_RLS_ALLSH_MAS = "allinput_master"
+# CONF_RLS_ALLSH_SLV = "allinput_slave"
 
 LOGGER = logging.getLogger(__name__)
 LOGGER.info("init.py RollerShutter Start")
@@ -96,24 +96,12 @@ CONFIG_RLS_SHUTTER = cv.Schema(
     }
 )
 
-CONFIG_RLS_ALLSHUTTER = cv.Schema(
-    {
-        cv.Optional(CONF_RLS_ALLSH_IPU): cv.string,
-        cv.Optional(CONF_RLS_ALLSH_IPD): cv.string,
-        cv.Optional(CONF_RLS_ALLSH_IPH): cv.string,
-        cv.Optional(CONF_RLS_ALLSH_MAS): cv.boolean,
-        cv.Optional(CONF_RLS_ALLSH_SLV): cv.boolean,
-    }
-)
-
-
 CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend(
     {
         cv.GenerateID(): cv.declare_id(RollerShutterComponent),
         cv.Required(CONF_NAME): cv.valid_name,
         cv.Required(CONF_RLS_TIMES): cv.ensure_list(CONFIG_RLS_TIME),
         cv.Required(CONF_RLS_GROUPS): cv.ensure_list(CONFIG_RLS_GROUP),
-        cv.Required(CONF_RLS_ALLSH): cv.ensure_schema(CONFIG_RLS_ALLSHUTTER),
         cv.Required(CONF_RLS_SHUTTERS): cv.ensure_list(CONFIG_RLS_SHUTTER),
     }
 )
@@ -150,14 +138,6 @@ async def to_code(config):
                 rlssundowner[CONF_RLS_SD_UH],
                 rlssundowner[CONF_RLS_SD_UM],
             ))
-    if CONF_RLS_ALLSH in config:
-        cg.add(var.SetButtons(
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPU],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPD],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_IPH],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_MAS],
-            config[CONF_RLS_ALLSH][CONF_RLS_ALLSH_SLV],
-        ))
     for rlshutter in config.get(CONF_RLS_SHUTTERS, []):
         cg.add(var.AddShutter(
             str(rlshutter[CONF_ID]),

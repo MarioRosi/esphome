@@ -1,6 +1,10 @@
 substitutions:
   mydelay_on: 50ms
   mydelay_off: 300ms
+  uartcommand_allup: 0xAC, 0xAB, 0x01
+  uartcommand_alldown: 0xAC, 0xAB, 0x02
+  uartcommand_holiday_on: 0xAC, 0xAB, 0x03
+  uartcommand_holiday_off: 0xAC, 0xAB, 0x04
 
 esphome:
   name: roller-shutter-2
@@ -60,7 +64,21 @@ uart:
   - id: rs485
     tx_pin: GPIO13
     rx_pin: GPIO16
-    baud_rate: 9600
+    baud_rate: 115200
+
+button:
+  - platform: uart
+    id: uart_master_all_up    
+    data: $uartcommand_allup
+  - platform: uart
+    id: uart_master_all_down
+    data: $uartcommand_alldown
+  - platform: uart
+    id: uart_master_holiday_on
+    data: $uartcommand_holiday_on
+  - platform: uart
+    id: uart_master_holiday_off
+    data: $uartcommand_holiday_off
 
 i2c:
   sda: GPIO4
@@ -122,7 +140,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_SCH_I_D"
@@ -133,7 +151,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_GAR_I_U"
@@ -144,7 +162,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_GAR_I_D"
@@ -155,7 +173,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_BA2_I_U"
@@ -166,7 +184,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_BA2_I_D"
@@ -177,7 +195,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_SFN_I_U"
@@ -188,7 +206,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_SFN_I_D"
@@ -199,7 +217,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_SFS_I_U"
@@ -210,7 +228,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "RL_SFS_I_D"
@@ -221,7 +239,7 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
 
   - platform: gpio
     name: "ZEN_I_U"
@@ -232,7 +250,12 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
+    on_press: 
+      then:
+        - button.press: uart_master_all_up
+        - lambda: |-
+            id(rollershutter_2).PressButtonAllUp();
 
   - platform: gpio
     name: "ZEN_I_D"
@@ -243,7 +266,12 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
+    on_press:
+      then:
+        - button.press: uart_master_all_down
+        - lambda: |-
+            id(rollershutter_2).PressButtonAllDown();
 
   - platform: gpio
     name: "URL_I_UD"
@@ -254,7 +282,17 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
+      - delayed_off: $mydelay_off
+    on_press:
+      then:
+        - button.press: uart_master_holiday_on
+        - lambda: |-
+            id(rollershutter_2).SetIsOnHollidayOn();
+    on_release: 
+      then:
+        - button.press: uart_master_holiday_off
+        - lambda: |-
+            id(rollershutter_2).SetIsOnHollidayOff();
 
 switch:
   - platform: gpio
@@ -397,7 +435,7 @@ rollershutter:
         gaphour: 6
         gapminute: 30
         uphour: 11
-        upminute: 0
+        upminute: 00
 
     - id: HOUSE_WEST
       name: haus-west
@@ -408,13 +446,6 @@ rollershutter:
         gapminute: 40
         uphour: 18
         upminute: 55
-
-  rshutterAll:
-    allinputup_id: zen_i_u
-    allinputdown_id: zen_i_d
-    allinputhollyday_id: url_i_ud
-    allinput_master: True
-    allinput_slave: False
 
   rshutters:
     - id: rs_sch
