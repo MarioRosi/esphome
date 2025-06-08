@@ -439,6 +439,8 @@ switch_::Switch *RollerShutter::getSwitchById(const std::string &hisId) {
     }
   }  
   switches.clear();
+  if (result == nullptr)
+    ESP_LOGW(TAG, "switch '%s' not found!", hisId.c_str());
   return result;
 }
 
@@ -457,6 +459,8 @@ binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::strin
     }
   }
   sensors.clear();
+  if (result == nullptr)
+    ESP_LOGW(TAG, "switch '%s' not found!", hisId.c_str());
   return result;
 }
 
@@ -468,7 +472,6 @@ binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::strin
   std::vector<text_sensor::TextSensor *> sensors = App.get_text_sensors();
   for (int idx = 0; idx < sensors.size(); idx++) {
     text_sensor::TextSensor *textSensorComponent = sensors.at(idx);
-    ESP_LOGD(TAG," TextsensorId = %s", textSensorComponent->get_object_id().c_str());
     if (textSensorComponent->get_object_id().compare(hisId) == 0)
     {      
       result = textSensorComponent;
@@ -476,6 +479,8 @@ binary_sensor::BinarySensor *RollerShutter::getBinarySensorById(const std::strin
     }
   }
   sensors.clear();
+  if (result == nullptr)
+    ESP_LOGW(TAG, "text-sensor '%s' not found!", hisId.c_str());
   return result;
 }
 

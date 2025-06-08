@@ -362,6 +362,7 @@ switch_::Switch *RollerShutterComponent::getSwitchById(const std::string &hisId)
       return switchComponent;
     }
   }
+  ESP_LOGW(TAG, "switch '%s' not found!", hisId.c_str());
   return nullptr;
 }
 
@@ -375,6 +376,7 @@ binary_sensor::BinarySensor *RollerShutterComponent::getBinarySensorById(const s
       return binSesorComponent;
     }
   }
+  ESP_LOGW(TAG, "binary sensor '%s' not found!", hisId.c_str());
   return nullptr;
 }
 

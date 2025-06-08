@@ -502,7 +502,7 @@ rollershutter:
       name: hausanschlussraum
       rsgroup_id: HOUSE_SOUTH
       rstime_id: TIME_NORMAL
-      inputup_id: rl_hal_i_u
+      inputup_id: rl_har_i_u
       inputdown_id: rl_har_i_d
       outputup_id: rl_har_o_u
       outputdown_id: rl_har_o_d
