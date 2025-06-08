@@ -335,11 +335,14 @@ void RollerShutterComponent::loop() {
     // zu erst die Buttons abfragen
     if (btnUpIsPress || btnDownIsPress)
     {
+      ESP_LOGD(TAG, "Loop 1");
       // wenn inzwischen beide gedrückt wurden, dann nix machen
       if (!(btnUpIsPress && btnDownIsPress)) 
       {
+        ESP_LOGD(TAG, "Loop 2");
         for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
           RollerShutter *shutter = *itter;
+          ESP_LOGD(TAG, "Loop 3");
           if (this->btnUpIsPress)
             shutter->SetButtonUpIsPress(true);
           else if (this->btnDownIsPress)
