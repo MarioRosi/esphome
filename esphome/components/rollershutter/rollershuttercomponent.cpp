@@ -224,15 +224,6 @@ void RollerShutterComponent::MySetup() {
   } else {
     this->hasSetup = true;
   } 
- ESP_LOGI(TAG, "MySetup 6"); 
- ESP_LOGI(TAG, "MySetup 61"); 
- ESP_LOGI(TAG, "MySetup 62"); 
- ESP_LOGI(TAG, "MySetup 63"); 
- ESP_LOGI(TAG, "MySetup 64"); 
- ESP_LOGI(TAG, "MySetup 65"); 
- ESP_LOGI(TAG, "MySetup 66"); 
- ESP_LOGI(TAG, "MySetup 67"); 
- ESP_LOGI(TAG, "MySetup 68"); 
   if (this->hasSetup)  
   {   
     ESP_LOGW(TAG, "Setup war erfolgreich");   
@@ -241,7 +232,6 @@ void RollerShutterComponent::MySetup() {
   {
     ESP_LOGW(TAG, "Setup NICHT erfolgreich");          
   }
-  ESP_LOGI(TAG, "MySetup 7"); 
 }
 
 /// @brief EventManager für ButtonUp
@@ -350,7 +340,7 @@ void RollerShutterComponent::dump_config() {
     ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Master = %s", this->btnDownIsRemote ? "nein" : "ja");
     ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Master = %s", this->btnUpIsRemote ? "nein" : "ja");
     ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Master = %s", this->btnHollidayIsRemote ? "nein" : "ja");
-  } else if (this->allBtnIsMaster) {
+  } else if (this->allBtnIsSlave) {
     ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Remote = %s", this->btnDownIsRemote ? "ja" : "nein");
     ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Remote = %s", this->btnUpIsRemote ? "ja" : "nein");
     ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Remote = %s", this->btnHollidayIsRemote ? "ja" : "nein");

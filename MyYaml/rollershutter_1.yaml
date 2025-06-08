@@ -72,15 +72,21 @@ i2c:
 
 text_sensor:
   - platform: template
-    name: RL_Schlafzimmer
+    name: RL_Hausanschluss
   - platform: template
-    name: RL_Garage
+    name: RL_Kueche
   - platform: template
-    name: RL_Bad
+    name: RL_Bad_Kinder
   - platform: template
-    name: RL_Stube_Sofa
+    name: RL_KiZi_1
   - platform: template
-    name: RL_Stube_Schrank
+    name: RL_KiZi_2
+  - platform: template
+    name: RL_Arbeit
+  - platform: template
+    name: RL_Stube_Ter_Tuer
+  - platform: template
+    name: RL_Stube_Terrasse
 
 pcf8574:
   - id: inputs_1_8
