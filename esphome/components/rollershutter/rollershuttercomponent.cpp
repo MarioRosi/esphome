@@ -172,6 +172,7 @@ void RollerShutterComponent::InitialRun() {
 
 /// @brief onSetup
 void RollerShutterComponent::MySetup() {
+  ESP_LOGW(TAG, "Start Setup");
   if (this->allBtnIsMaster) {
     if (std::strlen(this->btnUpId.c_str()) > 1) {
       if (this->btnDownId.compare("remote") != 0) {
@@ -225,12 +226,12 @@ void RollerShutterComponent::MySetup() {
     this->hasSetup = true;
   } 
   if (this->hasSetup)  
-  {   
-    ESP_LOGW(TAG, "Setup war erfolgreich");   
+  {
+    ESP_LOGW(TAG, "Setup war erfolgreich");
   }
   else
   {
-    ESP_LOGW(TAG, "Setup NICHT erfolgreich");          
+    ESP_LOGW(TAG, "Setup NICHT erfolgreich");
   }
 }
 
