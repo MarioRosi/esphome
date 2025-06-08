@@ -346,15 +346,17 @@ void RollerShutter::OnButtonDownStateChange(bool state)
 /// @param value
 void RollerShutter::SetButtonUpIsPress(bool value) 
 {
-   this->btnUpIsPress = value; 
-   this->MakeButtons();
+  ESP_LOGD(TAG, "Button up send '%s'", value ? "true" : "false");
+  this->btnUpIsPress = value; 
+  this->MakeButtons();
 }
 /// @brief Setzt den Wert für Button Down ist gedrückt (für Zentraltaster)
 /// @param value
 void  RollerShutter::SetButtonDownIsPress(bool value) 
 {
-   this->btnDownIsPress = value; 
-   this->MakeButtons();
+  ESP_LOGD(TAG, "Button down send '%s'", value ? "true" : "false");
+  this->btnDownIsPress = value; 
+  this->MakeButtons();
 }
 
 
