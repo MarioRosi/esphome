@@ -274,9 +274,9 @@ void RollerShutterComponent::PressButtonAllUp()
 /// @brief ButtonAllDown ist gedrückt
 void RollerShutterComponent::PressButtonAllDown()
 {
-  if (!this->btnUpIsPress)
+  if (!this->btnDownIsPress)
   {
-    this->btnUpIsPress = true;
+    this->btnDownIsPress = true;
     ESP_LOGI(TAG, "Press button all down raise");
   }
 }
