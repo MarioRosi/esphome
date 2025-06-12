@@ -29,8 +29,6 @@ RollerShutterComponent::RollerShutterComponent() {
   this->movingTimes = new std::vector<RL_Time *>();
   this->groups = new std::vector<RL_Group *>();
   this->shutters = new std::vector<RollerShutter *>();
-  this->isStarted = true;
-  this->hasSetup = false;
 }
 
 /// @brief name und Id setzten  
