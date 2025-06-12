@@ -194,56 +194,54 @@ void RollerShutterComponent::SetIsOnHollidayOff()
 
 /// @brief onLoop
 void RollerShutterComponent::loop() {  
-  if (hasSetup) {
-    // Wenn Urlaubssteuerung, hoch und runter zufällig zwischen 5-7 und 17-19
-    if (this->btnHollidayIsOn) {
-      int checkHourUp = 5;
-      int checkHourDown = 17;
-      int checkMinUpDown = (int) (118.0 * random_float());
-      if (checkMinUpDown > 59) {
-        checkHourDown++;
-        checkHourUp++;
-        checkMinUpDown -= 59;
+  // Wenn Urlaubssteuerung, hoch und runter zufällig zwischen 5-7 und 17-19
+  if (this->btnHollidayIsOn) {
+    int checkHourUp = 5;
+    int checkHourDown = 17;
+    int checkMinUpDown = (int) (118.0 * random_float());
+    if (checkMinUpDown > 59) {
+      checkHourDown++;
+      checkHourUp++;
+      checkMinUpDown -= 59;
+    }
+    ESPTime timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
+    if (!this->bthHollidayHasCatched) {
+      if ((timestampCheck.hour == checkHourUp) && (timestampCheck.minute == checkMinUpDown)) {
+        this->bthHollidayHasCatched = true;
+        this->btnUpIsPress = true;
+      } else if ((timestampCheck.hour == checkHourDown) && (timestampCheck.minute == checkMinUpDown)) {
+        this->bthHollidayHasCatched = true;
+        this->btnDownIsPress = true;
       }
-      ESPTime timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
-      if (!this->bthHollidayHasCatched) {
-        if ((timestampCheck.hour == checkHourUp) && (timestampCheck.minute == checkMinUpDown)) {
-          this->bthHollidayHasCatched = true;
-          this->btnUpIsPress = true;
-        } else if ((timestampCheck.hour == checkHourDown) && (timestampCheck.minute == checkMinUpDown)) {
-          this->bthHollidayHasCatched = true;
-          this->btnDownIsPress = true;
-        }
-      } else {
-        if (timestampCheck.hour == checkHourUp + 4) {
-          this->bthHollidayHasCatched = false;
-        } else if (timestampCheck.hour == checkHourDown + 4) {
-          this->bthHollidayHasCatched = false;
-        }
+    } else {
+      if (timestampCheck.hour == checkHourUp + 4) {
+        this->bthHollidayHasCatched = false;
+      } else if (timestampCheck.hour == checkHourDown + 4) {
+        this->bthHollidayHasCatched = false;
       }
     }
-    // zu erst die Buttons abfragen
-    if (btnUpIsPress || btnDownIsPress)
+  }
+  // zu erst die Buttons abfragen
+  if (btnUpIsPress || btnDownIsPress)
+  {
+    // wenn inzwischen beide gedrückt wurden, dann nix machen
+    if (!(btnUpIsPress && btnDownIsPress)) 
     {
-      // wenn inzwischen beide gedrückt wurden, dann nix machen
-      if (!(btnUpIsPress && btnDownIsPress)) 
-      {
-        for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
-          RollerShutter *shutter = *itter;
-          if (this->btnUpIsPress)
-            shutter->SetButtonUpIsPress(true);
-          else if (this->btnDownIsPress)
-            shutter->SetButtonDownIsPress(true);
-        }
+      for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
+        RollerShutter *shutter = *itter;
+        if (this->btnUpIsPress)
+          shutter->SetButtonUpIsPress(true);
+        else if (this->btnDownIsPress)
+          shutter->SetButtonDownIsPress(true);
       }
-      this->btnUpIsPress = false;
-      this->btnDownIsPress = false;
     }
-    for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
-      RollerShutter *shutter = *itter;
-      shutter->CheckTimerStartGap();
-      shutter->CheckTimerStop();
-    }
+    this->btnUpIsPress = false;
+    this->btnDownIsPress = false;
+  }
+  for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
+    RollerShutter *shutter = *itter;
+    shutter->CheckTimerStartGap();
+    shutter->CheckTimerStop();
   }
 }
 

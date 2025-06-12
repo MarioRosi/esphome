@@ -65,12 +65,6 @@ class RollerShutterComponent : public Component {
   bool btnHollidayIsOn;
   /// @brief Das Ereigniss wurde erzeugt
   bool bthHollidayHasCatched;
-
-  /// @brief true, solang die erste Runde nicht abgeschlossen ist
-  bool isStarted;
-  /// @brief true, wenn das Setup abgeschlossen ist
-  bool hasSetup;
-
  public:
   /// @brief Konstruktor
   RollerShutterComponent();

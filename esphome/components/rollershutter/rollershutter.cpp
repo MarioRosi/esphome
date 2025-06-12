@@ -236,7 +236,6 @@ void RollerShutter::CheckTimerStop() {
     double timeStartToCheck = this->timer->GetSecondsIsRunning();
     if (checkTimer > 0)
     {
-      ESP_LOGD(TAG, "mustRunning");
       double checkvalue = 0.0;
       switch (myState) {
         case enRollerShutterState::isDoTop:
