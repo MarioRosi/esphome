@@ -239,9 +239,14 @@ void RollerShutter::CheckTimerStop() {
       double checkvalue = 0.0;
       switch (myState) {
         case enRollerShutterState::isDoTop:
+        case enRollerShutterState::isStarting:
           checkvalue = this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0;
           if (checkvalue <= 0.0)
+          {
+            if (myState == enRollerShutterState::isStarting)
+              myState = enRollerShutterState::isStarted;
             Stop();
+          }
           else
             sendState(checkvalue);
           break;
@@ -289,9 +294,7 @@ void RollerShutter::sendState(double checkValue)
     newValue += "error";
   else
   {
-    if (checkValue < 0)
-      newValue += "error";
-    else if (checkValue < 10.0)
+    if (checkValue < 10.0)
       newValue += "0";
     else if ((checkValue >= 10.0) && (checkValue < 30.0))
       newValue += "1";
@@ -388,11 +391,13 @@ void RollerShutter::CheckTimerStartGap() {
           if ((timestampCheck.hour == this->group->sundownner->gapHour) &&
               (timestampCheck.minute == this->group->sundownner->gapMinute) && !hasMakeGapCatched) {
             hasMakeGapCatched = true;
+            ESP_LOGD(TAG, "Start make gap!");
             StartGap();
           } else if ((timestampCheck.hour == this->group->sundownner->upHoure) &&
                      (timestampCheck.minute == this->group->sundownner->upMinute) && !hasMakeGapOpenCatched) {
             hasMakeGapOpenCatched = true;
             this->myState == enRollerShutterState::isGapEndGoUp;
+            ESP_LOGD(TAG, "Gap-Time is END, open Shutter.");
             StartUp();
           } else if ((timestampCheck.hour == this->group->sundownner->upHoure + 1) &&
                      (timestampCheck.minute == this->group->sundownner->upMinute) && hasMakeGapOpenCatched &&
