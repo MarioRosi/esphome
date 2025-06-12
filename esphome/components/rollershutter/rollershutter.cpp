@@ -72,6 +72,7 @@ bool RollerShutter::StartUp() {
       case enRollerShutterState::isStopDoDown:
       case enRollerShutterState::isStopDoTop:
       case enRollerShutterState::isDown:
+      case enRollerShutterState::isGapEndGoUp:
         if(this->timer->StartTimer(this->timeUpDown->secondUp))
         {
           relDown->turn_off();
@@ -288,7 +289,9 @@ void RollerShutter::sendState(double checkValue)
     newValue += "error";
   else
   {
-    if (checkValue < 10.0)
+    if (checkValue < 0)
+      newValue += "error";
+    else if (checkValue < 10.0)
       newValue += "0";
     else if ((checkValue >= 10.0) && (checkValue < 30.0))
       newValue += "1";
