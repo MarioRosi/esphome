@@ -239,14 +239,9 @@ void RollerShutter::CheckTimerStop() {
       double checkvalue = 0.0;
       switch (myState) {
         case enRollerShutterState::isDoTop:
-        case enRollerShutterState::isStarting:
           checkvalue = this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0;
           if (checkvalue <= 0.0)
-          {
-            if (myState == enRollerShutterState::isStarting)
-              myState = enRollerShutterState::isStarted;
             Stop();
-          }
           else
             sendState(checkvalue);
           break;
@@ -273,7 +268,7 @@ void RollerShutter::CheckTimerStop() {
           break;
       }
     }
-    else if (checkTimer== 0)
+    else if (checkTimer == 0)
     {
       if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
       ESP_LOGD("RollerShutter", "Timer is stopped after %f seconds", this->timer->GetSecondsIsRunning());
