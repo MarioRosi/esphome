@@ -57,31 +57,6 @@ class RollerShutterComponent : public Component {
   std::vector<RL_Group *> *groups;
   /// @brief die Rolläden
   std::vector<RollerShutter *> *shutters;
-
-  /*
-  /// @brief Ich bin für Alle Hoch/Runter/Holliday Buttons der Master/Sender
-  bool allBtnIsMaster;
-  /// @brief Ich bin für Alle Hoch/Runter/Holliday Buttons der Slave/Empfänger
-  bool allBtnIsSlave;
-  /// @brief Button-Input-GPIO ALLE Hochfahren
-  std::string btnUpId;
-  /// @brief Pointer auf den GPIO-Pin Btn-Alle-Up
-  binary_sensor::BinarySensor *btnUp;
-  /// @brief Button-Input-GPIO ALLE Runterfahren
-  std::string btnDownId;
-  /// @brief der Button Up wird per Remote ausgelesen
-  bool btnUpIsRemote;
-  /// @brief Pointer auf den GPIO-Pin Btn-Alle-Down
-  binary_sensor::BinarySensor *btnDown;
-  /// @brief der Button Down wird per Remote ausgelesen
-  bool btnDownIsRemote;
-  /// @brief Button-Input-GPIO Urlaubsmodus
-  std::string btnHollidayId;
-  /// @brief Pointer auf den GPIO-Pin Urlaubsmodus
-  binary_sensor::BinarySensor *btnHolliday;
-  /// @brief der Button Urlaubsmodus wird per Remote ausgelesen
-  bool btnHollidayIsRemote;
-  */
   /// @brief der Button Up wurde gedrückt
   bool btnUpIsPress;
   /// @brief der Button Down wurde gedrückt
@@ -105,17 +80,6 @@ class RollerShutterComponent : public Component {
 
   /// @brief name und Id setzten  
   void SetIdAndName(const std::string &myId, const std::string &myName);
-
-  /*
-  /// @brief Buttons für alle setzten
-  /// @param btnUpId
-  /// @param btnDownId
-  /// @param btnHollidayId
-  /// @param allInputIsMaster
-  /// @param allInputIsSlave
-  void SetButtons(const std::string &btnUpId, const std::string &btnDownId, const std::string &btnHollidayId, 
-                  bool allInputIsMaster, bool allInputIsSlave);
-  */
 
   /// @brief Fügt eine RL_Time der Liste hinzu
   /// @param id 
@@ -187,31 +151,11 @@ class RollerShutterComponent : public Component {
   /// @brief Erstes Ausführen
   void InitialRun();
 
-  /*
-  /// @brief onSetup
-  void setup() override;
-  */
-
-  /// @brief eigenes Setup
-  void MySetup();
-
   /// @brief onLoop
   void loop() override;
 
   /// @brief Dump-Config
   void dump_config() override;
-
-  /*
-  /// @brief Gibt das Switch anhand seiner Id zurück
-  /// @param hisId
-  /// @return
-  switch_::Switch *getSwitchById(const std::string &hisId);
-
-  /// @brief Gibt den Sensor anhand seiner Id Zurück
-  /// @param hisId
-  /// @return
-  binary_sensor::BinarySensor *getBinarySensorById(const std::string &hisId);
-  */
 
 };
 

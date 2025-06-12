@@ -31,11 +31,6 @@ RollerShutterComponent::RollerShutterComponent() {
   this->shutters = new std::vector<RollerShutter *>();
   this->isStarted = true;
   this->hasSetup = false;
-  /*
-  this->btnUpIsRemote = false;
-  this->btnDownIsRemote = false;
-  this->btnHollidayIsRemote = false;
-  */
 }
 
 /// @brief name und Id setzten  
@@ -45,22 +40,6 @@ void RollerShutterComponent::SetIdAndName(const std::string &myId, const std::st
   this->myName = myName;
 }
 
-/*
-/// @brief Buttons für alle setzten
-/// @param btnUpId
-/// @param btnDownId
-/// @param btnHollidayId
-/// @param allInputIsMaster
-/// @param allInputIsSlave
-void RollerShutterComponent::SetButtons(const std::string &btnUpId, const std::string &btnDownId, const std::string &btnHollidayId,
-                                        bool allInputIsMaster, bool allInputIsSlave) {
-  this->btnUpId = btnUpId;
-  this->btnDownId = btnDownId;
-  this->btnHollidayId = btnHollidayId;
-  this->allBtnIsMaster = allInputIsMaster;
-  this->allBtnIsSlave = allInputIsSlave;
-}
-*/
 RollerShutterComponent::~RollerShutterComponent() {
   this->movingTimes->clear();
   this->groups->clear();
@@ -172,95 +151,6 @@ void RollerShutterComponent::InitialRun() {
   ESP_LOGI(TAG, "Initial Run End");
 }
 
-/// @brief onSetup
-void RollerShutterComponent::MySetup() {
-  ESP_LOGW(TAG, "Start Setup");
-  /*
-  if (this->allBtnIsMaster) {
-    if (std::strlen(this->btnUpId.c_str()) > 1) {
-      if (this->btnDownId.compare("remote") != 0) {
-        this->btnUp = getBinarySensorById(this->btnUpId);
-        this->btnUp->add_on_state_callback([this](bool state){ this->OnButtonUpStateChange(state); });
-        this->btnUpIsRemote = false;
-      } else {
-        this->btnUp = nullptr;
-        this->btnUpIsRemote = false;
-      }
-      if (std::strlen(this->btnDownId.c_str()) > 1) {
-        if (this->btnDownId.compare("remote") != 0) {
-          this->btnDown = getBinarySensorById(this->btnDownId);
-          this->btnDown->add_on_state_callback([this](bool state){ this->OnButtonDownStateChange(state); });
-          this->btnDownIsRemote = false;
-        } else {
-          this->btnDown = nullptr;
-          this->btnDownIsRemote = false;
-        }
-        if (std::strlen(this->btnHollidayId.c_str()) > 1) {
-          if (this->btnDownId.compare("remote") != 0) {
-            this->btnHolliday = getBinarySensorById(this->btnHollidayId);
-            this->btnHollidayIsRemote = false;
-          } else {
-            this->btnHolliday = nullptr;
-            this->btnHollidayIsRemote = false;
-          }
-        }
-        this->hasSetup = true;
-      }
-    }
-  } else if (this->allBtnIsSlave) {
-    if (this->btnDownId.compare("remote") == 0) {
-      this->btnUp = nullptr;
-      this->btnUpIsRemote = true;
-    }
-    if (std::strlen(this->btnDownId.c_str()) > 1) {
-      if (this->btnDownId.compare("remote") == 0) {
-        this->btnDown = nullptr;
-        this->btnDownIsRemote = true;
-      }
-      if (std::strlen(this->btnHollidayId.c_str()) > 1) {
-        if (this->btnDownId.compare("remote") == 0) {
-          this->btnHolliday = nullptr;
-          this->btnHollidayIsRemote = true;
-        }
-      }
-      this->hasSetup = true;
-    }
-  } else {
-    this->hasSetup = true;
-  } 
-  */
-  this->hasSetup = true;
-  if (this->hasSetup)  
-  {
-    ESP_LOGW(TAG, "Setup war erfolgreich");
-  }
-  else
-  {
-    ESP_LOGW(TAG, "Setup NICHT erfolgreich");
-  }
-}
-/*
-/// @brief EventManager für ButtonUp
-/// @param state 
-void RollerShutterComponent::OnButtonUpStateChange(bool state)
-{
-  if (state) 
-  {
-    this->btnUpIsPress = true;
-    ESP_LOGI(TAG, "Button All-Up id= %s is Press", this->btnUpId.c_str());    
-  }
-}
-/// @brief EventManager für ButtonDown
-/// @param state 
-void RollerShutterComponent::OnButtonDownStateChange(bool state)
-{
-  if (state) 
-  {
-    this->btnDownIsPress = true;
-    ESP_LOGI(TAG, "Button All-Down id= %s is Press", this->btnDownId.c_str());    
-  }
-}
-*/
 /// @brief ButtonAllUp ist gedrückt
 void RollerShutterComponent::PressButtonAllUp()
 {
@@ -335,14 +225,11 @@ void RollerShutterComponent::loop() {
     // zu erst die Buttons abfragen
     if (btnUpIsPress || btnDownIsPress)
     {
-      ESP_LOGD(TAG, "Loop 1");
       // wenn inzwischen beide gedrückt wurden, dann nix machen
       if (!(btnUpIsPress && btnDownIsPress)) 
       {
-        ESP_LOGD(TAG, "Loop 2");
         for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
           RollerShutter *shutter = *itter;
-          ESP_LOGD(TAG, "Loop 3");
           if (this->btnUpIsPress)
             shutter->SetButtonUpIsPress(true);
           else if (this->btnDownIsPress)
@@ -364,50 +251,7 @@ void RollerShutterComponent::loop() {
 void RollerShutterComponent::dump_config() {
   ESP_LOGCONFIG(TAG, "Rollershutter '%s'", this->myName.c_str());
   ESP_LOGCONFIG(TAG, "  Anzahl der Rolläden = %zu", this->shutters->size());
-  /*
-  if (this->allBtnIsMaster) {
-    ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Master = %s", this->btnDownIsRemote ? "nein" : "ja");
-    ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Master = %s", this->btnUpIsRemote ? "nein" : "ja");
-    ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Master = %s", this->btnHollidayIsRemote ? "nein" : "ja");
-  } else if (this->allBtnIsSlave) {
-    ESP_LOGCONFIG(TAG, "  Alles Runter, ich bin Remote = %s", this->btnDownIsRemote ? "ja" : "nein");
-    ESP_LOGCONFIG(TAG, "  Alles Hoch, ich bin Remote = %s", this->btnUpIsRemote ? "ja" : "nein");
-    ESP_LOGCONFIG(TAG, "  Urlaubsschalter, ich bin Remote = %s", this->btnHollidayIsRemote ? "ja" : "nein");
-  } else {
-    ESP_LOGCONFIG(TAG, "  Alles Runter, wird nicht genutzt");
-    ESP_LOGCONFIG(TAG, "  Alles Hoch, wird nicht genutzt");
-    ESP_LOGCONFIG(TAG, "  Urlaubsschalter, wird nicht genutzt");
-  }
-  */
-}
-/*
-/// @brief Gibt das Switch anhand seiner Id zurück
-/// @param hisId
-/// @return
-switch_::Switch *RollerShutterComponent::getSwitchById(const std::string &hisId) {
-  for (auto *switchComponent : App.get_switches()) {
-    if (switchComponent->get_object_id().compare(hisId) == 0)
-    {
-      return switchComponent;
-    }
-  }
-  ESP_LOGW(TAG, "switch '%s' not found!", hisId.c_str());
-  return nullptr;
 }
 
-/// @brief Gibt den Sensor anhand seiner Id Zurück
-/// @param hisId
-/// @return
-binary_sensor::BinarySensor *RollerShutterComponent::getBinarySensorById(const std::string &hisId) {
-  for (auto *binSesorComponent : App.get_binary_sensors()) {
-    if (binSesorComponent->get_object_id().compare(hisId) == 0)
-    {
-      return binSesorComponent;
-    }
-  }
-  ESP_LOGW(TAG, "binary sensor '%s' not found!", hisId.c_str());  
-  return nullptr;
-}
-*/
 }  // namespace rollershutter
 }  // namespace esphome
