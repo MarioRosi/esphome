@@ -395,8 +395,8 @@ void RollerShutter::CheckTimerStartGap() {
             ESP_LOGD(TAG, "Gap-Time is END, open shutter.");
             StartUp();
           } else if ((timestampCheck.hour == this->group->sundownner->upHoure + 1) &&
-                     (timestampCheck.minute == this->group->sundownner->upMinute) && hasMakeGapOpenCatched &&
-                     hasMakeGapCatched) {
+                     (timestampCheck.minute == this->group->sundownner->upMinute) && (hasMakeGapOpenCatched ||
+                     hasMakeGapCatched)) {
             ESP_LOGD(TAG, "Gap-reset catched.");
             hasMakeGapCatched = false;
             hasMakeGapOpenCatched = false;
