@@ -71,6 +71,7 @@ bool RollerShutter::StartUp() {
       case enRollerShutterState::isDoDown:
       case enRollerShutterState::isGoToGapDown:
       case enRollerShutterState::isGoToGapUp:
+        ESP_LOGD(TAG, "Make StartUp->Stop");
         Stop();
         break;
       case enRollerShutterState::isStopDoDown:
@@ -79,6 +80,7 @@ bool RollerShutter::StartUp() {
       case enRollerShutterState::isGapEndGoUp:
         if(this->timer->StartTimer(this->timeUpDown->secondUp))
         {
+          ESP_LOGD(TAG, "Make StartUp, Open Relais UP");
           relDown->turn_off();
           relUp->turn_on();
           this->myState = enRollerShutterState::isDoTop;
@@ -91,6 +93,7 @@ bool RollerShutter::StartUp() {
         // nix tun, alles i.O.
         break;
       case enRollerShutterState::isUnknown:
+        ESP_LOGD(TAG, "Make StartUp, Reset Rollershutter");
         ResetRollerShutter();
         break;
     }
@@ -106,6 +109,7 @@ bool RollerShutter::StartDown() {
     switch (myState) {
       case enRollerShutterState::isDoTop:
       case enRollerShutterState::isDoDown:
+        ESP_LOGD(TAG, "Make StartDown-Stop");
         Stop();
         break;
       case enRollerShutterState::isStarted:
@@ -117,6 +121,7 @@ bool RollerShutter::StartDown() {
         // Timer für ausschalten erzeugen
         if(this->timer->StartTimer(this->timeUpDown->secondDown))
         {
+          ESP_LOGD(TAG, "Make StartDown, Open Relais Down");
           relUp->turn_off();
           relDown->turn_on();
           this->myState = enRollerShutterState::isDoDown;
@@ -128,6 +133,7 @@ bool RollerShutter::StartDown() {
         // nix tun, alles i.O.
         break;
       case enRollerShutterState::isUnknown:
+          ESP_LOGD(TAG, "Make StartDown, Reset Rollershutter");
         ResetRollerShutter();
         break;
     }
@@ -369,9 +375,15 @@ void  RollerShutter::SetButtonDownIsPress(bool value)
 void RollerShutter::MakeButtons() {
   if (hasSetup) {
     if (this->btnUpIsPress)
+    {
+      ESP_LOGD(TAG, "Make StartUp");
       StartUp();
+    }
     else if (this->btnDownIsPress)
+    {
+      ESP_LOGD(TAG, "Make StartDown");
       StartDown();
+    }
     this->btnUpIsPress = false;
     this->btnDownIsPress = false;
   }
