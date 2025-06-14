@@ -364,9 +364,9 @@ void  RollerShutter::SetButtonDownIsPress(bool value)
 /// @brief führt die Befehle aus, entsprechend den gedrückten Buttons, Up hat Vorrang
 void RollerShutter::MakeButtons() {
   if (hasSetup) {
-    if (btnUpIsPress)
+    if (this->btnUpIsPress)
       StartUp();
-    else if (btnDownIsPress)
+    else if (this->btnDownIsPress)
       StartDown();
     this->btnUpIsPress = false;
     this->btnDownIsPress = false;
@@ -380,28 +380,35 @@ void RollerShutter::CheckTimerStartGap() {
       if (myState != enRollerShutterState::isGoToGapDown && myState != enRollerShutterState::isGoToGapUp &&
           myState != enRollerShutterState::isStopGapDown && myState != enRollerShutterState::isStopGapUp &&
           myState != enRollerShutterState::isGapEndGoUp) {
-        ESPTime timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
-        if ((timestampCheck.month >= this->group->sundownner->monthFrom) &&
-            (timestampCheck.month <= this->group->sundownner->monthTo)) {
-          if ((timestampCheck.hour == this->group->sundownner->gapHour) &&
-              (timestampCheck.minute == this->group->sundownner->gapMinute) && !hasMakeGapCatched) {
-            hasMakeGapCatched = true;
-            ESP_LOGD(TAG, "Start make gap!");
-            StartGap();
-          } else if ((timestampCheck.hour == this->group->sundownner->upHoure) &&
-                     (timestampCheck.minute == this->group->sundownner->upMinute) && !hasMakeGapOpenCatched) {
-            hasMakeGapOpenCatched = true;
-            this->myState == enRollerShutterState::isGapEndGoUp;
-            ESP_LOGD(TAG, "Gap-Time is END, open shutter.");
-            StartUp();
-          } else if ((timestampCheck.hour == this->group->sundownner->upHoure + 1) &&
-                     (timestampCheck.minute == this->group->sundownner->upMinute) && (hasMakeGapOpenCatched ||
-                     hasMakeGapCatched)) {
-            ESP_LOGD(TAG, "Gap-reset catched.");
-            hasMakeGapCatched = false;
-            hasMakeGapOpenCatched = false;
+        this->timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
+        if ((this->timestampCheck.month >= this->group->sundownner->monthFrom) &&
+            (this->timestampCheck.month <= this->group->sundownner->monthTo)) {
+          if ((this->timestampCheck.hour == this->group->sundownner->gapHour) &&
+              (this->timestampCheck.minute == this->group->sundownner->gapMinute)) {
+            if (!this->hasMakeGapCatched) {
+              this->hasMakeGapCatched = true;
+              ESP_LOGD(TAG, "Start make gap!");
+              StartGap();
+            }
           }
-        }
+          if ((this->timestampCheck.hour == this->group->sundownner->upHoure) &&
+              (this->timestampCheck.minute == this->group->sundownner->upMinute)) {
+            if (!this->hasMakeGapOpenCatched) {
+              this->hasMakeGapOpenCatched = true;
+              this->myState == enRollerShutterState::isGapEndGoUp;
+              ESP_LOGD(TAG, "Gap-Time is END, open shutter.");
+              StartUp();
+            }
+          }
+          if ((this->timestampCheck.hour == (this->group->sundownner->upHoure + 1)) &&
+              (this->timestampCheck.minute == this->group->sundownner->upMinute)) {
+            if (this->hasMakeGapOpenCatched || this->hasMakeGapCatched) {
+              ESP_LOGD(TAG, "Gap-reset catched.");
+              this->hasMakeGapCatched = false;
+              this->hasMakeGapOpenCatched = false;
+            }
+          }
+        }        
       }
     }
   }

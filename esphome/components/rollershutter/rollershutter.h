@@ -292,6 +292,8 @@ class RollerShutter{
   std::string timeUpDownId;
   /// @brief die Zeiten für Hoch und runter fahren
   RL_Time *timeUpDown;
+  /// @brief TestVariable, dann gibt es sie nur einmal!
+  ESPTime timestampCheck ;
 
   /// @brief die umschließende Komponente
   RollerShutterComponent *myComponent;
