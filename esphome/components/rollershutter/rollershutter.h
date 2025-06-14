@@ -268,6 +268,14 @@ class RollerShutter{
   /// @brief ist das Setup durchgelaufen?
   bool hasSetup;
 
+  bool hasGapUpTimeLog;
+  bool hasGapUpGapLog;
+  bool hasGapEndTimeLog;
+  bool hasGapEndGapLog;
+  bool hasGapResetTimeLog;
+  bool hasGapResetLog;
+
+
   /// @brief habe ich heut das Lückenfahren abgefangen?
   bool hasMakeGapCatched;
   /// @brief habe ich heut das Lückenauffahren abgefangen?

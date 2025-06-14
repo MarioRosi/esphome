@@ -53,6 +53,10 @@ void RollerShutter::ResetRollerShutter() {
     relUp->turn_on();
     hasMakeGapCatched = false;
     hasMakeGapOpenCatched = false;
+    hasGapUpTimeLog = false;
+    hasGapUpGapLog = false;
+    hasGapEndTimeLog = false;
+    hasGapEndGapLog = false;
     sendState( -1.0 );
   }  
 }
@@ -383,29 +387,91 @@ void RollerShutter::CheckTimerStartGap() {
         this->timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
         if ((this->timestampCheck.month >= this->group->sundownner->monthFrom) &&
             (this->timestampCheck.month <= this->group->sundownner->monthTo)) {
+
           if ((this->timestampCheck.hour == this->group->sundownner->gapHour) &&
               (this->timestampCheck.minute == this->group->sundownner->gapMinute)) {
+            if (!hasGapUpTimeLog)
+            {
+              hasGapUpTimeLog = true;
+              ESP_LOGD(TAG, "Gap is in Time");
+              hasGapResetTimeLog = false;
+              hasGapResetLog = false;
+            }
             if (!this->hasMakeGapCatched) {
+              if (!hasGapUpGapLog)
+              {
+                hasGapUpGapLog = true;
+                ESP_LOGD(TAG, "Gap is in Making");
+              }
               this->hasMakeGapCatched = true;
               ESP_LOGD(TAG, "Start make gap!");
               StartGap();
             }
+            else{
+              if (!hasGapUpGapLog)
+              {
+                hasGapUpGapLog = true;
+                ESP_LOGD(TAG, "Gap is hasMakeGapCatched==true");
+              }
+            }
           }
           if ((this->timestampCheck.hour == this->group->sundownner->upHoure) &&
               (this->timestampCheck.minute == this->group->sundownner->upMinute)) {
+            if (!hasGapEndTimeLog)
+            {
+              hasGapEndTimeLog = true;
+              ESP_LOGD(TAG, "Gap END is in Time");
+            }
             if (!this->hasMakeGapOpenCatched) {
+              if (!hasGapEndGapLog)
+              {
+                hasGapEndGapLog = true;
+                ESP_LOGD(TAG, "Gap END is on Making");
+              }
               this->hasMakeGapOpenCatched = true;
               this->myState == enRollerShutterState::isGapEndGoUp;
               ESP_LOGD(TAG, "Gap-Time is END, open shutter.");
               StartUp();
             }
+            else{
+              if (!hasGapEndGapLog)
+              {
+                hasGapEndGapLog = true;
+                ESP_LOGD(TAG, "Gap END is hasMakeGapOpenCatched==true");
+              }
+            }
           }
           if ((this->timestampCheck.hour == (this->group->sundownner->upHoure + 1)) &&
               (this->timestampCheck.minute == this->group->sundownner->upMinute)) {
+            if (!hasGapResetTimeLog)
+            {
+              hasGapResetTimeLog = true;
+              ESP_LOGD(TAG, "Gap Reset is in Time");
+            }
             if (this->hasMakeGapOpenCatched || this->hasMakeGapCatched) {
+              if (!hasGapResetLog)
+              {
+                hasGapResetLog = true;
+                ESP_LOGD(TAG, "Gap Reset is make");
+                hasGapUpTimeLog = false;
+                hasGapUpGapLog = false;
+                hasGapEndTimeLog = false;
+                hasGapEndGapLog = false;
+              }
               ESP_LOGD(TAG, "Gap-reset catched.");
               this->hasMakeGapCatched = false;
               this->hasMakeGapOpenCatched = false;
+            }
+            else{
+              if (!hasGapResetLog)
+              {
+                hasGapResetLog = true;
+                ESP_LOGD(TAG, "Gap Reset is hasMakeGapOpenCatched==false && hasMakeGapCatched == false");
+                hasGapUpTimeLog = false;
+                hasGapUpGapLog = false;
+                hasGapEndTimeLog = false;
+                hasGapEndGapLog = false;
+              }
             }
           }
         }        
