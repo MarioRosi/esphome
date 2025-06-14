@@ -65,6 +65,8 @@ class RollerShutterComponent : public Component {
   bool btnHollidayIsOn;
   /// @brief Das Ereigniss wurde erzeugt
   bool bthHollidayHasCatched;
+  /// @brief Loop Variable
+  ESPTime timestampCheck;
  public:
   /// @brief Konstruktor
   RollerShutterComponent();

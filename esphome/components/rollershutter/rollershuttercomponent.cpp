@@ -202,7 +202,7 @@ void RollerShutterComponent::loop() {
       checkHourUp++;
       checkMinUpDown -= 59;
     }
-    ESPTime timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
+    this->timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
     if (!this->bthHollidayHasCatched) {
       if ((timestampCheck.hour == checkHourUp) && (timestampCheck.minute == checkMinUpDown)) {
         this->bthHollidayHasCatched = true;
