@@ -66,6 +66,7 @@ void RollerShutter::ResetRollerShutter() {
 bool RollerShutter::StartUp() {
   bool result = false;
   if (hasSetup) {
+    ESP_LOGD(TAG,"StartUp myState=%d", (int)this->myState);
     switch (myState) {
       case enRollerShutterState::isDoTop:
       case enRollerShutterState::isDoDown:
