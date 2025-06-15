@@ -186,7 +186,7 @@ class Timer {
     /// @param runningTimeMs 
     /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
     bool StartTimer(int runningTimeSeconds)
-    {
+    {      
       if (!timerIsRunning)
       {
         ESP_LOGD("Timer", "StartTimer for %d seconds", runningTimeSeconds);
@@ -194,6 +194,10 @@ class Timer {
         timeStampEnd = timeStampStart + runningTimeSeconds;        
         timerIsRunning = true;        
         return true;
+      }
+      else
+      {
+        ESP_LOGD("Timer", "Timer is running!");
       }
       return false;
     }

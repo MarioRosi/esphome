@@ -86,6 +86,8 @@ bool RollerShutter::StartUp() {
           this->myState = enRollerShutterState::isDoTop;
           sendState(closingPosition);
         }
+        else
+          ESP_LOGD(TAG,"StartUp - Timer has not started!");
         break;
       case enRollerShutterState::isStarted:
       case enRollerShutterState::isStarting:
@@ -116,7 +118,6 @@ bool RollerShutter::StartDown() {
       case enRollerShutterState::isStopDoDown:
       case enRollerShutterState::isStopDoTop:
       case enRollerShutterState::isTop:
-      case enRollerShutterState::isGapEndGoUp:
         // Relais hoch aus
         // Relais runter an
         // Timer für ausschalten erzeugen
@@ -128,6 +129,8 @@ bool RollerShutter::StartDown() {
           this->myState = enRollerShutterState::isDoDown;
           sendState(closingPosition);
         }
+        else
+          ESP_LOGD(TAG,"StartDown - Timer has not started!");
         break;
       case enRollerShutterState::isDown:
       case enRollerShutterState::isStarting:
@@ -502,15 +505,21 @@ void RollerShutter::StartGap() {
         myState != enRollerShutterState::isStopGapDown && myState != enRollerShutterState::isStopGapUp &&
         myState != enRollerShutterState::isOnGap) {
       if (this->closingPosition < (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0)) {
-        this->timer->StartTimer(this->timeUpDown->secondGap);
-        relUp->turn_off();
-        relDown->turn_on();
-        this->myState = enRollerShutterState::isGoToGapDown;
+        if (this->timer->StartTimer(this->timeUpDown->secondGap))
+        {
+          ESP_LOGD(TAG,"Start GoToGap -Down");
+          relUp->turn_off();
+          relDown->turn_on();
+          this->myState = enRollerShutterState::isGoToGapDown;
+        }
       } else {
-        this->timer->StartTimer(this->timeUpDown->secondGap);
-        relDown->turn_off();
-        relUp->turn_on();
-        this->myState = enRollerShutterState::isGoToGapUp;
+        if (this->timer->StartTimer(this->timeUpDown->secondGap))
+        {
+          ESP_LOGD(TAG,"Start GoToGap -Up");
+          relDown->turn_off();
+          relUp->turn_on();
+          this->myState = enRollerShutterState::isGoToGapUp;
+        }
       }
       sendState(closingPosition);
     }
