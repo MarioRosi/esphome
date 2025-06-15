@@ -446,7 +446,7 @@ void RollerShutter::CheckTimerStartGap() {
                 ESP_LOGD(TAG, "Gap END is on Making");
               }
               this->hasMakeGapOpenCatched = true;
-              this->myState == enRollerShutterState::isGapEndGoUp;
+              this->myState = enRollerShutterState::isGapEndGoUp;
               ESP_LOGD(TAG, "Gap-Time is END, open shutter.");
               StartUp();
             }
