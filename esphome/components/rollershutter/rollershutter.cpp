@@ -116,6 +116,7 @@ bool RollerShutter::StartDown() {
       case enRollerShutterState::isStopDoDown:
       case enRollerShutterState::isStopDoTop:
       case enRollerShutterState::isTop:
+      case enRollerShutterState::isGapEndGoUp:
         // Relais hoch aus
         // Relais runter an
         // Timer für ausschalten erzeugen
