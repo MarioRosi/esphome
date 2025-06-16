@@ -62,7 +62,7 @@ void RollerShutter::ResetRollerShutter() {
 bool RollerShutter::StartUp() {
   bool result = false;
   if (hasSetup) {
-    //ESP_LOGD(TAG,"StartUp myState=%d", (int)this->myState);
+    ESP_LOGD(TAG,"StartUp myState=%d", (int)this->myState);
     switch (myState) {
       case enRollerShutterState::isDoTop:
       case enRollerShutterState::isDoDown:
@@ -74,6 +74,7 @@ bool RollerShutter::StartUp() {
       case enRollerShutterState::isStopDoDown:
       case enRollerShutterState::isStopDoTop:
       case enRollerShutterState::isDown:
+      case enRollerShutterState::isOnGap:
       case enRollerShutterState::isGapEndGoUp:
         if(this->timer->StartTimer(this->timeUpDown->secondUp))
         {
@@ -105,6 +106,7 @@ bool RollerShutter::StartUp() {
 bool RollerShutter::StartDown() {
   bool result = false;
   if (hasSetup) {
+    ESP_LOGD(TAG,"StartDown myState=%d", (int)this->myState);
     switch (myState) {
       case enRollerShutterState::isDoTop:
       case enRollerShutterState::isDoDown:
@@ -115,6 +117,7 @@ bool RollerShutter::StartDown() {
       case enRollerShutterState::isStopDoDown:
       case enRollerShutterState::isStopDoTop:
       case enRollerShutterState::isTop:
+      case enRollerShutterState::isOnGap:
         // Relais hoch aus
         // Relais runter an
         // Timer für ausschalten erzeugen
@@ -149,6 +152,7 @@ void RollerShutter::Stop() {
     this->timer->StopTimer();
     double timeStartToStop = this->timer->GetSecondsIsRunning();
     this->timer->SleepTimer();
+    ESP_LOGD(TAG,"Stop myState=%d", (int)this->myState);
     switch (myState) {
       case enRollerShutterState::isDoTop:
         {

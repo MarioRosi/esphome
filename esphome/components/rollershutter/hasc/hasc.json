@@ -1,0 +1,6 @@
+{
+  "name": "RollerShutter Card",
+  "filename": "rollershutter-card.js",
+  "render_readme": false,
+  "homeassistant": "2025.01.01"
+}
