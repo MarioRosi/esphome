@@ -194,6 +194,7 @@ void RollerShutterComponent::SetIsOnHollidayOff()
 void RollerShutterComponent::loop() {  
   // Wenn Urlaubssteuerung, hoch und runter zufällig zwischen 5-7 und 17-19
   if (this->btnHollidayIsOn) {
+    ESP_LOGD(TAG,"btnHolidayIsOn , is in");
     int checkHourUp = 5;
     int checkHourDown = 17;
     int checkMinUpDown = (int) (118.0 * random_float());
@@ -205,16 +206,20 @@ void RollerShutterComponent::loop() {
     this->timestampCheck = ESPTime::from_epoch_local(std::time(nullptr));
     if (!this->bthHollidayHasCatched) {
       if ((timestampCheck.hour == checkHourUp) && (timestampCheck.minute == checkMinUpDown)) {
+        ESP_LOGD(TAG,"btnHolidayIsOn , Time for Up %d:%d is comming", checkHourUp, checkMinUpDown);
         this->bthHollidayHasCatched = true;
         this->btnUpIsPress = true;
       } else if ((timestampCheck.hour == checkHourDown) && (timestampCheck.minute == checkMinUpDown)) {
+        ESP_LOGD(TAG,"btnHolidayIsOn , Time for Down %d:%d is comming", checkHourDown, checkMinUpDown);
         this->bthHollidayHasCatched = true;
         this->btnDownIsPress = true;
       }
     } else {
       if (timestampCheck.hour == checkHourUp + 4) {
+        ESP_LOGD(TAG,"btnHolidayIsOn , Time for Reset catching Up %d:00 is comming", checkHourUp + 4);
         this->bthHollidayHasCatched = false;
       } else if (timestampCheck.hour == checkHourDown + 4) {
+        ESP_LOGD(TAG,"btnHolidayIsOn , Time for Reset catching Down %d:00 is comming", checkHourDown +4);
         this->bthHollidayHasCatched = false;
       }
     }

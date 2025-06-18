@@ -255,6 +255,8 @@ class RollerShutter{
   std::string lastState;
   /** Button-Input-GPIO Hochfahren */
   std::string btnUpId;
+  /// @brief Der Sensor für Hochfahren
+  binary_sensor::BinarySensor* btnUp;
   /// @brief der Button Up wurde gedrückt
   bool btnUpIsPress;
   /// @brief Relais-Output-GPIO Hochfahren
@@ -263,6 +265,8 @@ class RollerShutter{
   switch_::Switch *relUp;
   /// @brief Button-Input-GPIO Runterfahren
   std::string btnDownId;
+  /// @brief Der Sensor für Runterfahren
+  binary_sensor::BinarySensor* btnDown;
   /// @brief der Button Down wurde gedrückt
   bool btnDownIsPress;
   /// @brief Relais-Output-GPIO Runterfahren
@@ -271,6 +275,7 @@ class RollerShutter{
   switch_::Switch *relDown;
   /// @brief ist das Setup durchgelaufen?
   bool hasSetup;
+
 
   /// @brief habe ich heut das Lückenfahren abgefangen?
   bool hasMakeGapCatched;

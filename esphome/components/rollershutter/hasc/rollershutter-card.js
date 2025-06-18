@@ -32,10 +32,46 @@ class RollerShutterCard extends HTMLElement {
         let entityId = entitiy;
         if (entitiy && entitiy.entity)
           entityId = entity.entity;
+        let shutter = document.createElement('div');
+        shutter.className = 'rl-shutter';
+        shutter.dataset.shutter = entityId;
+        shutter.innerHTML = `
+          <ha-icon icon="" />
+          <div
+        `;
+        
 
-        let buttonPosition = entity.button_position.toLowerCase();
-
+        /*
+    <div>
+      <svg preserveAspectRatio="xMidYMid meet" focusable="false" role="img" aria-hidden="true" viewBox="0 0 24 24"> 
+        <g>
+          <path class="primary-path" d="M15,20H9V12H4.16L12,4.16L19.84,12H15V20Z"></path>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <svg preserveAspectRatio="xMidYMid meet" focusable="false" role="img" aria-hidden="true" viewBox="0 0 24 24">
+         <g>
+           <path class="primary-path" d="M4 4H20V20H4V4Z"></path>
+         </g>
+      </svg>
+    </div>
+    <div>
+      <svg preserveAspectRatio="xMidYMid meet" focusable="false" role="img" aria-hidden="true" viewBox="0 0 24 24">
+         <g>
+           <path class="primary-path" d="M5 5H19V19H17V7H7V19H5V5M8 8H16V10H8V8M8 11H16V13H8V11M8 14H16V16H8V14M8 17H16V19H8V17Z"></path>
+         </g>
+      </svg>
+    </div>
+    <div>
+      <svg preserveAspectRatio="xMidYMid meet" focusable="false" role="img" aria-hidden="true" viewBox="0 0 24 24">
+         <g>
+           <path class="primary-path" d="M9,4H15V12H19.84L12,19.84L4.16,12H9V4Z"></path>
+         </g>
+      </svg>
+    </div>        */
       });
+
 
       const style = document.createElement('style');
       style.textContent = `

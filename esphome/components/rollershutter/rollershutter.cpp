@@ -44,16 +44,40 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
   this->timer = new Timer();
 }
 
+/// @brief Den Rolladen aktivieren
+void RollerShutter::MySetup() {
+  ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
+  if (std::strlen(this->btnUpId.c_str()) > 1) {
+    this->btnUp = getBinarySensorById(this->btnUpId);
+    this->btnUp->add_on_state_callback([this](bool state){ this->OnButtonUpStateChange(state); });
+    if (std::strlen(this->btnDownId.c_str()) > 1) {
+      this->btnDown = getBinarySensorById(this->btnDownId);
+      this->btnDown->add_on_state_callback([this](bool state){ this->OnButtonDownStateChange(state); });
+      if (std::strlen(this->relUpId.c_str()) > 1) {
+        this->relUp = getSwitchById(this->relUpId);
+        if (std::strlen(this->relDownId.c_str()) > 1) {
+          this->relDown = getSwitchById(this->relDownId);
+          if (std::strlen(this->displayId.c_str()) > 1) {
+            this->display = getTextSensorById(this->displayId);
+            this->hasSetup = true;
+            this->ResetRollerShutter();
+          }
+        }
+      }
+    }
+  }
+}
+
 /// @brief Rollladen zurücksetzten == hochfahren
 void RollerShutter::ResetRollerShutter() {
-  myState = enRollerShutterState::isStarting;
-  if (timer->StartTimer(this->timeUpDown->secondUp))
+  this->myState = enRollerShutterState::isStarting;
+  if (this->timer->StartTimer(this->timeUpDown->secondUp))
   {
-    relDown->turn_off();
-    relUp->turn_on();
-    hasMakeGapCatched = false;
-    hasMakeGapOpenCatched = false;
-    sendState( -1.0 );
+    this->relDown->turn_off();
+    this->relUp->turn_on();
+    this->hasMakeGapCatched = false;
+    this->hasMakeGapOpenCatched = false;
+    this->sendState( -1.0 );
   }  
 }
 
@@ -61,15 +85,15 @@ void RollerShutter::ResetRollerShutter() {
 /// @return true erfolgreich gestartet, false == gestoppt oder nix zu tun
 bool RollerShutter::StartUp() {
   bool result = false;
-  if (hasSetup) {
+  if (this->hasSetup) {
     ESP_LOGD(TAG,"StartUp myState=%d", (int)this->myState);
-    switch (myState) {
+    switch (this->myState) {
       case enRollerShutterState::isDoTop:
       case enRollerShutterState::isDoDown:
       case enRollerShutterState::isGoToGapDown:
       case enRollerShutterState::isGoToGapUp:
         ESP_LOGD(TAG, "Make StartUp->Stop");
-        Stop();
+        this->Stop();
         break;
       case enRollerShutterState::isStopDoDown:
       case enRollerShutterState::isStopDoTop:
@@ -79,10 +103,10 @@ bool RollerShutter::StartUp() {
         if(this->timer->StartTimer(this->timeUpDown->secondUp))
         {
           ESP_LOGD(TAG, "Make StartUp, Open Relais UP");
-          relDown->turn_off();
-          relUp->turn_on();
+          this->relDown->turn_off();
+          this->relUp->turn_on();
           this->myState = enRollerShutterState::isDoTop;
-          sendState(closingPosition);
+          this->sendState(this->closingPosition);
         }
         else
           ESP_LOGD(TAG,"StartUp - Timer has not started!");
@@ -94,7 +118,7 @@ bool RollerShutter::StartUp() {
         break;
       case enRollerShutterState::isUnknown:
         ESP_LOGD(TAG, "Make StartUp, Reset Rollershutter");
-        ResetRollerShutter();
+        this->ResetRollerShutter();
         break;
     }
   }
@@ -105,13 +129,13 @@ bool RollerShutter::StartUp() {
 /// @return true erfolgreich gestartet, false == gestoppt oder nix zu tun
 bool RollerShutter::StartDown() {
   bool result = false;
-  if (hasSetup) {
+  if (this->hasSetup) {
     ESP_LOGD(TAG,"StartDown myState=%d", (int)this->myState);
-    switch (myState) {
+    switch (this->myState) {
       case enRollerShutterState::isDoTop:
       case enRollerShutterState::isDoDown:
         ESP_LOGD(TAG, "Make StartDown-Stop");
-        Stop();
+        this->Stop();
         break;
       case enRollerShutterState::isStarted:
       case enRollerShutterState::isStopDoDown:
@@ -124,10 +148,10 @@ bool RollerShutter::StartDown() {
         if(this->timer->StartTimer(this->timeUpDown->secondDown))
         {
           ESP_LOGD(TAG, "Make StartDown, Open Relais Down");
-          relUp->turn_off();
-          relDown->turn_on();
+          this->relUp->turn_off();
+          this->relDown->turn_on();
           this->myState = enRollerShutterState::isDoDown;
-          sendState(closingPosition);
+          this->sendState(this->closingPosition);
         }
         else
           ESP_LOGD(TAG,"StartDown - Timer has not started!");
@@ -137,8 +161,8 @@ bool RollerShutter::StartDown() {
         // nix tun, alles i.O.
         break;
       case enRollerShutterState::isUnknown:
-          ESP_LOGD(TAG, "Make StartDown, Reset Rollershutter");
-        ResetRollerShutter();
+        ESP_LOGD(TAG, "Make StartDown, Reset Rollershutter");
+        this->ResetRollerShutter();
         break;
     }
   }
@@ -148,7 +172,7 @@ bool RollerShutter::StartDown() {
 /// @brief Hoch- oder Runterfahren stoppen und die abgelaufenen Zeit merken
 /// @return
 void RollerShutter::Stop() {
-  if (hasSetup) {
+  if (this->hasSetup) {
     this->timer->StopTimer();
     double timeStartToStop = this->timer->GetSecondsIsRunning();
     this->timer->SleepTimer();
@@ -156,8 +180,8 @@ void RollerShutter::Stop() {
     switch (myState) {
       case enRollerShutterState::isDoTop:
         {
-          relUp->turn_off();
-          relDown->turn_off();
+          this->relUp->turn_off();
+          this->relDown->turn_off();
           this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->secondUp) * 100.0;
           this->myState = enRollerShutterState::isStopDoTop;
           if (this->closingPosition <= 0.0) {
@@ -168,8 +192,8 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isDoDown:
         {
-          relUp->turn_off();
-          relDown->turn_off();          
+          this->relUp->turn_off();
+          this->relDown->turn_off();          
           this->closingPosition += timeStartToStop / ((double) this->timeUpDown->secondDown) * 100.0;
           this->myState = enRollerShutterState::isStopDoDown;
           if (this->closingPosition >= 100.0) {
@@ -180,16 +204,16 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isStarted:
         {
-          relUp->turn_off();
-          relDown->turn_off();
+          this->relUp->turn_off();
+          this->relDown->turn_off();
           this->closingPosition = 0.0;
           this->myState = enRollerShutterState::isTop;
         }
         break;
       case enRollerShutterState::isGoToGapUp:
         {
-          relUp->turn_off();
-          relDown->turn_off();          
+          this->relUp->turn_off();
+          this->relDown->turn_off();          
           this->closingPosition -= timeStartToStop / ((double) this->timeUpDown->secondUp) * 100.0;
           if (this->closingPosition <= (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
             this->myState = enRollerShutterState::isOnGap;
@@ -199,8 +223,8 @@ void RollerShutter::Stop() {
         break;
       case enRollerShutterState::isGoToGapDown:
         {
-          relUp->turn_off();
-          relDown->turn_off();          
+          this->relUp->turn_off();
+          this->relDown->turn_off();          
           this->closingPosition += timeStartToStop / ((double) this->timeUpDown->secondDown) * 100.0;
           if (this->closingPosition >= (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
             this->myState = enRollerShutterState::isOnGap;
@@ -209,85 +233,58 @@ void RollerShutter::Stop() {
         }
         break;
       default:
-        ESP_LOGD(TAG, "Stop not taked mystate==%d", (int)myState);
+        ESP_LOGD(TAG, "Stop not taked mystate==%d", (int)this->myState);
         break;
     }
-    ESP_LOGD(TAG,"Stop with closingPosition=%f", closingPosition);
-    sendState(closingPosition);
+    ESP_LOGD(TAG,"Stop with closingPosition=%f", this->closingPosition);
+    this->sendState(this->closingPosition);
   }
-}
-
-
-/// @brief Den Rolladen aktivieren
-void RollerShutter::MySetup() {
-  ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
-  
-  if (std::strlen(this->btnUpId.c_str()) > 1) {
-    binary_sensor::BinarySensor* btnUp = getBinarySensorById(this->btnUpId);
-    btnUp->add_on_state_callback([this](bool state){ this->OnButtonUpStateChange(state); });
-    if (std::strlen(this->btnDownId.c_str()) > 1) {
-      binary_sensor::BinarySensor *btnDown = getBinarySensorById(this->btnDownId);
-      btnDown->add_on_state_callback([this](bool state){ this->OnButtonDownStateChange(state); });
-      if (std::strlen(this->relUpId.c_str()) > 1) {
-        this->relUp = getSwitchById(this->relUpId);
-        if (std::strlen(this->relDownId.c_str()) > 1) {
-          this->relDown = getSwitchById(this->relDownId);
-          if (std::strlen(this->displayId.c_str()) > 1) {
-            this->display = getTextSensorById(this->displayId);
-            this->hasSetup = true;                      
-            ResetRollerShutter();
-          }
-        }        
-      }
-    }
-  }
-  
 }
 
 /// @brief Testet, ob die Zeit für Hoch, Runter, Lücke erreicht ist
 void RollerShutter::CheckTimerStop() {
-  if (hasSetup) {
+  if (this->hasSetup) {
     int checkTimer = this->timer->CheckTimer();
     double timeStartToCheck = this->timer->GetSecondsIsRunning();
     if (checkTimer > 0)
     {
       double checkvalue = 0.0;
-      switch (myState) {
+      switch (this->myState) {
         case enRollerShutterState::isDoTop:
           checkvalue = this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0;
           if (checkvalue <= 0.0)
-            Stop();
+            this->Stop();
           else
-            sendState(checkvalue);
+            this->sendState(checkvalue);
           break;
         case enRollerShutterState::isDoDown:
           checkvalue = (this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0);
           if ( checkvalue >= 100.0)
-            Stop();
+            this->Stop();
           else
-            sendState(checkvalue);
+            this->sendState(checkvalue);
           break;
         case enRollerShutterState::isGoToGapUp:
           checkvalue = (this->closingPosition - (timeStartToCheck / this->timeUpDown->secondUp) * 100.0);
           if (checkvalue <= (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
-            Stop();
+            this->Stop();
           else
-            sendState(checkvalue);
+            this->sendState(checkvalue);
           break;
         case enRollerShutterState::isGoToGapDown:
           checkvalue = (this->closingPosition + (timeStartToCheck / this->timeUpDown->secondDown) * 100.0);
           if (checkvalue >= (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
-            Stop();
+            this->Stop();
           else
-            sendState(checkvalue);
+            this->sendState(checkvalue);
           break;
       }
     }
     else if (checkTimer == 0)
     {
-      if (myState == enRollerShutterState::isStarting) myState = enRollerShutterState::isStarted;
+      if (this->myState == enRollerShutterState::isStarting) this->myState = enRollerShutterState::isStarted;
       ESP_LOGD("RollerShutter", "Timer is stopped after %f seconds", this->timer->GetSecondsIsRunning());
-      Stop();
+      this->Stop();
     }
     else if (checkTimer < 0)
     {
@@ -300,7 +297,7 @@ void RollerShutter::CheckTimerStop() {
 void RollerShutter::sendState(double checkValue)
 {
   std::string newValue = "window-shutter-";
-  if (myState == enRollerShutterState::isUnknown)
+  if (this->myState == enRollerShutterState::isUnknown)
     newValue += "error";
   else
   {
@@ -317,18 +314,18 @@ void RollerShutter::sendState(double checkValue)
     else if (checkValue >= 90.0)
       newValue += "5";
 
-    if ((myState == enRollerShutterState::isDoDown) ||
-        (myState == enRollerShutterState::isGoToGapDown))
+    if ((this->myState == enRollerShutterState::isDoDown) ||
+        (this->myState == enRollerShutterState::isGoToGapDown))
         newValue += "-down";
-    else if ((myState == enRollerShutterState::isDoTop) ||
-        (myState == enRollerShutterState::isGoToGapUp) ||
-        (myState == enRollerShutterState::isStarting))
+    else if ((this->myState == enRollerShutterState::isDoTop) ||
+        (this->myState == enRollerShutterState::isGoToGapUp) ||
+        (this->myState == enRollerShutterState::isStarting))
         newValue += "-up";
   }
   //newValue += ".svg";
-  if (lastState.compare(newValue) != 0)
+  if (this->lastState.compare(newValue) != 0)
   {
-    lastState = newValue;
+    this->lastState = newValue;
     ESP_LOGD(TAG, "Send state %s", newValue.c_str());
     if (this->display != nullptr)
       this->display->publish_state(newValue);
@@ -343,7 +340,7 @@ void RollerShutter::OnButtonUpStateChange(bool state)
   {
     this->btnUpIsPress = true;
     ESP_LOGI(TAG, "Button Up id= %s is Press", this->btnUpId.c_str());
-    MakeButtons();
+    this->MakeButtons();
   }
 }
 /// @brief EventManager für ButtonDown
@@ -354,7 +351,7 @@ void RollerShutter::OnButtonDownStateChange(bool state)
   {
     this->btnDownIsPress = true;
     ESP_LOGI(TAG, "Button Down id= %s is Press", this->btnDownId.c_str());
-    MakeButtons();
+    this->MakeButtons();
   }
 }
 
