@@ -29,6 +29,10 @@ RollerShutterComponent::RollerShutterComponent() {
   this->movingTimes = new std::vector<RL_Time *>();
   this->groups = new std::vector<RL_Group *>();
   this->shutters = new std::vector<RollerShutter *>();
+  this->btnHollidayIsOn = false;
+  this->btnUpIsPress = false;
+  this->btnDownIsPress = false;
+  this->bthHollidayHasCatched = false;
 }
 
 /// @brief name und Id setzten  
