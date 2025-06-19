@@ -197,8 +197,7 @@ void RollerShutterComponent::SetIsOnHollidayOff()
 /// @brief onLoop
 void RollerShutterComponent::loop() {  
   // Wenn Urlaubssteuerung, hoch und runter zufällig zwischen 5-7 und 17-19
-  if (this->btnHollidayIsOn) {
-    ESP_LOGD(TAG,"btnHolidayIsOn , is in");
+  if (this->btnHollidayIsOn) {    
     int checkHourUp = 5;
     int checkHourDown = 17;
     int checkMinUpDown = (int) (118.0 * random_float());
