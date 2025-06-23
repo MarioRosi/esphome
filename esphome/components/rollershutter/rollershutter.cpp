@@ -134,6 +134,8 @@ bool RollerShutter::StartDown() {
     switch (this->myState) {
       case enRollerShutterState::isDoTop:
       case enRollerShutterState::isDoDown:
+      case enRollerShutterState::isGoToGapDown:
+      case enRollerShutterState::isGoToGapUp:
         ESP_LOGD(TAG, "Make StartDown-Stop");
         this->Stop();
         break;
@@ -413,8 +415,11 @@ void RollerShutter::CheckTimerStartGap() {
               (this->timestampCheck.minute == this->group->sundownner->upMinute)) {
             if (!this->hasMakeGapOpenCatched) {
               this->hasMakeGapOpenCatched = true;
-              this->myState = enRollerShutterState::isGapEndGoUp;
-              StartUp();
+              if (!this->gapUpIsBlocked)
+              {
+                this->myState = enRollerShutterState::isGapEndGoUp;
+                StartUp();
+              }
             }
           }
           if ((this->timestampCheck.hour == (this->group->sundownner->upHoure + 1)) &&
@@ -422,12 +427,20 @@ void RollerShutter::CheckTimerStartGap() {
             if (this->hasMakeGapOpenCatched || this->hasMakeGapCatched) {
               this->hasMakeGapCatched = false;
               this->hasMakeGapOpenCatched = false;
+              this->gapUpIsBlocked = false;
+              this->myComponent->ResetGapUpIsBlockedHasSet();
             }
           }
         }        
       }
     }
   }
+}
+/// @brief Der Sonnenschutz wird nicht hochgefahren
+void RollerShutter::SetGapUpIsBlocked()
+{
+  if (!this->gapUpIsBlocked)
+    gapUpIsBlocked = true;
 }
 
 /// @brief Fährt auf Lücke, wenn das Rollo unten ist, wird "hochgefahren"

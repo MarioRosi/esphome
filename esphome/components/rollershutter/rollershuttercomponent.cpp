@@ -193,6 +193,27 @@ void RollerShutterComponent::SetIsOnHollidayOff()
   }
 }
 
+/// @brief gapUpIsBlockedHasSet zurücksetzten, nur vom Rollershutter selber!
+void RollerShutterComponent::ResetGapUpIsBlockedHasSet()
+{
+  if (!this->gapUpIsBlockedHasSet)
+    this->gapUpIsBlockedHasSet = false;
+}
+
+/// @brief Der Sonnenschutz wird nicht hochgefahren
+void RollerShutterComponent::SetGapUpIsBlocked()
+{
+  if (!this->gapUpIsBlockedHasSet)
+  {
+    this->gapUpIsBlockedHasSet = true;
+    ESP_LOGI(TAG, "Gap-Up is Blocked");
+    for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
+      RollerShutter *shutter = *itter;
+      shutter->SetGapUpIsBlocked();      
+    }
+  }
+}
+
 
 /// @brief onLoop
 void RollerShutterComponent::loop() {  

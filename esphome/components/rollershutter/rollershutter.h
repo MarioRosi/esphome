@@ -276,7 +276,8 @@ class RollerShutter{
   /// @brief ist das Setup durchgelaufen?
   bool hasSetup;
 
-
+  /// @brief Sonnenschutz wird nicht hochgefahren
+  bool gapUpIsBlocked;
   /// @brief habe ich heut das Lückenfahren abgefangen?
   bool hasMakeGapCatched;
   /// @brief habe ich heut das Lückenauffahren abgefangen?
@@ -354,6 +355,8 @@ class RollerShutter{
   /// @brief Setzt den Wert für Button Down ist gedrückt (für Zentraltaster)
   /// @param value
   void SetButtonDownIsPress(bool value);
+  /// @brief Der Sonnenschutz wird nicht hochgefahren
+  void SetGapUpIsBlocked();
   /// @brief Testet, ob die Zeit für Fahre-Auf-Lücke erreicht ist
   void CheckTimerStartGap();
   /// @brief Fährt auf Lücke, wenn das Rollo unten ist, wird "hochgefahren"

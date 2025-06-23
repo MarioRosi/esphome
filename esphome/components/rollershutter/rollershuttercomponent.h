@@ -61,6 +61,9 @@ class RollerShutterComponent : public Component {
   bool btnUpIsPress;
   /// @brief der Button Down wurde gedrückt
   bool btnDownIsPress;
+  /// @brief gapUpisBlocked wurde gesetzt
+  bool gapUpIsBlockedHasSet;
+
   /// @brief der Button Urlaubsmodus wurde gedrückt/ eingeschaltet
   bool btnHollidayIsOn;
   /// @brief Das Ereigniss wurde erzeugt
@@ -143,6 +146,11 @@ class RollerShutterComponent : public Component {
   void SetIsOnHollidayOn();
   /// @brief Ferien ausschalten
   void SetIsOnHollidayOff();
+
+  /// @brief Der Sonnenschutz wird nicht hochgefahren
+  void SetGapUpIsBlocked();
+  /// @brief gapUpIsBlockedHasSet zurücksetzten, nur vom Rollershutter selber!
+  void ResetGapUpIsBlockedHasSet();
 
   /// @brief Erstes Ausführen
   void InitialRun();
