@@ -85,7 +85,7 @@ class RollerShutterComponent : public Component {
   /// @param secondUp 
   /// @param secondDown 
   /// @param secondGap 
-  void AddTime(const std::string &id, int secondUp, int secondDown, int secondGap);
+  void AddTime(const std::string &id, double secondUp, double secondDown, double secondGap);
 
   // @brief Fügt eine Gruppe der Liste hinzu
 

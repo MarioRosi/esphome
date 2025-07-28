@@ -197,30 +197,10 @@ binary_sensor:
       - delayed_on: $mydelay_on
       - delayed_off: $mydelay_off
 
+
+
   - platform: gpio
     name: "RL_SFN_I_U"
-    pin:
-      pcf8574: inputs_1_8
-      number: 6
-      mode: INPUT
-      inverted: true
-    filters:
-      - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off
-
-  - platform: gpio
-    name: "RL_SFN_I_D"
-    pin:
-      pcf8574: inputs_1_8
-      number: 7
-      mode: INPUT
-      inverted: true
-    filters:
-      - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off
-
-  - platform: gpio
-    name: "RL_SFS_I_U"
     pin:
       pcf8574: inputs_9_16
       number: 0
@@ -231,7 +211,7 @@ binary_sensor:
       - delayed_off: $mydelay_off
 
   - platform: gpio
-    name: "RL_SFS_I_D"
+    name: "RL_SFN_I_D"
     pin:
       pcf8574: inputs_9_16
       number: 1
@@ -242,10 +222,32 @@ binary_sensor:
       - delayed_off: $mydelay_off
 
   - platform: gpio
-    name: "ZEN_I_U"
+    name: "RL_SFS_I_U"
     pin:
       pcf8574: inputs_9_16
       number: 2
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off
+
+  - platform: gpio
+    name: "RL_SFS_I_D"
+    pin:
+      pcf8574: inputs_9_16
+      number: 3
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on: $mydelay_on
+      - delayed_off: $mydelay_off
+
+  - platform: gpio
+    name: "ZEN_I_U"
+    pin:
+      pcf8574: inputs_9_16
+      number: 4
       mode: INPUT
       inverted: true
     filters:
@@ -261,7 +263,7 @@ binary_sensor:
     name: "ZEN_I_D"
     pin:
       pcf8574: inputs_9_16
-      number: 3
+      number: 5
       mode: INPUT
       inverted: true
     filters:
@@ -277,7 +279,7 @@ binary_sensor:
     name: "URL_I_UD"
     pin:
       pcf8574: inputs_9_16
-      number: 4
+      number: 6
       mode: INPUT
       inverted: true
     filters:
@@ -343,32 +345,9 @@ switch:
       mode: OUTPUT
       inverted: true
 
+
   - platform: gpio
     name: "RL_SFN_O_U"
-    pin:
-      pcf8574: outputs_1_8
-      number: 6
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_SFN_O_D"
-    pin:
-      pcf8574: outputs_1_8
-      number: 7
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_SFS_O_U"
-    pin:
-      pcf8574: outputs_9_16
-      number: 0
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_SFS_O_D"
     pin:
       pcf8574: outputs_9_16
       number: 1
@@ -376,10 +355,34 @@ switch:
       inverted: true
 
   - platform: gpio
-    name: "HOUSENUMBER"
+    name: "RL_SFN_O_D"
     pin:
       pcf8574: outputs_9_16
       number: 2
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_SFS_O_U"
+    pin:
+      pcf8574: outputs_9_16
+      number: 3
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "RL_SFS_O_D"
+    pin:
+      pcf8574: outputs_9_16
+      number: 4
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "HOUSENUMBER"
+    pin:
+      pcf8574: outputs_9_16
+      number: 5
       mode: OUTPUT
       inverted: true
 
@@ -397,19 +400,19 @@ rollershutter:
 
   rstimes:
     - id: TIME_NORMAL
-      secondsup: 20
-      secondsdown: 20
-      secondsgap: 14
+      secondsup: 19.0
+      secondsdown: 18.0
+      secondsgap: 14.0
 
     - id: TIME_BIGWINDOW
-      secondsup: 27
-      secondsdown: 27
-      secondsgap: 17
+      secondsup: 24.0
+      secondsdown: 22.0
+      secondsgap: 17.0
 
     - id: TIME_BIGDOOR
-      secondsup: 30
-      secondsdown: 27
-      secondsgap: 11
+      secondsup: 27.0
+      secondsdown: 28.0
+      secondsgap: 17.0
 
   rsgroups:
     - id: HOUSE_SOUTH

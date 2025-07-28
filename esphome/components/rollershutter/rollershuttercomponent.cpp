@@ -53,7 +53,7 @@ RollerShutterComponent::~RollerShutterComponent() {
 /// @param secondUp 
 /// @param secondDown 
 /// @param secondGap 
-void RollerShutterComponent::AddTime(const std::string &id, int secondUp, int secondDown, int secondGap)
+void RollerShutterComponent::AddTime(const std::string &id, double secondUp, double secondDown, double secondGap)
 {
   RL_Time *item = new RL_Time(id, secondUp, secondDown, secondGap);
   this->movingTimes->push_back(item); 

@@ -54,9 +54,9 @@ LOGGER.info("init.py RollerShutter Start")
 CONFIG_RLS_TIME = cv.Schema(
     {
         cv.Required(CONF_ID): cv.declare_id(RL_Time),
-        cv.Required(CONF_RLS_TIMES_SU): cv.int_range(0, 100, True, True),
-        cv.Required(CONF_RLS_TIMES_SD): cv.int_range(0, 100, True, True),
-        cv.Required(CONF_RLS_TIMES_SGD): cv.int_range(0, 100, True, True),
+        cv.Required(CONF_RLS_TIMES_SU): cv.float_range(0.0, 100.0, True, True),
+        cv.Required(CONF_RLS_TIMES_SD): cv.float_range(0.0, 100.0, True, True),
+        cv.Required(CONF_RLS_TIMES_SGD): cv.float_range(0.0, 100.0, True, True),
     }
 )
 

@@ -440,19 +440,19 @@ rollershutter:
 
   rstimes:
     - id: TIME_NORMAL
-      secondsup: 20
-      secondsdown: 20
-      secondsgap: 14
+      secondsup: 19.0
+      secondsdown: 18.0
+      secondsgap: 14.0
 
     - id: TIME_BIGWINDOW
-      secondsup: 27
-      secondsdown: 27
-      secondsgap: 17
+      secondsup: 24.0
+      secondsdown: 22.0
+      secondsgap: 17.0
 
     - id: TIME_BIGDOOR
-      secondsup: 30
-      secondsdown: 27
-      secondsgap: 11
+      secondsup: 27.0
+      secondsdown: 28.0
+      secondsgap: 17.0
 
   rsgroups:
     - id: HOUSE_SOUTH

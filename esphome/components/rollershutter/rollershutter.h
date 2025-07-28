@@ -93,11 +93,11 @@ class RL_Time {
   /// @param secondUp
   /// @param secondDown
   /// @param secondGap
-  RL_Time(const std::string &id, int secondUp, int secondDown, int secondGap) {
+  RL_Time(const std::string &id, double secondUp, double secondDown, double secondGap) {
     this->id = id;
-    this->secondUp = (double) secondUp;
-    this->secondDown = (double) secondDown;
-    this->secondGap = (double) secondGap;
+    this->secondUp =  secondUp;
+    this->secondDown = secondDown;
+    this->secondGap =  secondGap;
   }
 };
 
@@ -168,30 +168,33 @@ class RL_Group {
   }
 };
 
+using namespace std::chrono_literals;
 /// @brief Meine eigene Timerklasse
 class Timer {
   private:
     /// @brief Bis dahin läuft der Timer // unix epoch time (seconds since UTC Midnight January 1, 1970)
-    time_t timeStampEnd;
+    std::chrono::milliseconds timeStampEnd;
     /// @brief Bei dieser zeit wurde der Timer gestartet
-    time_t timeStampStart;
+    std::chrono::milliseconds timeStampStart;
+    /// @brief zum zwischenspeichern von Werten
+    std::chrono::milliseconds temp;
     /// @brief Wieviele Sekunden ist der Timer gelaufen?
     double secondsIsRunning;
     /// @brief läuft der Timer?
     bool timerIsRunning;
   public:
     /// @brief Konstructor
-    Timer() {secondsIsRunning = -1; timerIsRunning = false;}
+    Timer() {secondsIsRunning = -1.0; timerIsRunning = false;}
     /// @brief Startet den Timer
     /// @param runningTimeMs 
     /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
-    bool StartTimer(int runningTimeSeconds)
+    bool StartTimer(double runningTimeSeconds)
     {      
       if (!timerIsRunning)
       {
-        ESP_LOGD("Timer", "StartTimer for %d seconds", runningTimeSeconds);
-        timeStampStart = std::time(nullptr);
-        timeStampEnd = timeStampStart + runningTimeSeconds;        
+        ESP_LOGD("Timer", "StartTimer for %f seconds", runningTimeSeconds);
+        timeStampStart = GetCurrentTime();
+        timeStampEnd = timeStampStart + GetMilliseconds(runningTimeSeconds);
         timerIsRunning = true;        
         return true;
       }
@@ -201,6 +204,30 @@ class Timer {
       }
       return false;
     }
+
+    /// @brief Gibt die aktuelle Zeit als milliSekunden zurück
+    /// @return 
+    std::chrono::milliseconds GetCurrentTime()
+    {
+      return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch());
+    }
+
+    /// @brief Gibt die Sekunden als millisekunden zurück
+    /// @param seconds 
+    /// @return 
+    std::chrono::milliseconds GetMilliseconds(double seconds)
+    {      
+      return std::chrono::duration_cast<std::chrono::milliseconds>((seconds * 1000.0) * 1ms);
+    }
+
+    /// @brief wandelt die chrono::milliseconds in double seconds um
+    /// @param milliseconds 
+    /// @return 
+    double GetSeconds(std::chrono::milliseconds milliseconds)
+    {
+      return ((double)milliseconds.count()) / 1000.0;
+    }
+
     /// @brief Läuft überhaupt ein Timer?
     /// @return 
     bool IsTimerRunning() {return timerIsRunning;}
@@ -210,7 +237,7 @@ class Timer {
     {
       if (timerIsRunning)
       {
-        time_t temp = std::time(nullptr);
+         temp = GetCurrentTime();
         
         if (temp >= timeStampEnd)
         {          
@@ -218,7 +245,7 @@ class Timer {
           return 0;
         }
         else 
-          secondsIsRunning = (double)( temp - timeStampStart);
+          secondsIsRunning = GetSeconds(temp - timeStampStart);
         return 1;
       }
       return -1;
@@ -232,8 +259,8 @@ class Timer {
     {
       if (timerIsRunning)
       {        
-        time_t stop = std::time(nullptr);
-        secondsIsRunning = (double)(stop - timeStampStart);
+        temp = GetCurrentTime();
+        secondsIsRunning = GetSeconds(temp - timeStampStart);
         timerIsRunning = false;       
         return secondsIsRunning;
       }
