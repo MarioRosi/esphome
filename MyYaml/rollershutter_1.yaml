@@ -4,6 +4,10 @@
 substitutions:
   mydelay_on: 50ms
   mydelay_off: 300ms
+  uartcommand_allup: 0xAC, 0xAB, 0x01, 0x99
+  uartcommand_alldown: 0xAC, 0xAB, 0x02, 0x99
+  uartcommand_holiday_on: 0xAC, 0xAB, 0x03, 0x99
+  uartcommand_holiday_off: 0xAC, 0xAB, 0x04, 0x99  
 
 esphome:
   name: roller-shutter-1
@@ -11,9 +15,7 @@ esphome:
   on_boot: 
     priority: -100
     then:
-      - lambda: |-          
-          id(rollershutter_1).MySetup();
-          id(rollershutter_1).InitialRun();
+      - lambda: id(rollershutter_1).InitialRun();
 
 esp32:
   board: esp32dev
@@ -25,6 +27,7 @@ debug:
 # Logger must be at least debug (default)
 logger:
   level: DEBUG
+  baud_rate: 115200
 
 api:
   encryption:
@@ -62,13 +65,34 @@ uart:
   - id: rs485
     tx_pin: GPIO13
     rx_pin: GPIO16
-    baud_rate: 9600
+    baud_rate: 115200
+    stop_bits: 1
+    parity: NONE
+    data_bits: 8
+    debug: 
+      direction: BOTH
+      dummy_receiver: true
+      after:
+        delimiter: [0x99]
+      sequence:
+        - lambda: |-
+            UARTDebug::log_binary(direction, bytes, ';');
+            if ((bytes[0] == 0xAC) && (bytes[1] == 0xAB))            {
+              if (bytes[2] == 0x01)
+                id(rollershutter_1).PressButtonAllUp();
+              else if (bytes[2] == 0x02)
+                id(rollershutter_1).PressButtonAllDown();
+              else if (bytes[2] == 0x03)
+                id(rollershutter_1).SetIsOnHollidayOn();
+              else if (bytes[2] == 0x04)
+                id(rollershutter_1).SetIsOnHollidayOff();
+            }
 
 i2c:
   sda: GPIO4
   scl:
     number: GPIO5
-    ignore_strapping_warning: true
+    ignore_strapping_warning: true    
 
 text_sensor:
   - platform: template
@@ -86,7 +110,7 @@ text_sensor:
   - platform: template
     name: RL_Stube_Ter_Tuer
   - platform: template
-    name: RL_Stube_Terrasse
+    name: RL_Stube_Terrasse   
 
 pcf8574:
   - id: inputs_1_8
@@ -104,24 +128,28 @@ pcf8574:
 
 binary_sensor:
   - platform: gpio
+    internal: true
     name: "KC868-A16-HT1"
     pin:
       number: GPIO32
       inverted: true
 
   - platform: gpio
+    internal: true
     name: "KC868-A16-HT2"
     pin:
       number: GPIO33
       inverted: true
 
   - platform: gpio
+    internal: true
     name: "KC868-A16-HT3"
     pin:
       number: GPIO14
       inverted: true
 
   - platform: gpio
+    internal: true
     name: "RL_HAR_I_U"
     pin:
       pcf8574: inputs_1_8
@@ -130,9 +158,10 @@ binary_sensor:
       inverted: true
     filters:
       - delayed_on: $mydelay_on
-      - delayed_off: $mydelay_off     
-
+      - delayed_off: $mydelay_off         
+            
   - platform: gpio
+    internal: true
     name: "RL_HAR_I_D"
     pin:
       pcf8574: inputs_1_8
@@ -144,6 +173,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_KIT_I_U"
     pin:
       pcf8574: inputs_1_8
@@ -155,6 +185,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_KIT_I_D"
     pin:
       pcf8574: inputs_1_8
@@ -166,6 +197,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_BA1_I_U"
     pin:
       pcf8574: inputs_1_8
@@ -177,6 +209,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_BA1_I_D"
     pin:
       pcf8574: inputs_1_8
@@ -188,6 +221,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_KI1_I_U"
     pin:
       pcf8574: inputs_1_8
@@ -199,6 +233,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_KI1_I_D"
     pin:
       pcf8574: inputs_1_8
@@ -210,6 +245,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_KI2_I_U"
     pin:
       pcf8574: inputs_9_16
@@ -221,6 +257,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_KI2_I_D"
     pin:
       pcf8574: inputs_9_16
@@ -232,6 +269,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_ARB_I_U"
     pin:
       pcf8574: inputs_9_16
@@ -243,6 +281,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_ARB_I_D"
     pin:
       pcf8574: inputs_9_16
@@ -254,6 +293,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_STT_I_U"
     pin:
       pcf8574: inputs_9_16
@@ -265,6 +305,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_STT_I_D"
     pin:
       pcf8574: inputs_9_16
@@ -276,6 +317,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_STF_I_U"
     pin:
       pcf8574: inputs_9_16
@@ -287,6 +329,7 @@ binary_sensor:
       - delayed_off: $mydelay_off     
 
   - platform: gpio
+    internal: true
     name: "RL_STF_I_D"
     pin:
       pcf8574: inputs_9_16
@@ -299,130 +342,146 @@ binary_sensor:
 
 switch:
   - platform: gpio
+    internal: true
     name: "RL_HAR_O_U"
     pin:
-      pcf8574: outputs_1_8
-      number: 0
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_HAR_O_D"
-    pin:
-      pcf8574: outputs_1_8
-      number: 1
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_KIT_O_U"
-    pin:
-      pcf8574: outputs_1_8
-      number: 2
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_KIT_O_D"
-    pin:
-      pcf8574: outputs_1_8
-      number: 3
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_BA1_O_U"
-    pin:
-      pcf8574: outputs_1_8
-      number: 4
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_BA1_O_D"
-    pin:
-      pcf8574: outputs_1_8
-      number: 5
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_KI1_O_U"
-    pin:
-      pcf8574: outputs_1_8
-      number: 6
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_KI1_O_D"
-    pin:
-      pcf8574: outputs_1_8
+      pcf8574: outputs_9_16
       number: 7
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
-    name: "RL_KI2_O_U"
+    internal: true
+    name: "RL_HAR_O_D"
     pin:
       pcf8574: outputs_9_16
-      number: 0
+      number: 6
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
+    internal: true
+    name: "RL_KIT_O_U"
+    pin:
+      pcf8574: outputs_9_16
+      number: 5
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_KIT_O_D"
+    pin:
+      pcf8574: outputs_9_16
+      number: 4
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_BA1_O_U"
+    pin:
+      pcf8574: outputs_9_16
+      number: 3
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_BA1_O_D"
+    pin:
+      pcf8574: outputs_9_16
+      number: 2
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_KI1_O_U"
+    pin:
+      pcf8574: outputs_9_16
+      number: 1
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
     name: "RL_KI2_O_D"
     pin:
       pcf8574: outputs_9_16
-      number: 1
+      number: 0
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
-    name: "RL_ARB_O_U"
+    internal: true
+    name: "RL_KI2_O_U"
     pin:
-      pcf8574: outputs_9_16
-      number: 2
+      pcf8574: outputs_1_8
+      number: 7
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
-    name: "RL_ARB_O_D"
+    internal: true
+    name: "RL_KI1_O_D"
     pin:
-      pcf8574: outputs_9_16
-      number: 3
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_STT_O_U"
-    pin:
-      pcf8574: outputs_9_16
-      number: 4
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_STT_O_D"
-    pin:
-      pcf8574: outputs_9_16
-      number: 5
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_STF_O_U"
-    pin:
-      pcf8574: outputs_9_16
+      pcf8574: outputs_1_8
       number: 6
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
+    internal: true
+    name: "RL_ARB_O_U"
+    pin:
+      pcf8574: outputs_1_8
+      number: 5
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_ARB_O_D"
+    pin:
+      pcf8574: outputs_1_8
+      number: 4
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_STT_O_U"
+    pin:
+      pcf8574: outputs_1_8
+      number: 3
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_STT_O_D"
+    pin:
+      pcf8574: outputs_1_8
+      number: 2
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_STF_O_U"
+    pin:
+      pcf8574: outputs_1_8
+      number: 1
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
     name: "RL_STF_O_D"
     pin:
-      pcf8574: outputs_9_16
-      number: 7
+      pcf8574: outputs_1_8
+      number: 0
       mode: OUTPUT
       inverted: true
 
@@ -490,13 +549,6 @@ rollershutter:
         uphour: 18
         upminute: 55
 
-  rshutterAll:
-    allinputup_id: remote
-    allinputdown_id: remote
-    allinputhollyday_id: remote
-    allinput_master: False
-    allinput_slave: True
-
   rshutters:
     - id: rs_har
       name: hausanschlussraum
@@ -560,7 +612,7 @@ rollershutter:
 
     - id: rs_stt
       name: stube-terassentuer
-      rsgroup_id: HOUSE_WEST
+      rsgroup_id: HOUSE_NORTH
       rstime_id: TIME_BIGDOOR
       inputup_id: rl_stt_i_u
       inputdown_id: rl_stt_i_d

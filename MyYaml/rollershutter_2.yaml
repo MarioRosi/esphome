@@ -1,10 +1,10 @@
 substitutions:
   mydelay_on: 50ms
   mydelay_off: 300ms
-  uartcommand_allup: 0xAC, 0xAB, 0x01
-  uartcommand_alldown: 0xAC, 0xAB, 0x02
-  uartcommand_holiday_on: 0xAC, 0xAB, 0x03
-  uartcommand_holiday_off: 0xAC, 0xAB, 0x04
+  uartcommand_allup: 0xAC, 0xAB, 0x01, 0x99
+  uartcommand_alldown: 0xAC, 0xAB, 0x02, 0x99
+  uartcommand_holiday_on: 0xAC, 0xAB, 0x03, 0x99
+  uartcommand_holiday_off: 0xAC, 0xAB, 0x04, 0x99
 
 esphome:
   name: roller-shutter-2
@@ -12,9 +12,7 @@ esphome:
   on_boot: 
     priority: -100
     then:
-      - lambda: |-
-          id(rollershutter_2).MySetup();
-          id(rollershutter_2).InitialRun();
+      - lambda: id(rollershutter_2).InitialRun();
 
 esp32:
   board: esp32dev
@@ -26,6 +24,7 @@ debug:
 # Logger must be at least debug (default)
 logger:
   level: DEBUG
+  baud_rate: 115200
 
 api:
   encryption:
@@ -65,20 +64,36 @@ uart:
     tx_pin: GPIO13
     rx_pin: GPIO16
     baud_rate: 115200
+    stop_bits: 1
+    parity: NONE
+    data_bits: 8
+    debug: 
+      direction: BOTH
+      dummy_receiver: true
+      sequence:
+        - lambda: UARTDebug::log_binary(direction, bytes, ';');
 
 button:
   - platform: uart
-    id: uart_master_all_up    
-    data: $uartcommand_allup
+    internal: true
+    id: uart_master_all_up
+    uart_id: rs485
+    data: [0xAC, 0xAB, 0x01, 0x99]
   - platform: uart
+    internal: true
+    uart_id: rs485
     id: uart_master_all_down
-    data: $uartcommand_alldown
+    data: [0xAC, 0xAB, 0x02, 0x99]
   - platform: uart
+    internal: true
+    uart_id: rs485
     id: uart_master_holiday_on
-    data: $uartcommand_holiday_on
+    data: [0xAC, 0xAB, 0x03, 0x99]
   - platform: uart
+    internal: true
+    uart_id: rs485
     id: uart_master_holiday_off
-    data: $uartcommand_holiday_off
+    data: [0xAC, 0xAB, 0x04, 0x99]
 
 i2c:
   sda: GPIO4
@@ -115,18 +130,21 @@ pcf8574:
 binary_sensor:
   - platform: gpio
     name: "KC868-A16-HT1"
+    internal: true
     pin:
       number: GPIO32
       inverted: true
 
   - platform: gpio
     name: "KC868-A16-HT2"
+    internal: true
     pin:
       number: GPIO33
       inverted: true
 
   - platform: gpio
     name: "KC868-A16-HT3"
+    internal: true
     pin:
       number: GPIO14
       inverted: true
@@ -256,8 +274,7 @@ binary_sensor:
     on_press: 
       then:
         - button.press: uart_master_all_up
-        - lambda: |-
-            id(rollershutter_2).PressButtonAllUp();
+        - lambda: id(rollershutter_2).PressButtonAllUp();
 
   - platform: gpio
     name: "ZEN_I_D"
@@ -272,8 +289,7 @@ binary_sensor:
     on_press:
       then:
         - button.press: uart_master_all_down
-        - lambda: |-
-            id(rollershutter_2).PressButtonAllDown();
+        - lambda:  id(rollershutter_2).PressButtonAllDown();
 
   - platform: gpio
     name: "URL_I_UD"
@@ -288,92 +304,99 @@ binary_sensor:
     on_press:
       then:
         - button.press: uart_master_holiday_on
-        - lambda: |-
-            id(rollershutter_2).SetIsOnHollidayOn();
+        - lambda:  id(rollershutter_2).SetIsOnHollidayOn();
     on_release: 
       then:
         - button.press: uart_master_holiday_off
-        - lambda: |-
-            id(rollershutter_2).SetIsOnHollidayOff();
+        - lambda: id(rollershutter_2).SetIsOnHollidayOff();
 
 switch:
   - platform: gpio
+    internal: true
     name: "RL_SCH_O_U"
     pin:
-      pcf8574: outputs_1_8
-      number: 0
+      pcf8574: outputs_9_16
+      number: 7
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
+    internal: true
     name: "RL_SCH_O_D"
     pin:
-      pcf8574: outputs_1_8
-      number: 1
+      pcf8574: outputs_9_16
+      number: 6
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
+    internal: true
     name: "RL_GAR_O_U"
     pin:
-      pcf8574: outputs_1_8
-      number: 2
+      pcf8574: outputs_9_16
+      number: 5
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
+    internal: true
     name: "RL_GAR_O_D"
     pin:
-      pcf8574: outputs_1_8
-      number: 3
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_BA2_O_U"
-    pin:
-      pcf8574: outputs_1_8
+      pcf8574: outputs_9_16
       number: 4
       mode: OUTPUT
       inverted: true
 
   - platform: gpio
+    internal: true
+    name: "RL_BA2_O_U"
+    pin:
+      pcf8574: outputs_9_16
+      number: 3
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
     name: "RL_BA2_O_D"
+    pin:
+      pcf8574: outputs_9_16
+      number: 2
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_SFN_O_U"
+    pin:
+      pcf8574: outputs_1_8
+      number: 7
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_SFN_O_D"
+    pin:
+      pcf8574: outputs_1_8
+      number: 6
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    internal: true
+    name: "RL_SFS_O_U"
     pin:
       pcf8574: outputs_1_8
       number: 5
       mode: OUTPUT
       inverted: true
 
-
   - platform: gpio
-    name: "RL_SFN_O_U"
-    pin:
-      pcf8574: outputs_9_16
-      number: 1
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_SFN_O_D"
-    pin:
-      pcf8574: outputs_9_16
-      number: 2
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
-    name: "RL_SFS_O_U"
-    pin:
-      pcf8574: outputs_9_16
-      number: 3
-      mode: OUTPUT
-      inverted: true
-
-  - platform: gpio
+    internal: true
     name: "RL_SFS_O_D"
     pin:
-      pcf8574: outputs_9_16
+      pcf8574: outputs_1_8
       number: 4
       mode: OUTPUT
       inverted: true
@@ -381,8 +404,8 @@ switch:
   - platform: gpio
     name: "HOUSENUMBER"
     pin:
-      pcf8574: outputs_9_16
-      number: 5
+      pcf8574: outputs_1_8
+      number: 3
       mode: OUTPUT
       inverted: true
 
@@ -400,19 +423,19 @@ rollershutter:
 
   rstimes:
     - id: TIME_NORMAL
-      secondsup: 19.0
-      secondsdown: 18.0
-      secondsgap: 14.0
+      secondsup: 20
+      secondsdown: 20
+      secondsgap: 14
 
     - id: TIME_BIGWINDOW
-      secondsup: 24.0
-      secondsdown: 22.0
-      secondsgap: 17.0
+      secondsup: 27
+      secondsdown: 27
+      secondsgap: 17
 
     - id: TIME_BIGDOOR
-      secondsup: 27.0
-      secondsdown: 28.0
-      secondsgap: 17.0
+      secondsup: 30
+      secondsdown: 27
+      secondsgap: 11
 
   rsgroups:
     - id: HOUSE_SOUTH
