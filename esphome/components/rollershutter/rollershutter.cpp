@@ -213,6 +213,8 @@ void RollerShutter::Stop() {
           this->relDown->turn_off();
           this->closingPosition = 0.0;
           this->myState = enRollerShutterState::isTop;
+          this->btnDownIsPress = false;
+          this->btnUpIsPress = false;
         }
         break;
       case enRollerShutterState::isStartingDown:
