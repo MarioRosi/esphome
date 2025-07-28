@@ -46,34 +46,36 @@ class RollerShutterComponent;
 enum enRollerShutterState {
   /// @brief darf es nicht geben
   isUnknown = 0,
+  /// @brief ich wurde neu gestartet, fahre automatisch runter
+  isStartingDown = 1,
   /// @brief ich wurde neu gestartet, fahre automatisch hoch
-  isStarting = 1,
+  isStartingUp = 2,
   /// @brief ich wurde gestartet und bin oben!
-  isStarted = 2,
+  isStarted = 3,
   /// @brief ich bin oben
-  isTop = 3,
+  isTop = 4,
   /// @brief ich fahre nach unten
-  isDoDown = 4,
+  isDoDown = 5,
   /// @brief Runterfahren wurde gestoppt
-  isStopDoDown = 5,
+  isStopDoDown = 6,
   /// @brief ich bin unten
-  isDown = 6,
+  isDown = 7,
   /// @brief ich fahre hoch
-  isDoTop = 7,
+  isDoTop = 8,
   /// @brief Hochfahren wurde gestoppt
-  isStopDoTop = 8,
+  isStopDoTop = 9,
   /// @brief Fahre auf Lücke hoch
-  isGoToGapUp = 9,
+  isGoToGapUp = 10,
   /// @brief Hochfahren auf Lück gestoppt
-  isStopGapUp = 10,
+  isStopGapUp = 11,
   /// @brief Fahre auf Lücke runter
-  isGoToGapDown = 11,
+  isGoToGapDown = 12,
   /// @brief Runterfahren auf Lücke gestoppt
-  isStopGapDown = 12,
+  isStopGapDown = 13,
   /// @brief ich stehe auf Lücke
-  isOnGap = 13,
+  isOnGap = 14,
   /// @brief Ende der auf Lücke, hochfahren
-  isGapEndGoUp = 14,
+  isGapEndGoUp = 15,
 };
 
 
