@@ -47,8 +47,6 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
 /// @brief Den Rolladen aktivieren
 void RollerShutter::MySetup() {
   ESP_LOGD(TAG, "setup id = %s", this->myId.c_str());
-  try
-  {
   if (std::strlen(this->btnUpId.c_str()) > 1) {
     this->btnUp = getBinarySensorById(this->btnUpId);
     this->btnUp->add_on_state_callback([this](bool state){ this->OnButtonUpStateChange(state); });
@@ -70,11 +68,7 @@ void RollerShutter::MySetup() {
       }
     }
   }
-  }
-  catch(const std::exception& e)
-  {
-     ESP_LOGD(TAG, "ERROR on id = %s Message=%s", this->myId.c_str(), e.what());
-  }  
+  ESP_LOGD(TAG, "setup id = %s is finished", this->myId.c_str());
 }
 
 /// @brief Rollladen zurücksetzten == hochfahren
