@@ -16,7 +16,7 @@
 // #define USE_EVENT
 // #define USE_UPDATE
 
-
+#include <inttypes.h>
 #include "esphome/core/defines.h"
 #include "esphome/core/application.h"
 #include "esphome/core/component_iterator.h"
@@ -175,11 +175,11 @@ using namespace std::chrono_literals;
 class Timer {
   private:
     /// @brief Bis dahin läuft der Timer // unix epoch time (seconds since UTC Midnight January 1, 1970)
-    std::int64_t timeStampEnd;
+    std::uint64_t timeStampEnd;
     /// @brief Bei dieser zeit wurde der Timer gestartet
-    std::int64_t timeStampStart;
+    std::uint64_t timeStampStart;
     /// @brief zum zwischenspeichern von Werten
-    std::int64_t temp;
+    std::uint64_t temp;
     /// @brief Wieviele Sekunden ist der Timer gelaufen?
     double secondsIsRunning;
     /// @brief läuft der Timer?
@@ -198,7 +198,7 @@ class Timer {
         timeStampStart = GetCurrentTime();
         timeStampEnd = timeStampStart + GetMilliseconds(runningTimeSeconds);
         timerIsRunning = true;
-        ESP_LOGD("Timer", "EndTimer is %lld miliseconds", timeStampEnd);
+        ESP_LOGD("Timer", "EndTimer is %" PRIu64 " miliseconds", timeStampEnd);
         return true;
       }
       else
@@ -210,27 +210,28 @@ class Timer {
 
     /// @brief Gibt die aktuelle Zeit als milliSekunden zurück
     /// @return 
-    std::int64_t GetCurrentTime()
+    std::uint64_t GetCurrentTime()
     {     
       timeval tv;
       gettimeofday(&tv, NULL);
-      return (tv.tv_sec * 1000LL + (tv.tv_usec / 1000LL));
+      return ((std::uint64_t)(tv.tv_sec * 1000LL + (tv.tv_usec / 1000LL)));
+      ESP_LOGD("Timer","gettime");
       //return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
     /// @brief Gibt die Sekunden als millisekunden zurück
     /// @param seconds 
     /// @return 
-    std::int64_t GetMilliseconds(double seconds)
+    std::uint64_t GetMilliseconds(double seconds)
     {   
-      return ((std::int64_t) (seconds  * 1000.0));
+      return ((std::uint64_t) (seconds  * 1000.0));
       //return std::chrono::duration_cast<std::chrono::milliseconds>((seconds * 1000.0) * 1ms).count();
     }
 
     /// @brief wandelt die chrono::milliseconds in double seconds um
     /// @param milliseconds 
     /// @return 
-    double GetSeconds(std::int64_t milliseconds)
+    double GetSeconds(std::uint64_t milliseconds)
     {
       return ((double)milliseconds) / 1000.0;
     }
