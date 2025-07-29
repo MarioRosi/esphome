@@ -222,8 +222,9 @@ class Timer {
     /// @param seconds 
     /// @return 
     std::int64_t GetMilliseconds(double seconds)
-    {      
-      return std::chrono::duration_cast<std::chrono::milliseconds>((seconds * 1000.0) * 1ms).count();
+    {   
+      return ((std::int64_t) (seconds  * 1000.0));
+      //return std::chrono::duration_cast<std::chrono::milliseconds>((seconds * 1000.0) * 1ms).count();
     }
 
     /// @brief wandelt die chrono::milliseconds in double seconds um
