@@ -197,7 +197,8 @@ class Timer {
         ESP_LOGD("Timer", "StartTimer for %f seconds", runningTimeSeconds);
         timeStampStart = GetCurrentTime();
         timeStampEnd = timeStampStart + GetMilliseconds(runningTimeSeconds);
-        timerIsRunning = true;        
+        timerIsRunning = true;
+        ESP_LOGD("Timer", "EndTimer is %d miliseconds", timeStampEnd);
         return true;
       }
       else
@@ -239,8 +240,7 @@ class Timer {
     {
       if (timerIsRunning)
       {
-         temp = GetCurrentTime();
-        
+         temp = GetCurrentTime();        
         if (temp >= timeStampEnd)
         {          
           StopTimer();
@@ -263,7 +263,8 @@ class Timer {
       {        
         temp = GetCurrentTime();
         secondsIsRunning = GetSeconds(temp - timeStampStart);
-        timerIsRunning = false;       
+        timerIsRunning = false;     
+        ESP_LOGD("Timer","Timer is stoping");  
         return secondsIsRunning;
       }
       return 0;
