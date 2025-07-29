@@ -175,11 +175,11 @@ using namespace std::chrono_literals;
 class Timer {
   private:
     /// @brief Bis dahin läuft der Timer // unix epoch time (seconds since UTC Midnight January 1, 1970)
-    std::chrono::milliseconds timeStampEnd;
+    std::int64_t timeStampEnd;
     /// @brief Bei dieser zeit wurde der Timer gestartet
-    std::chrono::milliseconds timeStampStart;
+    std::int64_t timeStampStart;
     /// @brief zum zwischenspeichern von Werten
-    std::chrono::milliseconds temp;
+    std::int64_t temp;
     /// @brief Wieviele Sekunden ist der Timer gelaufen?
     double secondsIsRunning;
     /// @brief läuft der Timer?
@@ -209,25 +209,25 @@ class Timer {
 
     /// @brief Gibt die aktuelle Zeit als milliSekunden zurück
     /// @return 
-    std::chrono::milliseconds GetCurrentTime()
+    std::int64_t GetCurrentTime()
     {
-      return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch());
+      return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
     /// @brief Gibt die Sekunden als millisekunden zurück
     /// @param seconds 
     /// @return 
-    std::chrono::milliseconds GetMilliseconds(double seconds)
+    std::int64_t GetMilliseconds(double seconds)
     {      
-      return std::chrono::duration_cast<std::chrono::milliseconds>((seconds * 1000.0) * 1ms);
+      return std::chrono::duration_cast<std::chrono::milliseconds>((seconds * 1000.0) * 1ms).count();
     }
 
     /// @brief wandelt die chrono::milliseconds in double seconds um
     /// @param milliseconds 
     /// @return 
-    double GetSeconds(std::chrono::milliseconds milliseconds)
+    double GetSeconds(std::int64_t milliseconds)
     {
-      return ((double)milliseconds.count()) / 1000.0;
+      return ((double)milliseconds) / 1000.0;
     }
 
     /// @brief Läuft überhaupt ein Timer?
