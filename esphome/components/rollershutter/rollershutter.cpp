@@ -250,7 +250,7 @@ void RollerShutter::Stop() {
         ESP_LOGD(TAG, "Stop not taked mystate==%d", (int)this->myState);
         break;
     }
-    ESP_LOGD(TAG,"Stop with closingPosition=%f", this->closingPosition);
+    ESP_LOGD(TAG,"Stop with closingPosition=%f mystate==%d", this->closingPosition, (int)this->myState);
     this->sendState(this->closingPosition);
   }
 }
