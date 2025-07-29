@@ -198,7 +198,7 @@ class Timer {
         timeStampStart = GetCurrentTime();
         timeStampEnd = timeStampStart + GetMilliseconds(runningTimeSeconds);
         timerIsRunning = true;
-        ESP_LOGD("Timer", "EndTimer is %d miliseconds", timeStampEnd);
+        ESP_LOGD("Timer", "EndTimer is %lld miliseconds", timeStampEnd);
         return true;
       }
       else
@@ -211,8 +211,11 @@ class Timer {
     /// @brief Gibt die aktuelle Zeit als milliSekunden zurück
     /// @return 
     std::int64_t GetCurrentTime()
-    {
-      return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    {     
+      timeval tv;
+      gettimeofday(&tv, NULL);
+      return (tv.tv_sec * 1000LL + (tv.tv_usec / 1000LL));
+      //return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
     /// @brief Gibt die Sekunden als millisekunden zurück
