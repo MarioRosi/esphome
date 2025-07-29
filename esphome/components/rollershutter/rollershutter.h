@@ -178,8 +178,6 @@ class Timer {
     std::uint64_t timeStampEnd;
     /// @brief Bei dieser zeit wurde der Timer gestartet
     std::uint64_t timeStampStart;
-    /// @brief zum zwischenspeichern von Werten
-    std::uint64_t temp;
     /// @brief Wieviele Sekunden ist der Timer gelaufen?
     double secondsIsRunning;
     /// @brief läuft der Timer?
@@ -211,12 +209,8 @@ class Timer {
     /// @brief Gibt die aktuelle Zeit als milliSekunden zurück
     /// @return 
     std::uint64_t GetCurrentTime()
-    {     
-      timeval tv;
-      gettimeofday(&tv, NULL);
-      return ((std::uint64_t)(tv.tv_sec * 1000LL + (tv.tv_usec / 1000LL)));
-      ESP_LOGD("Timer","gettime");
-      //return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+    {
+      return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
     }
 
     /// @brief Gibt die Sekunden als millisekunden zurück
@@ -245,7 +239,7 @@ class Timer {
     {
       if (timerIsRunning)
       {
-         temp = GetCurrentTime();        
+        std::uint64_t temp = GetCurrentTime();        
         if (temp >= timeStampEnd)
         {          
           StopTimer();
@@ -266,7 +260,7 @@ class Timer {
     {
       if (timerIsRunning)
       {        
-        temp = GetCurrentTime();
+        std::uint64_t temp = GetCurrentTime();
         secondsIsRunning = GetSeconds(temp - timeStampStart);
         timerIsRunning = false;     
         ESP_LOGD("Timer","Timer is stoping");  
