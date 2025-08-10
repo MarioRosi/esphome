@@ -32,6 +32,7 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
                              const std::string &relUpId, const std::string &relDownId, const std::string &displayId) {
   this->myId = id;  
   //this->set_name(name.c_str());
+  this->closingPosition = 0.0;
   this->groupId = groupId;
   this->timeUpDownId = timeUpDownId;
   this->myComponent = myComponent;
@@ -42,7 +43,7 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
   this->displayId = displayId;
   this->hasSetup = false;
   myState = enRollerShutterState::isUnknown;
-  
+
   this->timer = new RLSTimer(this);
 }
 
@@ -175,8 +176,11 @@ void RollerShutter::Stop() {
     this->relDown->turn_off();          
     switch (myState) {
       case enRollerShutterState::isDoTop:
+      case enRollerShutterState::isStartingUp:
         {
           this->closingPosition -= timeStartToStop / this->timeUpDown->secondUp * 100.0;
+          if (this->myState != enRollerShutterState::isStartingUp)
+            this->closingPosition = 0.0;
           this->myState = enRollerShutterState::isStopDoTop;
           if (this->closingPosition <= 0.0) {
             this->closingPosition = 0.0;
