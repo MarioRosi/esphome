@@ -42,7 +42,7 @@ namespace rollershutter {
 
 // extern definition
 class RollerShutterComponent;
-class Timer;
+class RLSTimer;
 
 /// @brief Status des Rolladen
 enum enRollerShutterState {
