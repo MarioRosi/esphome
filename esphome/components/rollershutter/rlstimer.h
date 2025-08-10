@@ -28,7 +28,7 @@ namespace rollershutter {
 class RollerShutter;
 
 /// @brief Meine eigene Timerklasse
-class Timer {
+class RLSTimer {
   private:
     /// @brief Die Stopfunktion des Rolladen, wird bei erreichen des Timers aufgerufen
     RollerShutter* owner;
@@ -64,7 +64,7 @@ class Timer {
     }
   public:
     /// @brief Konstructor
-    Timer(RollerShutter* owner);
+    RLSTimer(RollerShutter* owner);
     /// @brief Startet den Timer
     /// @param runningTimeMs 
     /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!

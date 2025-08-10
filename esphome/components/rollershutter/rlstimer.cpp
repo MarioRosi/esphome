@@ -4,14 +4,14 @@
    Freeware
 */
 
-#include "timer.h"
+#include "rlstimer.h"
 #include "rollershutter.h"
 
 namespace esphome {
 namespace rollershutter {
 
 /// @brief Konstructor
-Timer::Timer(RollerShutter* owner)
+RLSTimer::RLSTimer(RollerShutter* owner)
 {
   this->owner = owner;
   secondsIsRunning = -1.0;
@@ -20,7 +20,7 @@ Timer::Timer(RollerShutter* owner)
 /// @brief Startet den Timer
 /// @param runningTimeMs 
 /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
-bool Timer::StartTimer(double runningTimeSeconds)
+bool RLSTimer::StartTimer(double runningTimeSeconds)
 {      
   if (!timerIsRunning)
   {
@@ -40,7 +40,7 @@ bool Timer::StartTimer(double runningTimeSeconds)
 
 /// @brief Testet, ob der Timer abgelaufen ist
 /// @return >=1 = Timer ist nich nicht zu ende, er läuft noch. 0 == Timer zu ende. -1 == Timer schläft
-int Timer::CheckTimer()
+int RLSTimer::CheckTimer()
 {
   if (timerIsRunning)
   {
@@ -60,7 +60,7 @@ int Timer::CheckTimer()
 
 /// @brief Stopt den Timer und gibt die LaufSekunden zurück
 /// @return 0 == Timer war bereits gestoppt, >0 == Laufsekunden
-double Timer::StopTimer()
+double RLSTimer::StopTimer()
 {
   if (timerIsRunning)
   {        

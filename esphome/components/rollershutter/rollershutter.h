@@ -16,7 +16,6 @@
 // #define USE_EVENT
 // #define USE_UPDATE
 
-#include "tiner.h"
 #include <inttypes.h>
 #include <chrono>
 #include "esphome/core/defines.h"
@@ -43,6 +42,7 @@ namespace rollershutter {
 
 // extern definition
 class RollerShutterComponent;
+class Timer;
 
 /// @brief Status des Rolladen
 enum enRollerShutterState {
@@ -209,7 +209,7 @@ class RollerShutter{
   /// @brief Mein derzeitiger Status
   enRollerShutterState myState;
   /// @brief Mein eigener Timer
-  Timer *timer;
+  RLSTimer *timer;
   /// @brief Die Position des Rolladen 0.0 == oben, 100.0 = vollständig geschlossen
   double closingPosition;
   /// @brief die ID des Textsensor für die Anzeige

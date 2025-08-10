@@ -6,7 +6,7 @@
    Freeware
 */
 
-#include "timer.h"
+#include "rlstimer.h"
 #include "rollershutter.h"
 #include "rollershuttercomponent.h"
 
