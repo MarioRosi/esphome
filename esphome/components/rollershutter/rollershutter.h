@@ -16,6 +16,7 @@
 // #define USE_EVENT
 // #define USE_UPDATE
 
+#include "tiner.h"
 #include <inttypes.h>
 #include <chrono>
 #include "esphome/core/defines.h"
@@ -42,7 +43,6 @@ namespace rollershutter {
 
 // extern definition
 class RollerShutterComponent;
-class RollerShutter;
 
 /// @brief Status des Rolladen
 enum enRollerShutterState {
@@ -166,116 +166,6 @@ class RL_Group {
     this->name = name;
     this->sundownner = sundownner;    
   }
-};
-
-using namespace std::chrono_literals;
-/// @brief Meine eigene Timerklasse
-class Timer {
-  private:
-    /// @brief Die Stopfunktion des Rolladen, wird bei erreichen des Timers aufgerufen
-    RollerShutter* owner;
-    /// @brief Bis dahin läuft der Timer // unix epoch time (seconds since UTC Midnight January 1, 1970)
-    std::uint64_t timeStampEnd;
-    /// @brief Bei dieser zeit wurde der Timer gestartet
-    std::uint64_t timeStampStart;
-    /// @brief Wieviele Sekunden ist der Timer gelaufen?
-    double secondsIsRunning;
-    /// @brief läuft der Timer?
-    bool timerIsRunning;
-    /// @brief Gibt die aktuelle Zeit als milliSekunden zurück
-    /// @return 
-    std::uint64_t GetCurrentTime()
-    {
-      return  std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
-    }
-
-    /// @brief Gibt die Sekunden als millisekunden zurück
-    /// @param seconds 
-    /// @return 
-    std::uint64_t GetMilliseconds(double seconds)
-    {   
-      return ((std::uint64_t) (seconds  * 1000.0));
-      //return std::chrono::duration_cast<std::chrono::milliseconds>((seconds * 1000.0) * 1ms).count();
-    }
-
-    /// @brief wandelt die chrono::milliseconds in double seconds um
-    /// @param milliseconds 
-    /// @return 
-    double GetSeconds(std::uint64_t milliseconds)
-    {
-      return ((double)milliseconds) / 1000.0;
-    }
-  public:
-    /// @brief Konstructor
-    Timer(RollerShutter* owner)
-    {
-      this->owner = owner;
-      secondsIsRunning = -1.0;
-      timerIsRunning = false;
-    }
-    /// @brief Startet den Timer
-    /// @param runningTimeMs 
-    /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
-    bool StartTimer(double runningTimeSeconds)
-    {      
-      if (!timerIsRunning)
-      {
-        ESP_LOGD("Timer", "StartTimer for %f seconds", runningTimeSeconds);
-        timeStampStart = GetCurrentTime();
-        timeStampEnd = timeStampStart + GetMilliseconds(runningTimeSeconds);
-        timerIsRunning = true;
-        ESP_LOGD("Timer", "EndTimer is %" PRIu64 " miliseconds", timeStampEnd);
-        return true;
-      }
-      else
-      {
-        ESP_LOGD("Timer", "Timer is running!");
-      }
-      return false;
-    }
-
-    /// @brief Läuft überhaupt ein Timer?
-    /// @return 
-    bool IsTimerRunning() {return timerIsRunning;}
-    /// @brief Testet, ob der Timer abgelaufen ist
-    /// @return >=1 = Timer ist nich nicht zu ende, er läuft noch. 0 == Timer zu ende. -1 == Timer schläft
-    int CheckTimer()
-    {
-      if (timerIsRunning)
-      {
-        std::uint64_t temp = GetCurrentTime();        
-        if (temp >= timeStampEnd)
-        {          
-          owner->Stop();
-          StopTimer();
-          return 0;
-        }
-        else 
-          secondsIsRunning = GetSeconds(temp - timeStampStart);
-        return 1;
-      }
-      return -1;
-    }
-
-    double GetSecondsIsRunning() {return secondsIsRunning;}
-
-    /// @brief Stopt den Timer und gibt die LaufSekunden zurück
-    /// @return 0 == Timer war bereits gestoppt, >0 == Laufsekunden
-    double StopTimer()
-    {
-      if (timerIsRunning)
-      {        
-        std::uint64_t temp = GetCurrentTime();
-        secondsIsRunning = GetSeconds(temp - timeStampStart);
-        timerIsRunning = false;     
-        ESP_LOGD("Timer","Timer is stoping");  
-        return secondsIsRunning;
-      }
-      return 0;
-    }
-
-    /// @brief Timer Schlafen legen
-    void SleepTimer() { this->secondsIsRunning = -1.0;}
 };
 
 /** Basisklasse für die Rolladensteuerung, ist ein Rolladen */
