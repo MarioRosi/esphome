@@ -102,12 +102,12 @@ button:
   - platform: uart
     internal: true
     uart_id: rs485
-    id: uart_master_bockedopengap_on
+    id: uart_master_blockedopengap_on
     data: [0xAC, 0xAB, 0x05, 0x99]
   - platform: uart
     internal: true
     uart_id: rs485
-    id: uart_master_bockedopengap_off
+    id: uart_master_blockedopengap_off
     data: [0xAC, 0xAB, 0x06, 0x99]
 
 i2c:
@@ -326,17 +326,17 @@ binary_sensor:
         - lambda: id(rollershutter_2).SetIsOnHollidayOff();
 
   - platform: template
-    name: "STOPGAP_I_ON"
+    name: "STOPGAPOPEN_I_ON"
     on_press:
       then:
-        - button.press: uart_master_bockedopengap_on
+        - button.press: uart_master_blockedopengap_on
         - lambda:  id(rollershutter_2).SetGapUpIsBlocked();
 
   - platform: template
-    name: "STOPGAP_I_OFF"
+    name: "STOPGAPOPEN_I_OFF"
     on_press:
       then:
-        - button.press: uart_master_bockedopengap_off
+        - button.press: uart_master_blockedopengap_off
         - lambda:  id(rollershutter_2).SetGapUpIsAllowed();
 
 switch:
