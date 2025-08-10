@@ -86,6 +86,10 @@ uart:
                 id(rollershutter_1).SetIsOnHollidayOn();
               else if (bytes[2] == 0x04)
                 id(rollershutter_1).SetIsOnHollidayOff();
+              else if (bytes[2] == 0x05)
+                id(rollershutter_1).SetGapUpIsBlocked();
+              else if (bytes[2] == 0x06)
+                id(rollershutter_1).SetGapUpIsAllowed();
             }
 
 i2c:

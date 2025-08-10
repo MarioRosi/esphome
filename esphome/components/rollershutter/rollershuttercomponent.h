@@ -149,6 +149,8 @@ class RollerShutterComponent : public Component {
 
   /// @brief Der Sonnenschutz wird nicht hochgefahren
   void SetGapUpIsBlocked();
+  /// @brief Der Sonnenschutz wird hochgefahren
+  void SetGapUpIsAllowed();
   /// @brief gapUpIsBlockedHasSet zurücksetzten, nur vom Rollershutter selber!
   void ResetGapUpIsBlockedHasSet();
 

@@ -143,19 +143,16 @@ void RollerShutterComponent::InitialRun() {
   ESP_LOGI(TAG, "Initial Run begin"); 
   for (int idx = 0; idx < this->shutters->size(); idx++)
   {
-    ESP_LOGD(TAG, "1");
     RollerShutter *shutter = this->shutters->at(idx);    
-    ESP_LOGD(TAG, "2");
     RL_Time *timeUD = GetTimeById(shutter->GetTimeUpDownId());
-    ESP_LOGD(TAG, "3");
+    if (timeUD == nullptr)
+      ESP_LOGW(TAG, " TimeUpDownId %s für Shutter-ID %s nicht gefunden!", shutter->GetTimeUpDownId().c_str(), shutter->GetMyId().c_str());
     shutter->SetTimeUpDown(timeUD);
-    ESP_LOGD(TAG, "4");
     RL_Group *group = GetGroupById(shutter->GetGroupId());
-    ESP_LOGD(TAG, "5");
+    if (group == nullptr)
+      ESP_LOGW(TAG, " GroupId %s für Shutter-ID %s nicht gefunden!", shutter->GetGroupId().c_str(), shutter->GetMyId().c_str());
     shutter->SetGroup(group);
-    ESP_LOGD(TAG, "6");
     shutter->MySetup();    
-    ESP_LOGD(TAG, "7");
   }
   ESP_LOGI(TAG, "Initial Run End");
 }
@@ -221,6 +218,19 @@ void RollerShutterComponent::SetGapUpIsBlocked()
   }
 }
 
+/// @brief Der Sonnenschutz wird nicht hochgefahren
+void RollerShutterComponent::SetGapUpIsAllowed()
+{
+  if (this->gapUpIsBlockedHasSet)
+  {
+    this->gapUpIsBlockedHasSet = false;
+    ESP_LOGI(TAG, "Gap-Up is allowed");
+    for (auto itter = this->shutters->cbegin(), last = this->shutters->cend(); itter != last; itter++) {
+      RollerShutter *shutter = *itter;
+      shutter->SetGapUpIsAllowed();      
+    }
+  }
+}
 
 /// @brief onLoop
 void RollerShutterComponent::loop() {  

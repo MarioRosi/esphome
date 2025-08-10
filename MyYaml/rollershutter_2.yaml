@@ -20,6 +20,11 @@ esp32:
     type: esp-idf
 
 debug:
+  update_interval: 2s
+sensor:
+  - platform: debug
+    free:
+      name: "Heap Free"
 
 # Logger must be at least debug (default)
 logger:
@@ -94,6 +99,16 @@ button:
     uart_id: rs485
     id: uart_master_holiday_off
     data: [0xAC, 0xAB, 0x04, 0x99]
+  - platform: uart
+    internal: true
+    uart_id: rs485
+    id: uart_master_bockedopengap_on
+    data: [0xAC, 0xAB, 0x05, 0x99]
+  - platform: uart
+    internal: true
+    uart_id: rs485
+    id: uart_master_bockedopengap_off
+    data: [0xAC, 0xAB, 0x06, 0x99]
 
 i2c:
   sda: GPIO4
@@ -309,6 +324,20 @@ binary_sensor:
       then:
         - button.press: uart_master_holiday_off
         - lambda: id(rollershutter_2).SetIsOnHollidayOff();
+
+  - platform: template
+    name: "STOPGAP_I_ON"
+    on_press:
+      then:
+        - button.press: uart_master_bockedopengap_on
+        - lambda:  id(rollershutter_2).SetGapUpIsBlocked();
+
+  - platform: template
+    name: "STOPGAP_I_OFF"
+    on_press:
+      then:
+        - button.press: uart_master_bockedopengap_off
+        - lambda:  id(rollershutter_2).SetGapUpIsAllowed();
 
 switch:
   - platform: gpio

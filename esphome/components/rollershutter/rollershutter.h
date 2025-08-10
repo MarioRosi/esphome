@@ -47,36 +47,32 @@ class RollerShutterComponent;
 enum enRollerShutterState {
   /// @brief darf es nicht geben
   isUnknown = 0,
-  /// @brief ich wurde neu gestartet, fahre automatisch runter
-  isStartingDown = 1,
   /// @brief ich wurde neu gestartet, fahre automatisch hoch
-  isStartingUp = 2,
-  /// @brief ich wurde gestartet und bin oben!
-  isStarted = 3,
+  isStartingUp = 1,
   /// @brief ich bin oben
-  isTop = 4,
+  isTop = 2,
   /// @brief ich fahre nach unten
-  isDoDown = 5,
+  isDoDown = 3,
   /// @brief Runterfahren wurde gestoppt
-  isStopDoDown = 6,
+  isStopDoDown = 4,
   /// @brief ich bin unten
-  isDown = 7,
+  isDown = 5,
   /// @brief ich fahre hoch
-  isDoTop = 8,
+  isDoTop = 6,
   /// @brief Hochfahren wurde gestoppt
-  isStopDoTop = 9,
+  isStopDoTop = 7,
   /// @brief Fahre auf Lücke hoch
-  isGoToGapUp = 10,
+  isGoToGapUp = 8,
   /// @brief Hochfahren auf Lück gestoppt
-  isStopGapUp = 11,
+  isStopGapUp = 9,
   /// @brief Fahre auf Lücke runter
-  isGoToGapDown = 12,
+  isGoToGapDown = 10,
   /// @brief Runterfahren auf Lücke gestoppt
-  isStopGapDown = 13,
+  isStopGapDown = 11,
   /// @brief ich stehe auf Lücke
-  isOnGap = 14,
+  isOnGap = 12,
   /// @brief Ende der auf Lücke, hochfahren
-  isGapEndGoUp = 15,
+  isGapEndGoUp = 13,
 };
 
 
@@ -175,6 +171,8 @@ using namespace std::chrono_literals;
 /// @brief Meine eigene Timerklasse
 class Timer {
   private:
+    /// @brief Die Stopfunktion des Rolladen, wird bei erreichen des Timers aufgerufen
+    RollerShutter* owner;
     /// @brief Bis dahin läuft der Timer // unix epoch time (seconds since UTC Midnight January 1, 1970)
     std::uint64_t timeStampEnd;
     /// @brief Bei dieser zeit wurde der Timer gestartet
@@ -183,30 +181,6 @@ class Timer {
     double secondsIsRunning;
     /// @brief läuft der Timer?
     bool timerIsRunning;
-  public:
-    /// @brief Konstructor
-    Timer() {secondsIsRunning = -1.0; timerIsRunning = false;}
-    /// @brief Startet den Timer
-    /// @param runningTimeMs 
-    /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
-    bool StartTimer(double runningTimeSeconds)
-    {      
-      if (!timerIsRunning)
-      {
-        ESP_LOGD("Timer", "StartTimer for %f seconds", runningTimeSeconds);
-        timeStampStart = GetCurrentTime();
-        timeStampEnd = timeStampStart + GetMilliseconds(runningTimeSeconds);
-        timerIsRunning = true;
-        ESP_LOGD("Timer", "EndTimer is %" PRIu64 " miliseconds", timeStampEnd);
-        return true;
-      }
-      else
-      {
-        ESP_LOGD("Timer", "Timer is running!");
-      }
-      return false;
-    }
-
     /// @brief Gibt die aktuelle Zeit als milliSekunden zurück
     /// @return 
     std::uint64_t GetCurrentTime()
@@ -230,6 +204,34 @@ class Timer {
     {
       return ((double)milliseconds) / 1000.0;
     }
+  public:
+    /// @brief Konstructor
+    Timer(RollerShutter* owner)
+    {
+      this->owner = owner;
+      secondsIsRunning = -1.0;
+      timerIsRunning = false;
+    }
+    /// @brief Startet den Timer
+    /// @param runningTimeMs 
+    /// @return true, Timer konnte gestartet werden, false = es läuft bereits dieser Timer!
+    bool StartTimer(double runningTimeSeconds)
+    {      
+      if (!timerIsRunning)
+      {
+        ESP_LOGD("Timer", "StartTimer for %f seconds", runningTimeSeconds);
+        timeStampStart = GetCurrentTime();
+        timeStampEnd = timeStampStart + GetMilliseconds(runningTimeSeconds);
+        timerIsRunning = true;
+        ESP_LOGD("Timer", "EndTimer is %" PRIu64 " miliseconds", timeStampEnd);
+        return true;
+      }
+      else
+      {
+        ESP_LOGD("Timer", "Timer is running!");
+      }
+      return false;
+    }
 
     /// @brief Läuft überhaupt ein Timer?
     /// @return 
@@ -243,6 +245,7 @@ class Timer {
         std::uint64_t temp = GetCurrentTime();        
         if (temp >= timeStampEnd)
         {          
+          owner->Stop();
           StopTimer();
           return 0;
         }
@@ -387,10 +390,15 @@ class RollerShutter{
   void SetButtonDownIsPress(bool value);
   /// @brief Der Sonnenschutz wird nicht hochgefahren
   void SetGapUpIsBlocked();
+  /// @brief Der Sonnenschutz wird hochgefahren
+  void SetGapUpIsAllowed();
   /// @brief Testet, ob die Zeit für Fahre-Auf-Lücke erreicht ist
   void CheckTimerStartGap();
   /// @brief Fährt auf Lücke, wenn das Rollo unten ist, wird "hochgefahren"
   void StartGap();
+  /// @brief Gibt meine eigene Id zurück
+  /// @return 
+  std::string &GetMyId() {return this->myId;}
   /// @brief Gibt die GruppenId zurück
   /// @return 
   std::string &GetGroupId() {return this->groupId;}
