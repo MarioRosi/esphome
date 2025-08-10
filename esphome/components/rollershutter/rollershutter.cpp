@@ -42,7 +42,8 @@ RollerShutter::RollerShutter(const std::string &id, const std::string &name, con
   this->displayId = displayId;
   this->hasSetup = false;
   myState = enRollerShutterState::isUnknown;
-  this->timer = new Timer(this);
+  
+  this->timer = new RLSTimer(this);
 }
 
 /// @brief Den Rolladen aktivieren
