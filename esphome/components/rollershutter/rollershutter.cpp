@@ -80,6 +80,7 @@ void RollerShutter::ResetRollerShutter() {
   this->hasMakeGapOpenCatched = false;    
   this->btnUpIsPress = false;
   this->btnDownIsPress = false;
+  this->gapUpIsBlocked = false;
   this->myState = enRollerShutterState::isStartingUp;
   this->StartUp();
 }
@@ -179,6 +180,7 @@ void RollerShutter::Stop() {
       case enRollerShutterState::isStartingUp:
         {
           this->closingPosition -= timeStartToStop / this->timeUpDown->secondUp * 100.0;
+          ESP_LOGD(TAG,"Stop Up with calc closingPosition=%f", this->closingPosition);
           if (this->myState != enRollerShutterState::isStartingUp)
             this->closingPosition = 0.0;
           this->myState = enRollerShutterState::isStopDoTop;
@@ -191,6 +193,7 @@ void RollerShutter::Stop() {
       case enRollerShutterState::isDoDown:
         {
           this->closingPosition += timeStartToStop / this->timeUpDown->secondDown * 100.0;
+          ESP_LOGD(TAG,"Stop Down with calc closingPosition=%f", this->closingPosition);
           this->myState = enRollerShutterState::isStopDoDown;
           if (this->closingPosition >= 100.0) {
             this->closingPosition = 100.0;
@@ -201,6 +204,7 @@ void RollerShutter::Stop() {
       case enRollerShutterState::isGoToGapUp:
         {
           this->closingPosition -= timeStartToStop / this->timeUpDown->secondUp * 100.0;
+          ESP_LOGD(TAG,"Stop GapUp with calc closingPosition=%f", this->closingPosition);
           if (this->closingPosition <= (this->timeUpDown->secondGap / this->timeUpDown->secondUp * 100.0))
             this->myState = enRollerShutterState::isOnGap;
           else
@@ -210,6 +214,7 @@ void RollerShutter::Stop() {
       case enRollerShutterState::isGoToGapDown:
         {
           this->closingPosition += timeStartToStop / this->timeUpDown->secondDown * 100.0;
+          ESP_LOGD(TAG,"Stop GapDown with calc closingPosition=%f", this->closingPosition);
           if (this->closingPosition >= (this->timeUpDown->secondGap / this->timeUpDown->secondDown * 100.0))
             this->myState = enRollerShutterState::isOnGap;
           else
@@ -379,6 +384,7 @@ void RollerShutter::CheckTimerStartGap() {
           if ((this->timestampCheck.hour == this->group->sundownner->gapHour) &&
               (this->timestampCheck.minute == this->group->sundownner->gapMinute)) {
             if (!this->hasMakeGapCatched) {
+              ESP_LOGD(TAG,"CheckTimer-StartGap");
               this->hasMakeGapCatched = true;
               StartGap();
             }
@@ -387,11 +393,15 @@ void RollerShutter::CheckTimerStartGap() {
               (this->timestampCheck.minute == this->group->sundownner->upMinute)) {
             if (!this->hasMakeGapOpenCatched) {
               this->hasMakeGapOpenCatched = true;
+              ESP_LOGD(TAG,"CheckTimer-EndGap");
               if (!this->gapUpIsBlocked)
               {
                 this->myState = enRollerShutterState::isGapEndGoUp;
+                ESP_LOGD(TAG,"CheckTimer-EndGap-StartUp");
                 StartUp();
               }
+              else
+                ESP_LOGD(TAG,"CheckTimer-EndGap-Up-is blocked");
             }
           }
           if ((this->timestampCheck.hour == (this->group->sundownner->upHoure + 1)) &&
