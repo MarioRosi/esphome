@@ -181,7 +181,7 @@ void RollerShutter::Stop() {
         {
           this->closingPosition -= timeStartToStop / this->timeUpDown->secondUp * 100.0;
           ESP_LOGD(TAG,"Stop Up with calc closingPosition=%f", this->closingPosition);
-          if (this->myState != enRollerShutterState::isStartingUp)
+          if (this->myState == enRollerShutterState::isStartingUp)
             this->closingPosition = 0.0;
           this->myState = enRollerShutterState::isStopDoTop;
           if (this->closingPosition <= 0.0) {
