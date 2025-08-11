@@ -172,7 +172,7 @@ void RollerShutter::Stop() {
     this->timer->StopTimer();
     double timeStartToStop = this->timer->GetSecondsIsRunning();
     this->timer->SleepTimer();
-    ESP_LOGD(TAG,"Stop myState=%d", (int)this->myState);
+    ESP_LOGD(TAG,"Stop myState=%d and runningtime=%f sec", (int)this->myState , timeStartToStop);
     this->relUp->turn_off();
     this->relDown->turn_off();          
     switch (myState) {
