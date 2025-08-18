@@ -105,6 +105,8 @@ bool RollerShutter::StartUp() {
       case enRollerShutterState::isOnGap:
       case enRollerShutterState::isStartingUp:
       case enRollerShutterState::isGapEndGoUp:
+      case enRollerShutterState::isStopGapDown:
+      case enRollerShutterState::isStopGapUp:
         ESP_LOGD(TAG, "Make StartUp, Open Relais UP");
         this->relDown->turn_off();
         this->relUp->turn_on();
@@ -143,6 +145,8 @@ bool RollerShutter::StartDown() {
       case enRollerShutterState::isStopDoTop:
       case enRollerShutterState::isTop:
       case enRollerShutterState::isOnGap:
+      case enRollerShutterState::isStopGapDown:
+      case enRollerShutterState::isStopGapUp:
         // Relais hoch aus
         // Relais runter an
         // Timer für ausschalten erzeugen        
