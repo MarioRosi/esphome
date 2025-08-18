@@ -453,12 +453,16 @@ void RollerShutter::StartGap() {
           this->myState = enRollerShutterState::isGoToGapDown;
         }
       } else {
-        if (this->timer->StartTimer(this->timeUpDown->secondGap))
+        // Wenn geschlossen, dann soll auch nicht auf Lücke geöffnet werden!
+        if (myState != enRollerShutterState::isDown)
         {
-          ESP_LOGD(TAG,"Start GoToGap -Up");
-          relDown->turn_off();
-          relUp->turn_on();
-          this->myState = enRollerShutterState::isGoToGapUp;
+          if (this->timer->StartTimer(this->timeUpDown->secondGap))
+          {
+            ESP_LOGD(TAG,"Start GoToGap -Up");
+            relDown->turn_off();
+            relUp->turn_on();
+            this->myState = enRollerShutterState::isGoToGapUp;
+          }
         }
       }
       sendState(closingPosition);
